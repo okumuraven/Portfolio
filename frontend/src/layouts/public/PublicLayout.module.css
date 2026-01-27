@@ -1,0 +1,224 @@
+/* src/layouts/public/PublicLayout.module.css */
+
+/* --- GLOBAL LAYOUT --- */
+.layoutWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #050505;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* --- NAVBAR STYLES --- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  
+  /* Glassmorphism background */
+  background: rgba(5, 5, 5, 0.7);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Logo Styling */
+.logoGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1001; /* Keeps logo above the mobile menu overlay */
+}
+
+.logoImage {
+  height: 40px;
+  width: auto;
+  border-radius: 4px; /* Soften edges */
+  /* If your logo has a white background, this helps it blend: */
+  mix-blend-mode: screen; 
+}
+
+.logoText {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #fff;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+}
+
+/* --- DESKTOP NAV --- */
+.desktopNav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.navLink {
+  color: #888;
+  text-decoration: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #ffffff;
+}
+
+.adminLink {
+  color: #333;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  text-decoration: none;
+}
+.adminLink:hover {
+  color: #ff0055;
+}
+
+/* --- MOBILE TOGGLE BUTTON --- */
+.mobileToggle {
+  display: none; /* Hidden on Desktop */
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 8px 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  cursor: pointer;
+  z-index: 1001; /* Above overlay */
+  transition: all 0.3s;
+}
+
+.mobileToggle:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* --- MOBILE MENU OVERLAY (The Unique Part) --- */
+.mobileMenuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #050505;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  
+  /* Animation State: Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* When the menu is open */
+.mobileMenuOverlay.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.mobileNavLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Huge Links for Mobile */
+.mobileNavLinks a {
+  font-size: 2.5rem; /* Massive text */
+  font-weight: 800;
+  color: transparent;
+  -webkit-text-stroke: 1px #555; /* Outline style */
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s;
+}
+
+.mobileNavLinks a:hover,
+.mobileNavLinks a:active {
+  color: #fff;
+  -webkit-text-stroke: 1px #fff;
+  transform: scale(1.1);
+}
+
+.mobileAdmin {
+  font-size: 1rem !important; /* Smaller for admin */
+  -webkit-text-stroke: 0 !important;
+  color: #333 !important;
+  margin-top: 2rem;
+}
+
+/* --- CONTENT & FOOTER --- */
+.mainContent {
+  padding-top: 0; 
+  flex: 1;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.8rem;
+  color: #444;
+  border-top: 1px solid #111;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 768px) {
+  .desktopNav {
+    display: none; /* Hide standard links */
+  }
+
+  .mobileToggle {
+    display: block; /* Show menu button */
+  }
+  
+  .navbar {
+    padding: 15px 20px; /* Smaller padding on mobile */
+  }
+}
+/* ... existing mobileMenuOverlay code ... */
+
+/* The Mobile Links */
+.mobileNavLinks a {
+  font-size: 3rem; /* Bigger for impact */
+  font-weight: 900;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.6);
+  margin: 5px 0;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+}
+
+/* Active/Hover State for Mobile */
+.mobileNavLinks a:active, 
+.mobileNavLinks a:hover {
+  color: #fff;
+  -webkit-text-stroke: 0;
+  transform: scale(1.1) translateX(10px); /* Grows and slides right */
+  text-shadow: 0 0 20px rgba(255,255,255,0.8); /* Glows */
+}
+
+/* Pin Admin link to bottom */
+.mobileAdmin {
+  margin-top: auto; 
+  padding-bottom: 2rem;
+  font-size: 0.9rem !important;
+  color: #444 !important;
+  -webkit-text-stroke: 0 !important;
+  letter-spacing: 0.2em;
+}

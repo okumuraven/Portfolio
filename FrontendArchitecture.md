@@ -10,7 +10,8 @@ The architecture is designed to support two distinct systems within a single cod
 ---
 
 ## 2. Directory Structure
-The codebase follows a **Feature-Sliced Design** pattern, separating global configuration from domain-specific business logic.
+
+The codebase follows a **Feature-Sliced Design** pattern, cleanly separating global configuration from domain-specific business logic and interface layers.
 
 ```text
 frontend/
@@ -41,7 +42,7 @@ frontend/
 │   │   │   ├── Projects/       # Case Studies
 │   │   │   ├── Timeline/       # The "Evolution Graph"
 │   │   │   └── Contact/        # Conversion Page
-│   │   └── admin/              # Restricted Pages
+│   │   └── admin/              # Restricted Pages (CMS)
 │   │       ├── Dashboard/      # Stats & Quick Actions
 │   │       ├── Roles/          # "Persona" Editor
 │   │       └── Achievements/   # "Post a Milestone" Interface
@@ -88,3 +89,36 @@ frontend/
 │   └── FOLDER_GUIDE.md
 │
 └── package.json
+```
+
+---
+
+## 3. Key Patterns & Principles
+
+- **Feature-Sliced Design:** Keeps codebase scalable, testable, and easy to extend as persona/mode system adds complexity.
+- **API Layer:** Abstracted calls to backend, supporting flexible endpoint config and future API platform changes.
+- **App Providers:** Global context—theme, authentication, API, etc.—wired up once for use throughout the app.
+- **Layouts:** Separate shells for the public portfolio and admin dashboard to enable distinct branding and security.
+- **Theme System:** Easily swap personas and themes; dedicated themes for each role.
+- **Global Hooks:** Simple utilities for authentication, theming, and role management.
+
+---
+
+## 4. Usage Notes
+
+- **Public Pages** (`pages/public/`) never import admin or CMS logic/assets.
+- **Admin Logic** and CMS UI are protected by authenticated routes and security-aware hooks.
+- **Feature Modules** (in `features/`) manage their own state and API sync as much as possible.
+- **Error boundaries** and error logger patterns ensure runtime resilience for both public and admin sides.
+
+---
+
+## 5. Useful References
+
+- [Feature-Sliced Design](https://feature-sliced.design/)
+- [React Project Structure Best Practices (2026)](https://react.dev/learn/project-structure)
+- [Atomic Design Pattern](https://bradfrost.com/blog/post/atomic-web-design/)
+
+---
+
+_Last updated: 2026-01-26 (includes full support for Chameleon Mode, admin CMS separation, and persona-driven themes)_
