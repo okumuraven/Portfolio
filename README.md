@@ -36,14 +36,14 @@ High-level structure:
 
 ## 🔧 Tech Stack
 
-| Layer      | Tech                           |
-|------------|-------------------------------|
-| Frontend   | React.js (+ CSS modules)      |
-| Backend    | Node.js, Express.js           |
-| Database   | PostgreSQL                    |
-| Styling    | CSS Modules / Custom themes   |
-| Auth       | JWT (admin area)              |
-| Other      | REST API, file uploads (S3)   |
+| Layer      | Tech                             |
+|------------|----------------------------------|
+| Frontend   | React.js (+ CSS modules)         |
+| Backend    | Node.js, Express.js              |
+| Database   | PostgreSQL                       |
+| Styling    | CSS Modules / Custom themes      |
+| Auth       | JWT (admin area)                 |
+| Other      | REST API, file uploads (S3)      |
 
 ---
 
@@ -56,18 +56,39 @@ git clone https://github.com/okumuraven/portfolio.git
 cd portfolio
 ```
 
-### 2. Setup Backend
+---
+
+### 2. Run with Docker (Recommended for dev/test)
+
+> This will bring up Postgres, backend and frontend—all connected.  
+> See `docker-compose.yml` for port mappings and ENV variables.
+
+```bash
+docker compose up --build
+```
+
+- The backend should run at http://localhost:5000
+- The frontend should run at http://localhost:3000
+
+**Environment Variables:**  
+- Update `.env` in `/backend` and `/frontend` (copy from `.env.example` if present).
+
+---
+
+### 3. Setup Backend (Manual/local alternative)
 
 ```bash
 cd backend
 npm install
 cp .env.example .env   # Edit with your DB/API secrets
-npm run migrate        # Run your migrations
+npm run migrate        # Run your migrations (locally, or in container)
 npm run seed           # Optional: Seed demo data
 npm start
 ```
 
-### 3. Setup Frontend
+---
+
+### 4. Setup Frontend
 
 ```bash
 cd ../frontend
@@ -79,16 +100,32 @@ npm start
 
 ## 📝 Documentation
 
-- **Frontend & Backend structures**: See respective architecture docs.
+- **Frontend & Backend structures**: See respective architecture docs:
+  - [Frontend Architecture](./FrontendArchitecture.md)
+  - [Backend Architecture](./BackendArchitecture.md)
 - **API Reference**: Check `/backend/docs/API.md` (if present).
-- **Admin Usage**: Log into `/admin`. Add/update roles, skills, achievements, contact.
+- **Admin Usage**: Browse to `/admin`. Add/update roles, skills, achievements, contact.
+
+---
+
+## 🛠️ Database Migrations
+
+- To create a migration (from `/backend`):
+  ```bash
+  npm run migrate-create -- [migration_name]
+  ```
+- To apply migrations (ensure DB in Docker/localhost is running):
+  ```bash
+  npm run migrate
+  ```
+  See `BackendArchitecture.md` for full workflow and troubleshooting.
 
 ---
 
 ## 💡 Customization
 
-- Easily add new roles, skills, achievements via the admin dashboard.
-- Theme, persona, and site content are all dynamically managed.
+- Add new roles, skills, achievements from the admin dashboard.
+- Content, themes, and personas are managed live—no redeploy required.
 
 ---
 
@@ -98,6 +135,4 @@ PRs and suggestions welcome! Please see the contributing guide (if present).
 
 ---
 
----
-
-**For deeper dive into the tech stack or for feature requests, check the architecture docs or open an issue.**
+**For tech deep-dives, feature requests, or troubleshooting, check the architecture docs or open an issue.**
