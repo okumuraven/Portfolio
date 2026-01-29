@@ -1,70 +1,93 @@
-import React from "react";
-import { Outlet, Link } from "react-router-dom";
+// src/layouts/admin/AdminLayout.jsx
+import React, { useState } from "react";
+import { Outlet, NavLink, Link } from "react-router-dom";
+import styles from "./AdminLayout.module.css";
 
-/**
- * AdminLayout
- * - Provides the shell for all admin/dashboard pages.
- * - Typical: sidebar or topbar navigation, admin content area, and minimal footer.
- * - Uses <Outlet /> for nested admin routes.
- * - All admin logic/layout only; no business logic!
- */
 export default function AdminLayout() {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  // Toggle function
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+  
+  // Close sidebar when a link is clicked (for mobile)
+  const closeSidebar = () => setSidebarOpen(false);
+
+  // Helper for active link styling
+  const getLinkClass = ({ isActive }) => 
+    isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
+
   return (
-    <div className="admin-layout" style={{ display: "flex", minHeight: "100vh" }}>
-      {/* ==== SIDEBAR ==== */}
-      <aside
-        className="admin-sidebar"
-        style={{
-          width: "220px",
-          background: "#232446",
-          color: "#fff",
-          padding: "2rem 1rem",
-          minHeight: "100vh",
-        }}
-      >
-        <div
-          style={{
-            fontWeight: "bold",
-            fontSize: "1.3rem",
-            marginBottom: "2rem",
-            textAlign: "center",
-          }}
-        >
-          Admin Panel
+    <div className={styles.layoutWrapper}>
+      
+      {/* ==== MOBILE OVERLAY ==== */}
+      {/* Dims the background when menu is open on mobile */}
+      <div 
+        className={`${styles.overlay} ${isSidebarOpen ? styles.overlayOpen : ''}`} 
+        onClick={closeSidebar}
+      />
+
+      {/* ==== SIDEBAR (COMMAND DRAWER) ==== */}
+      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
+        
+        {/* Title Area */}
+        <div className={styles.adminTitle}>
+          <span className={styles.statusDot}></span>
+          Admin_Console
         </div>
-        <nav style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
-          <Link to="/admin" style={{ color: "#fff" }}>Dashboard</Link>
-          <Link to="/admin/roles" style={{ color: "#fff" }}>Roles</Link>
-          <Link to="/admin/skills" style={{ color: "#fff" }}>Skills</Link>
-          <Link to="/admin/achievements" style={{ color: "#fff" }}>Achievements</Link>
-          <Link to="/admin/activity" style={{ color: "#fff" }}>Activity</Link>
-          {/* Add more links as needed */}
+
+        {/* Navigation Menu */}
+        <nav className={styles.navGroup}>
+          <NavLink to="/admin" end className={getLinkClass} onClick={closeSidebar}>
+            / Dashboard
+          </NavLink>
+          <NavLink to="/admin/roles" className={getLinkClass} onClick={closeSidebar}>
+            / Roles & Personas
+          </NavLink>
+          <NavLink to="/admin/skills" className={getLinkClass} onClick={closeSidebar}>
+            / Skill_Matrix
+          </NavLink>
+          <NavLink to="/admin/achievements" className={getLinkClass} onClick={closeSidebar}>
+            / Timeline_Feed
+          </NavLink>
+          <NavLink to="/admin/activity" className={getLinkClass} onClick={closeSidebar}>
+            / System_Logs
+          </NavLink>
         </nav>
-        <div style={{ marginTop: "2rem" }}>
-          <Link to="/" style={{ color: "#9adccd", fontSize: "0.95rem" }}>
-            ← Back to Site
+
+        {/* Bottom Area: Exit */}
+        <div className={styles.backLinkWrapper}>
+          <Link to="/" className={styles.backLink}>
+            ← Eject to Public Site
           </Link>
         </div>
       </aside>
 
-      {/* ==== MAIN CONTENT ==== */}
-      <div className="admin-main" style={{ flex: 1, background: "#f8faff", minHeight: "100vh" }}>
-        <header style={{ padding: "1.2rem 2rem", borderBottom: "1px solid #e5e8ee", background: "#fff" }}>
-          {/* You can add admin user info, quick actions, or breadcrumbs here */}
-          <span style={{ color: "#232446", fontWeight: "bold" }}>Admin Area</span>
+      {/* ==== MAIN INTERFACE ==== */}
+      <div className={styles.mainWrapper}>
+        
+        {/* Top Header */}
+        <header className={styles.topHeader}>
+          {/* Mobile Toggle Button (Visible only on phone) */}
+          <button className={styles.mobileToggle} onClick={toggleSidebar}>
+            [::]
+          </button>
+
+          <span className={styles.headerTitle}>System Configuration</span>
+          
+          {/* Pushes User Badge to the right */}
+          <div style={{ marginLeft: "auto" }} className={styles.userBadge}>
+            USER: <strong>SUPER_ADMIN</strong>
+          </div>
         </header>
-        <main style={{ padding: "2rem" }}>
+
+        {/* Content Render Area */}
+        <main className={styles.contentArea}>
           <Outlet />
         </main>
-        <footer style={{
-          textAlign: "center",
-          padding: "1rem 0",
-          background: "#fff",
-          borderTop: "1px solid #e5e8ee",
-          color: "#999",
-          fontSize: "0.96rem"
-        }}>
-          &copy; {new Date().getFullYear()} MyPortfolio Admin
+
+        {/* Minimal Footer */}
+        <footer className={styles.footer}>
+          SECURE CONNECTION // ENCRYPTED
         </footer>
       </div>
     </div>

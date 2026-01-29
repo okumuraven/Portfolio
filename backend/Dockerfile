@@ -1,5 +1,5 @@
 # Use official Node image
-FROM node:18
+FROM node:20.11.1
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
