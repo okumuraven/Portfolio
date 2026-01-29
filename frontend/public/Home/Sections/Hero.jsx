@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     <section className={styles.hero}>
       <h1>
-        Hi, I'm <span className={styles.highlight}>Your Name</span>  
+        Hi, I'm <span className={styles.highlight}>Okumu Joseph(joseraven01)</span>  
         <br />
         <span className={styles.roleSwitch}>Software Developer</span>
         {/* Later: put a <PersonaSwitcher /> here for dynamic role */}

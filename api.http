@@ -3,7 +3,7 @@ POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "joseravenlinux@gmail.com",
+  "email": "joseravelinux@gmail.com",
   "password": "Kingbeez@2026"
 }
 
@@ -11,6 +11,6 @@ Content-Type: application/json
 
 ### Get current user
 GET http://localhost:5000/api/auth/me
-Authorization: Bearer YOUR_JWT_TOKEN_HERE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiam9zZXJhdmVsaW51eEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Njk2OTgyMzEsImV4cCI6MTc2OTcwNTQzMX0.2Oe23A8mjVj06-479RGtJv4G98T6FKKebtLdeO_RLTw
 
 ###
