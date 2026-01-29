@@ -1,41 +1,54 @@
 // src/layouts/admin/AdminLayout.jsx
-import React, { useState } from "react";
-import { Outlet, NavLink, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import styles from "./AdminLayout.module.css";
+import { useAuth } from "../../hooks/useAuth";
 
+// Protects admin routes and displays the real user/contact info
 export default function AdminLayout() {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const { user, fetchUser, logout } = useAuth();
+  const navigate = useNavigate();
 
-  // Toggle function
+  // On mount, ensure user is loaded and authenticated
+  useEffect(() => {
+    if (!user) {
+      fetchUser();
+    }
+  }, [user, fetchUser]);
+
+  // When user NOT authenticated, redirect to login
+  useEffect(() => {
+    if (user === null) {
+      navigate("/auth/login", { replace: true });
+    }
+  }, [user, navigate]);
+
+  // Sidebar toggle logic
+  const [isSidebarOpen, setSidebarOpen] = React.useState(false);
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
-  
-  // Close sidebar when a link is clicked (for mobile)
   const closeSidebar = () => setSidebarOpen(false);
-
-  // Helper for active link styling
-  const getLinkClass = ({ isActive }) => 
+  const getLinkClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
+
+  if (user === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.layoutWrapper}>
-      
       {/* ==== MOBILE OVERLAY ==== */}
-      {/* Dims the background when menu is open on mobile */}
-      <div 
-        className={`${styles.overlay} ${isSidebarOpen ? styles.overlayOpen : ''}`} 
+      <div
+        className={`${styles.overlay} ${isSidebarOpen ? styles.overlayOpen : ""}`}
         onClick={closeSidebar}
       />
-
-      {/* ==== SIDEBAR (COMMAND DRAWER) ==== */}
-      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ''}`}>
-        
-        {/* Title Area */}
+      {/* ==== SIDEBAR ==== */}
+      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ""}`}>
+        {/* Title */}
         <div className={styles.adminTitle}>
           <span className={styles.statusDot}></span>
           Admin_Console
         </div>
-
-        {/* Navigation Menu */}
+        {/* Menu */}
         <nav className={styles.navGroup}>
           <NavLink to="/admin" end className={getLinkClass} onClick={closeSidebar}>
             / Dashboard
@@ -53,39 +66,35 @@ export default function AdminLayout() {
             / System_Logs
           </NavLink>
         </nav>
-
-        {/* Bottom Area: Exit */}
+        {/* Bottom: Exit */}
         <div className={styles.backLinkWrapper}>
           <Link to="/" className={styles.backLink}>
             ← Eject to Public Site
           </Link>
         </div>
       </aside>
-
-      {/* ==== MAIN INTERFACE ==== */}
+      {/* ==== MAIN ==== */}
       <div className={styles.mainWrapper}>
-        
-        {/* Top Header */}
         <header className={styles.topHeader}>
-          {/* Mobile Toggle Button (Visible only on phone) */}
           <button className={styles.mobileToggle} onClick={toggleSidebar}>
             [::]
           </button>
-
           <span className={styles.headerTitle}>System Configuration</span>
-          
-          {/* Pushes User Badge to the right */}
           <div style={{ marginLeft: "auto" }} className={styles.userBadge}>
-            USER: <strong>SUPER_ADMIN</strong>
+            USER: <strong>{user?.role?.toUpperCase() || "ADMIN"}</strong>
+            {" / "}
+            <span>{user?.email}</span>
+            <button 
+              className={styles.logoutBtn}
+              onClick={() => {logout(); navigate("/auth/login");}}
+              title="Logout"
+              style={{marginLeft: 12}}
+            >Logout</button>
           </div>
         </header>
-
-        {/* Content Render Area */}
         <main className={styles.contentArea}>
           <Outlet />
         </main>
-
-        {/* Minimal Footer */}
         <footer className={styles.footer}>
           SECURE CONNECTION // ENCRYPTED
         </footer>
