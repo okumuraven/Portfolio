@@ -2,17 +2,14 @@ import { Routes, Route } from "react-router-dom";
 import PublicLayout from "../layouts/public/PublicLayout";
 import AdminLayout from "../layouts/admin/AdminLayout";
 import Home from "../pages/public/Home/Home";
-// Replace with your real login page if implemented:
-import Login from "../pages/public/auth/Login"; // <--- <-- Add this import
+import Login from "../pages/public/auth/Login";
+import PersonasAdminPage from "../pages/admin/Personas"; // <--- Import your admin personas page!
 
 // Example admin pages -- stubs
 function AdminDashboardStub() {
   return <div>Admin Dashboard Coming Soon!</div>;
 }
 
-/**
- * Simple 404 Not Found page component.
- */
 function NotFound() {
   return (
     <div style={{ textAlign: "center", padding: "4rem 1rem" }}>
@@ -25,8 +22,7 @@ function NotFound() {
 
 /**
  * Centralized Routing for App
- * - Splits public routes and admin routes using layouts
- * - Add additional routes as features are built
+ * - Splits public and admin routes using layouts
  * - 404 fallback included
  */
 export default function AppRoutes() {
@@ -35,23 +31,20 @@ export default function AppRoutes() {
       {/* Public Routes */}
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<Home />} />
-        {/* Login Page */}
         <Route path="auth/login" element={<Login />} />
-        {/* Add other public pages here */}
-        {/* Example: 
-        <Route path="projects" element={<Projects />} />
-        <Route path="timeline" element={<Timeline />} />
-        */}
+        {/* Add other public pages here as you build them */}
+        {/* <Route path="projects" element={<Projects />} /> */}
+        {/* <Route path="timeline" element={<Timeline />} /> */}
       </Route>
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboardStub />} />
-        {/* Add other admin pages here */}
-        {/* Example:
-        <Route path="roles" element={<Roles />} />
-        <Route path="skills" element={<Skills />} />
-        */}
+        <Route path="personas" element={<PersonasAdminPage />} />
+        {/* Add other admin features per your structure: */}
+        {/* <Route path="skills" element={<SkillsAdminPage />} /> */}
+        {/* <Route path="achievements" element={<AchievementsAdminPage />} /> */}
+        {/* <Route path="activity" element={<SystemLogsAdminPage />} /> */}
       </Route>
 
       {/* 404 fallback */}

@@ -1,15 +1,14 @@
-// src/layouts/admin/AdminLayout.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import styles from "./AdminLayout.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
-// Protects admin routes and displays the real user/contact info
+// Protects admin routes and displays user/contact info
 export default function AdminLayout() {
   const { user, fetchUser, logout } = useAuth();
   const navigate = useNavigate();
 
-  // On mount, ensure user is loaded and authenticated
+  // On mount: ensure user is loaded and authenticated
   useEffect(() => {
     if (!user) {
       fetchUser();
@@ -24,9 +23,10 @@ export default function AdminLayout() {
   }, [user, navigate]);
 
   // Sidebar toggle logic
-  const [isSidebarOpen, setSidebarOpen] = React.useState(false);
-  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen((open) => !open);
   const closeSidebar = () => setSidebarOpen(false);
+
   const getLinkClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
 
@@ -41,6 +41,7 @@ export default function AdminLayout() {
         className={`${styles.overlay} ${isSidebarOpen ? styles.overlayOpen : ""}`}
         onClick={closeSidebar}
       />
+
       {/* ==== SIDEBAR ==== */}
       <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ""}`}>
         {/* Title */}
@@ -53,8 +54,8 @@ export default function AdminLayout() {
           <NavLink to="/admin" end className={getLinkClass} onClick={closeSidebar}>
             / Dashboard
           </NavLink>
-          <NavLink to="/admin/roles" className={getLinkClass} onClick={closeSidebar}>
-            / Roles & Personas
+          <NavLink to="/admin/personas" className={getLinkClass} onClick={closeSidebar}>
+            / Personas
           </NavLink>
           <NavLink to="/admin/skills" className={getLinkClass} onClick={closeSidebar}>
             / Skill_Matrix
@@ -73,6 +74,7 @@ export default function AdminLayout() {
           </Link>
         </div>
       </aside>
+
       {/* ==== MAIN ==== */}
       <div className={styles.mainWrapper}>
         <header className={styles.topHeader}>
@@ -86,9 +88,9 @@ export default function AdminLayout() {
             <span>{user?.email}</span>
             <button 
               className={styles.logoutBtn}
-              onClick={() => {logout(); navigate("/auth/login");}}
+              onClick={() => { logout(); navigate("/auth/login"); }}
               title="Logout"
-              style={{marginLeft: 12}}
+              style={{ marginLeft: 12 }}
             >Logout</button>
           </div>
         </header>

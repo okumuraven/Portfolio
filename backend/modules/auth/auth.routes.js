@@ -3,8 +3,7 @@ const router = express.Router();
 
 const authController = require('./auth.controller');
 const { validateLogin, validateRegister } = require('./auth.validation');
-const requireAuth = require('../../src/middlewares/auth.middleware');
-console.log('MIDDLEWARE DEBUG requireAuth:', requireAuth);
+const requireAuth = require('./auth.middleware'); // ✅ Default import, not destructured
 
 // === AUTH ROUTES ===
 
@@ -12,15 +11,15 @@ console.log('MIDDLEWARE DEBUG requireAuth:', requireAuth);
 router.post('/login', validateLogin, authController.login);
 
 // GET /api/auth/me - Return current user info (JWT required)
-router.get('/me', requireAuth(), authController.me);
+router.get('/me', requireAuth(), authController.me); // Call as function!
 
 // POST /api/auth/logout - (Stateless JWT: just a stub for extensibility)
 router.post('/logout', requireAuth(), authController.logout);
 
-// POST /api/auth/register - Admin registration (if enabled, optional!)
-router.post('/register', validateRegister, authController.register); // Uncomment and implement registration if desired
+// POST /api/auth/register - Admin registration (enable as needed)
+router.post('/register', validateRegister, authController.register);
 
-// POST /api/auth/refresh - For refresh tokens if you add support
+// POST /api/auth/refresh - For refresh tokens (future support)
 // router.post('/refresh', authController.refresh);
 
 module.exports = router;
