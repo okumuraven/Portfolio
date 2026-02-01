@@ -1,113 +1,168 @@
-/* sections/Hero.module.css */
+/* src/pages/public/Home/sections/Hero.module.css */
 
 .hero {
-  /* Use Grid for layout control */
+  /* Layout */
   display: grid;
   grid-template-columns: 1fr;
-  min-height: 90vh; /* Full screen height */
+  min-height: 90vh;
   width: 100%;
-  padding: 0 5vw; /* 5% padding on sides */
+  padding: 0 5vw;
   position: relative;
-  align-content: center; /* Center vertically */
+  align-content: center;
   
-  /* The Void Background + subtle grid */
+  /* Background: Deep Void + Tech Grid */
   background-color: #050505;
   background-image: 
     linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
   overflow: hidden;
+
+  /* Default Accent (Will be overridden by JSX inline style) */
+  --accent-color: #00ff88; 
 }
 
-/* 1. The "Intro" Tag - Small & Technical */
+/* 1. Intro Tag - Dynamic & Glowing */
 .introTag {
   font-family: 'Courier New', monospace;
-  color: #00ff88; /* Cyber Green Accent */
-  font-size: clamp(0.8rem, 2vw, 1rem);
+  color: var(--accent-color); 
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 10px;
-  opacity: 0.8;
+  gap: 15px;
+  opacity: 0.9;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .introTag::before {
   content: '';
-  width: 40px;
+  width: 30px;
   height: 2px;
-  background: #00ff88;
+  background: var(--accent-color);
   display: block;
+  box-shadow: 0 0 8px var(--accent-color);
 }
 
-/* 2. The Name - MASSIVE & Asymmetrical */
+/* 2. Main Title - Massive & Asymmetrical */
 .hero h1 {
   font-family: 'Inter', sans-serif;
-  /* Massive responsive font size */
-  font-size: clamp(3.5rem, 11vw, 7.5rem); 
+  font-size: clamp(2.8rem, 11vw, 7.5rem); 
   font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
   color: #fff;
   margin: 0;
   z-index: 2;
   text-transform: uppercase;
   max-width: 1400px;
+  word-wrap: break-word; 
 }
 
-/* The "Hollow" Effect on Last Name */
+/* The "Hollow" Text Effect */
 .highlight {
-  display: block; /* Forces "Joseph" to new line for impact */
+  display: block;
   color: transparent;
-  /* Thin sharp outline */
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.85); 
   transition: all 0.4s ease;
   cursor: default;
+  opacity: 0.9;
 }
 
 .highlight:hover {
-  color: #fff; /* Fills in white on hover */
+  color: #fff;
   -webkit-text-stroke: 0px;
-  /* Adds a "Glow" behind the text */
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.4); 
-  transform: translateX(10px); /* Slight slide movement */
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5); 
+  transform: translateX(10px);
 }
 
-/* 3. The Role Box - Tech Style */
+/* 3. Role/Description Container */
 .roleContainer {
   margin-top: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   border-left: 2px solid #333;
   padding-left: 20px;
+  max-width: 650px;
+  animation: slideIn 0.8s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .roleSwitch {
   font-family: 'Courier New', monospace;
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
-  color: #ccc; 
+  font-size: 0.85rem;
+  color: #888; 
   letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 .subtitle {
-  font-size: 1rem;
-  color: #666;
-  max-width: 450px;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  color: #aaa;
   line-height: 1.6;
+  white-space: pre-line; 
 }
 
-/* 4. Decorative "Scroll" Element (Desktop Only) */
+/* 4. Persona Switcher */
+.switcher {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap; 
+}
+
+.switcherLabel {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: var(--accent-color);
+  font-weight: 700;
+}
+
+.switcherSelect {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 8px 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s;
+  border-radius: 2px;
+}
+
+.switcherSelect:hover,
+.switcherSelect:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.switcherSelect option {
+  background: #000;
+  color: #fff;
+}
+
+/* 5. Desktop Decor */
 .decorLine {
   position: absolute;
   right: 6vw;
   bottom: 15vh;
-  writing-mode: vertical-rl; /* Text runs vertically */
+  writing-mode: vertical-rl;
   text-orientation: mixed;
   color: #444;
   font-family: 'Courier New', monospace;
   font-size: 0.75rem;
   letter-spacing: 0.3em;
-  display: none; /* Hidden on mobile */
+  display: none;
   animation: float 3s infinite ease-in-out;
 }
 
@@ -118,4 +173,69 @@
 
 @media (min-width: 1024px) {
   .decorLine { display: block; }
+}
+
+/* Loading/Error */
+.loader, .error {
+  font-family: 'Courier New', monospace;
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.error { color: #ff4444; }
+
+/* =========================================
+   MOBILE RESPONSIVENESS (PROFESSIONAL FIX)
+   ========================================= */
+@media (max-width: 768px) {
+  .hero {
+    /* Use fixed padding for mobile to prevent layout shifts */
+    padding: 120px 24px 60px 24px; 
+    align-content: flex-start; /* Align top-ish so it doesn't float weirdly */
+    height: auto;
+    min-height: 100vh;
+    box-sizing: border-box; /* Crucial for padding calculation */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Fix Title Overflow */
+  .hero h1 {
+    font-size: 3.5rem; /* Fixed size is safer than clamp on older phones */
+    line-height: 0.9;
+    width: 100%;
+    word-break: break-word; /* Prevents text bleeding off screen */
+  }
+
+  .introTag {
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Fix Description Cut-off */
+  .roleContainer {
+    margin-top: 2rem;
+    padding-left: 16px; /* Slightly reduce padding */
+    border-left-width: 2px;
+    width: 100%; /* Ensure container takes full width */
+    max-width: 100%;
+    box-sizing: border-box; /* Include padding in width */
+  }
+
+  .subtitle {
+    font-size: 0.95rem; /* readable size */
+    width: 100%;
+    /* These 3 lines fix the text cut-off issue: */
+    white-space: normal; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding-right: 10px; /* Safety buffer on the right */
+  }
+
+  /* Fix Hollow Text Stroke Width on small screens */
+  .highlight {
+    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.85);
+  }
 }

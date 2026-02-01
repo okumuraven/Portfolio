@@ -1,0 +1,294 @@
+/* src/pages/admin/Personas/Personas.module.css */
+
+/* --- CONTAINER --- */
+.container {
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  /* FIX: Ensure container doesn't overflow horizontally */
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #222;
+  padding-bottom: 1rem;
+  flex-wrap: wrap; /* Allows wrapping on small screens */
+  gap: 1rem;
+}
+
+.title {
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  /* FIX: Text wrapping for long titles */
+  white-space: normal; 
+  line-height: 1.4;
+}
+
+.title::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 24px; /* Fixed height match */
+  min-width: 6px; /* Prevents shrinking */
+  background: #ff5500;
+}
+
+/* --- DATA TABLE --- */
+.tableContainer {
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.dataTable thead {
+  background: #111;
+  border-bottom: 1px solid #333;
+}
+
+.dataTable th {
+  text-align: left;
+  padding: 1rem;
+  color: #888;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.dataTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  color: #ccc;
+}
+
+.dataTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Badges & Dots */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.activeBadge {
+  background: rgba(0, 255, 136, 0.1);
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.inactiveBadge {
+  background: rgba(255, 255, 255, 0.05);
+  color: #666;
+  border: 1px solid #333;
+}
+
+.colorDot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #444;
+  vertical-align: middle;
+}
+
+/* Actions */
+.actionBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  margin-right: 8px;
+  transition: all 0.2s;
+  font-family: 'Courier New', monospace;
+}
+
+.editBtn:hover { border-color: #fff; color: #fff; }
+.deleteBtn:hover { border-color: #ff4444; color: #ff4444; }
+
+/* --- THE FORM CARD --- */
+.formCard {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  padding: 2rem;
+  position: relative;
+  /* FIX: Ensure it stays within screen width */
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.formCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #ff5500;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* FIX: Ensure content doesn't overflow container */
+  min-width: 0; 
+}
+
+.label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  white-space: nowrap; /* Keeps label on one line if possible */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input, .select, .textarea {
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.3s;
+  box-sizing: border-box; /* IMPORTANT for mobile padding */
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  border-color: #ff5500;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.submitBtn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submitBtn:hover {
+  background: #ff5500;
+  color: #fff;
+}
+
+.cancelBtn {
+  background: transparent;
+  color: #888;
+  border: 1px solid #333;
+  padding: 12px 24px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.cancelBtn:hover { color: #fff; border-color: #fff; }
+
+/* =========================================
+   MOBILE RESPONSIVENESS FIXES
+   ========================================= */
+@media (max-width: 768px) {
+  
+  /* 1. Fix Table Overflow */
+  .dataTable thead { display: none; }
+  
+  .dataTable tbody tr {
+    display: block;
+    background: #111;
+    margin-bottom: 1rem;
+    border: 1px solid #222;
+    padding: 1rem;
+  }
+  
+  .dataTable td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #222;
+    font-size: 0.85rem;
+  }
+  
+  .dataTable td:last-child { 
+    border-bottom: none; 
+    padding-top: 1rem;
+    justify-content: flex-start; /* Align buttons left */
+  }
+
+  /* 2. Fix Form Spacing */
+  .formCard {
+    padding: 1.5rem 1rem; /* Reduce side padding */
+  }
+
+  /* 3. Typography Adjustments */
+  .title {
+    font-size: 1rem; /* Smaller font prevents overflow */
+    word-break: break-word; /* Breaks long words if needed */
+  }
+
+  /* 4. Grid Stack */
+  .formGrid {
+    grid-template-columns: 1fr; /* Force single column */
+    gap: 1rem;
+  }
+  
+  /* 5. Input Text Size (Prevent Zoom) */
+  .input, .select, .textarea {
+    font-size: 16px; 
+  }
+
+  /* 6. Button Stack */
+  .submitBtn, .cancelBtn {
+    width: 100%;
+    margin: 5px 0;
+    display: block;
+    text-align: center;
+  }
+}
