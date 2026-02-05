@@ -1,0 +1,423 @@
+/* src/pages/public/SkillMatrix/SkillMatrix.module.css */
+
+/* --- CONTAINER & LAYOUT --- */
+.container {
+  padding: 5rem 5vw;
+  background-color: #050505;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  min-height: 80vh;
+  width: 100%;
+  box-sizing: border-box; /* Prevents horizontal scroll */
+  
+  /* Subtle Technical Grid Background */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.sectionTitle {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.sectionTitle span {
+  /* Cinematic Hollow Text Effect */
+  color: transparent;
+  -webkit-text-stroke: 1px #fff;
+}
+
+/* --- ERROR & LOADING STATES --- */
+.loader, .error {
+  text-align: center;
+  padding: 4rem;
+  font-family: 'Courier New', monospace;
+  color: #666;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+}
+
+.error { color: #ff4444; }
+
+
+/* =========================================
+   SECTION 1: SUPERPOWERS (FEATURED)
+   ========================================= */
+.superpowerSection {
+  margin-bottom: 6rem;
+  text-align: center;
+}
+
+.superLabel {
+  font-family: 'Courier New', monospace;
+  color: #ffd700; /* Gold */
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  display: inline-block;
+  border-bottom: 1px solid #ffd700;
+  padding-bottom: 6px;
+}
+
+.superGrid {
+  display: grid;
+  /* Desktop: Cards sit side by side */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.superCard {
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.03) 0%, rgba(10, 10, 10, 0.8) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  padding: 2rem;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box; /* Keeps padding inside width */
+}
+
+.superCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+  border-color: #ffd700;
+}
+
+/* Featured Icon */
+.superIconImg {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+}
+
+.starIcon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #ffd700;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.superName {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.superDetail {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #ccc;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+
+/* =========================================
+   SECTION 2: CATEGORY GRID
+   ========================================= */
+.categoryGrid {
+  display: grid;
+  /* Desktop: Categories allow generous width */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.categoryCard {
+  background: rgba(15, 15, 15, 0.6);
+  border: 1px solid #222;
+  border-radius: 2px;
+  padding: 2rem;
+  transition: border-color 0.3s;
+  backdrop-filter: blur(5px);
+  box-sizing: border-box;
+}
+
+.categoryCard:hover {
+  border-color: #444;
+}
+
+.catTitle {
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: #888;
+  text-transform: uppercase;
+  border-bottom: 1px solid #333;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.1em;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* --- SKILL LIST ITEMS --- */
+.skillList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.skillItem {
+  display: flex;
+  flex-direction: row; 
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.skillItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.skillLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1; 
+  min-width: 150px;
+}
+
+.skillRight {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+/* Elements */
+.nodeDot {
+  width: 6px;
+  height: 6px;
+  background: #333;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.skillItem:hover .nodeDot {
+  background: #fff;
+  box-shadow: 0 0 8px #fff;
+}
+
+.iconImg {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.skillName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activeIndicator {
+  width: 6px;
+  height: 6px;
+  background-color: #00ff88;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px #00ff88;
+}
+
+.superpowerStar {
+  color: #ffd700;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+
+.skillLevel {
+  font-size: 0.85rem;
+  color: #aaa;
+  font-weight: 500;
+}
+
+.skillMeta {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.skillOrderTag {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #333;
+  border: 1px solid #222;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* --- THE INFO ROW (Links, Certs, Personas) --- */
+.skillInfoRow {
+  width: 100%; 
+  margin-top: 6px;
+  padding-left: 38px; 
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.8rem;
+}
+
+/* Links */
+.certLink, .skillProjectLink {
+  font-family: 'Courier New', monospace;
+  text-decoration: none;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.certLink {
+  color: #00ff88;
+  border: 1px solid #00ff88;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(0, 255, 136, 0.05);
+}
+
+.certLink:hover {
+  background: #00ff88;
+  color: #000;
+}
+
+.skillProjectLinks {
+  color: #666;
+  display: flex;
+  gap: 5px;
+}
+
+.skillProjectLink {
+  color: #888;
+  border-bottom: 1px dotted #666;
+}
+
+.skillProjectLink:hover {
+  color: #fff;
+  border-bottom-style: solid;
+}
+
+.skillPersonas {
+  display: flex;
+  gap: 4px;
+}
+
+.personaChip {
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  background: #222;
+  color: #aaa;
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS FIXES
+   ========================================= */
+@media (max-width: 768px) {
+  .container {
+    padding: 3rem 1.5rem; /* Reduced padding */
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+  
+  .sectionTitle {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  /* --- SUPERPOWER (FEATURED) FIX --- */
+  .superGrid {
+    display: flex; /* Flex column is safer than grid on mobile to prevent overflow */
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+  
+  .superCard {
+    /* Stack Vertical (Professional Card Look) */
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    
+    width: 100%; /* Force full width */
+    padding: 2rem 1rem;
+    
+    /* Ensure no weird margins shift it right */
+    margin: 0;
+  }
+  
+  .superIconImg {
+    margin-bottom: 1rem;
+    width: 56px;
+    height: 56px;
+  }
+
+  .superDetail {
+    margin-bottom: 1.5rem; /* Add space before certificate button */
+  }
+
+  /* --- CATEGORY FIX --- */
+  .categoryGrid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .categoryCard {
+    padding: 1.5rem 1rem;
+    width: 100%;
+  }
+
+  /* Skill Items - Stack nicely */
+  .skillItem {
+    align-items: flex-start;
+  }
+
+  .skillLeft {
+    min-width: 0;
+    max-width: 70%;
+  }
+  
+  .skillRight {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    max-width: 30%;
+  }
+
+  .skillInfoRow {
+    padding-left: 0; 
+    margin-top: 10px;
+  }
+}

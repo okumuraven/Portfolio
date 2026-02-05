@@ -1,56 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import styles from "./AdminLayout.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
-// Protects admin routes and displays user/contact info
 export default function AdminLayout() {
   const { user, fetchUser, logout } = useAuth();
   const navigate = useNavigate();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-  // On mount: ensure user is loaded and authenticated
+  // Fetch user (once) on mount if not already loaded
   useEffect(() => {
-    if (!user) {
-      fetchUser();
-    }
+    if (user === undefined) fetchUser();
   }, [user, fetchUser]);
 
-  // When user NOT authenticated, redirect to login
+  // Redirect to login if NOT authenticated
   useEffect(() => {
     if (user === null) {
       navigate("/auth/login", { replace: true });
     }
   }, [user, navigate]);
 
-  // Sidebar toggle logic
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const toggleSidebar = () => setSidebarOpen((open) => !open);
-  const closeSidebar = () => setSidebarOpen(false);
+  // Sidebar toggle handlers w/esc to close
+  const toggleSidebar = useCallback(() => setSidebarOpen(open => !open), []);
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
+  useEffect(() => {
+    if (!isSidebarOpen) return;
+    const handleEsc = (e) => { if (e.key === "Escape") setSidebarOpen(false); };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [isSidebarOpen]);
 
   const getLinkClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
 
-  if (user === null) {
-    return <div>Loading...</div>;
-  }
+  // Early returns
+  if (user === undefined) return <div>Loading...</div>;
 
   return (
     <div className={styles.layoutWrapper}>
-      {/* ==== MOBILE OVERLAY ==== */}
+      {/* MOBILE OVERLAY */}
       <div
         className={`${styles.overlay} ${isSidebarOpen ? styles.overlayOpen : ""}`}
         onClick={closeSidebar}
+        aria-label="Close sidebar"
+        role="button"
+        tabIndex={0}
+        onKeyPress={e => { if (e.key === "Enter") closeSidebar(); }}
       />
 
-      {/* ==== SIDEBAR ==== */}
-      <aside className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ""}`}>
-        {/* Title */}
+      {/* SIDEBAR */}
+      <aside
+        className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ""}`}
+        aria-label="Admin Navigation"
+      >
         <div className={styles.adminTitle}>
-          <span className={styles.statusDot}></span>
+          <span className={styles.statusDot} aria-label="Status: Online"></span>
           Admin_Console
         </div>
-        {/* Menu */}
-        <nav className={styles.navGroup}>
+        <nav className={styles.navGroup} aria-label="Admin Main Menu">
           <NavLink to="/admin" end className={getLinkClass} onClick={closeSidebar}>
             / Dashboard
           </NavLink>
@@ -60,6 +68,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/skills" className={getLinkClass} onClick={closeSidebar}>
             / Skill_Matrix
           </NavLink>
+          <NavLink to="/admin/projects" className={getLinkClass} onClick={closeSidebar}>
+            / Projects
+          </NavLink>
           <NavLink to="/admin/achievements" className={getLinkClass} onClick={closeSidebar}>
             / Timeline_Feed
           </NavLink>
@@ -67,7 +78,6 @@ export default function AdminLayout() {
             / System_Logs
           </NavLink>
         </nav>
-        {/* Bottom: Exit */}
         <div className={styles.backLinkWrapper}>
           <Link to="/" className={styles.backLink}>
             ← Eject to Public Site
@@ -75,23 +85,30 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* ==== MAIN ==== */}
+      {/* MAIN VIEW */}
       <div className={styles.mainWrapper}>
         <header className={styles.topHeader}>
-          <button className={styles.mobileToggle} onClick={toggleSidebar}>
+          <button
+            className={styles.mobileToggle}
+            onClick={toggleSidebar}
+            aria-label="Open sidebar"
+            tabIndex={0}
+          >
             [::]
           </button>
           <span className={styles.headerTitle}>System Configuration</span>
-          <div style={{ marginLeft: "auto" }} className={styles.userBadge}>
+          <div className={styles.userBadge} style={{ marginLeft: "auto" }}>
             USER: <strong>{user?.role?.toUpperCase() || "ADMIN"}</strong>
             {" / "}
             <span>{user?.email}</span>
-            <button 
+            <button
               className={styles.logoutBtn}
               onClick={() => { logout(); navigate("/auth/login"); }}
               title="Logout"
               style={{ marginLeft: 12 }}
-            >Logout</button>
+            >
+              Logout
+            </button>
           </div>
         </header>
         <main className={styles.contentArea}>
