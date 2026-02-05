@@ -2,13 +2,13 @@
 
 /* --- CONTAINER & LAYOUT --- */
 .container {
-  padding: 5rem 5vw;
+  padding: 4rem 5vw;
   background-color: #050505;
   color: #fff;
   font-family: 'Inter', sans-serif;
   min-height: 80vh;
   width: 100%;
-  box-sizing: border-box; /* Prevents horizontal scroll */
+  box-sizing: border-box;
   
   /* Subtle Technical Grid Background */
   background-image: 
@@ -17,6 +17,25 @@
   background-size: 40px 40px;
 }
 
+/* =========================================
+   NEW SECTION: PIE CHART OVERVIEW
+   ========================================= */
+.pieChartSection {
+  margin: 0 auto 5rem auto; 
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  /* CLEANUP: No border/background here to prevent "Double Frame" effect */
+}
+
+/* Hide the old external label since the chart has an internal title */
+.pieChartLabel {
+  display: none; 
+}
+
+/* =========================================
+   HEADER TITLE
+   ========================================= */
 .sectionTitle {
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight: 800;
@@ -41,7 +60,6 @@
   font-size: 1.1rem;
   letter-spacing: 0.1em;
 }
-
 .error { color: #ff4444; }
 
 
@@ -67,7 +85,6 @@
 
 .superGrid {
   display: grid;
-  /* Desktop: Cards sit side by side */
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
   max-width: 1200px;
@@ -79,13 +96,12 @@
   border: 1px solid rgba(255, 215, 0, 0.2);
   padding: 2rem;
   border-radius: 4px;
-  position: relative;
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-sizing: border-box; /* Keeps padding inside width */
+  box-sizing: border-box;
 }
 
 .superCard:hover {
@@ -94,7 +110,6 @@
   border-color: #ffd700;
 }
 
-/* Featured Icon */
 .superIconImg {
   width: 64px;
   height: 64px;
@@ -135,7 +150,6 @@
    ========================================= */
 .categoryGrid {
   display: grid;
-  /* Desktop: Categories allow generous width */
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
   max-width: 1400px;
@@ -346,35 +360,36 @@
    ========================================= */
 @media (max-width: 768px) {
   .container {
-    padding: 3rem 1.5rem; /* Reduced padding */
+    padding: 3rem 1.5rem;
     width: 100%;
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-x: hidden;
+  }
+
+  /* Pie Chart spacing on mobile */
+  .pieChartSection {
+    margin-bottom: 3rem; 
+    padding: 0; /* Remove padding to maximize width */
   }
   
   .sectionTitle {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 3rem;
   }
   
-  /* --- SUPERPOWER (FEATURED) FIX --- */
+  /* --- SUPERPOWER STACKING --- */
   .superGrid {
-    display: flex; /* Flex column is safer than grid on mobile to prevent overflow */
+    display: flex; 
     flex-direction: column;
     width: 100%;
     gap: 20px;
   }
   
   .superCard {
-    /* Stack Vertical (Professional Card Look) */
-    flex-direction: column; 
-    align-items: center;
-    text-align: center;
-    
-    width: 100%; /* Force full width */
-    padding: 2rem 1rem;
-    
-    /* Ensure no weird margins shift it right */
+    width: 100%; 
+    padding: 1.5rem;
     margin: 0;
+    /* Force stack vertical items */
+    flex-direction: column;
   }
   
   .superIconImg {
@@ -382,15 +397,10 @@
     width: 56px;
     height: 56px;
   }
-
-  .superDetail {
-    margin-bottom: 1.5rem; /* Add space before certificate button */
-  }
-
-  /* --- CATEGORY FIX --- */
+  
+  /* --- CATEGORY STACKING --- */
   .categoryGrid {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     width: 100%;
   }
 
@@ -399,7 +409,7 @@
     width: 100%;
   }
 
-  /* Skill Items - Stack nicely */
+  /* --- SKILL ITEMS --- */
   .skillItem {
     align-items: flex-start;
   }
@@ -417,7 +427,7 @@
   }
 
   .skillInfoRow {
-    padding-left: 0; 
+    padding-left: 0;
     margin-top: 10px;
   }
 }

@@ -1,0 +1,155 @@
+/* src/pages/public/SkillMatrix/SkillPieChart.module.css */
+
+.chartContainer {
+  width: 100%;
+  padding: 2.5rem;
+  /* Glass Panel Look */
+  background: rgba(15, 15, 15, 0.7); 
+  backdrop-filter: blur(10px);
+  border: 1px solid #333; /* Single, clean border */
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; /* Ensures padding doesn't break width */
+  
+  /* Subtle inner glow */
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Optional: Top "System" Line decoration */
+.chartContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #444, transparent);
+}
+
+.chartTitle {
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- CUSTOM TOOLTIP --- */
+.customTooltip {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid #555;
+  padding: 10px 15px;
+  border-radius: 2px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+}
+
+.tooltipLabel {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: #fff;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.tooltipValue {
+  display: block;
+  font-family: 'Courier New', monospace;
+  color: #00ff88;
+  font-size: 0.8rem;
+}
+
+/* --- LEGEND (Custom Grid) --- */
+.legendContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px currentColor;
+}
+
+/* --- CENTER LABEL (Inside Donut) --- */
+.centerLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.totalCount {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.totalText {
+  display: block;
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  color: #555;
+  text-transform: uppercase;
+  margin-top: 5px;
+  letter-spacing: 0.1em;
+}
+
+/* --- MOBILE ADJUSTMENTS (FIXED) --- */
+@media (max-width: 600px) {
+  .chartContainer {
+    /* 1. RESTORE THE CARD LOOK */
+    border: 1px solid #333;
+    border-radius: 4px;
+    
+    /* 2. Adjust padding for smaller screens */
+    padding: 2rem 1rem;
+    
+    /* 3. Ensure it fits */
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .chartTitle {
+    position: static; /* Stack title above chart */
+    margin-bottom: 1rem;
+    align-self: center;
+  }
+
+  .totalCount { 
+    font-size: 2rem; 
+  }
+  
+  /* Make the legend wrap tighter on mobile */
+  .legendContainer {
+    gap: 1rem;
+  }
+}
