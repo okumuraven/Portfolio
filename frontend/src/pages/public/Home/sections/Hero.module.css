@@ -186,55 +186,61 @@
 .error { color: #ff4444; }
 
 /* =========================================
-   MOBILE RESPONSIVENESS (PROFESSIONAL FIX)
+   MOBILE RESPONSIVENESS (THE PROFESSIONAL FIX)
    ========================================= */
 @media (max-width: 768px) {
   .hero {
-    /* Use fixed padding for mobile to prevent layout shifts */
-    padding: 120px 24px 60px 24px; 
-    align-content: flex-start; /* Align top-ish so it doesn't float weirdly */
-    height: auto;
-    min-height: 100vh;
-    box-sizing: border-box; /* Crucial for padding calculation */
+    /* FIX 1: Tighter Top Padding */
+    /* 85px is enough to clear the navbar, removing the "huge space" */
+    padding: 85px 24px 60px 24px; 
+    
+    /* FIX 2: Align to Top instead of Center */
+    /* This snaps content up so it looks deliberate, not floating */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; 
+    
+    align-content: flex-start;
+    height: auto;
+    min-height: 100vh;
+    box-sizing: border-box; 
+  }
+
+  /* FIX 3: Tighter Intro Tag */
+  .introTag {
+    font-size: 0.75rem;
+    margin-bottom: 1rem; /* Reduced from 1.5rem */
+    margin-top: 10px; /* Slight push if needed */
   }
 
   /* Fix Title Overflow */
   .hero h1 {
-    font-size: 3.5rem; /* Fixed size is safer than clamp on older phones */
+    font-size: 3.5rem; 
     line-height: 0.9;
     width: 100%;
-    word-break: break-word; /* Prevents text bleeding off screen */
+    word-break: break-word; 
   }
 
-  .introTag {
-    font-size: 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  /* Fix Description Cut-off */
+  /* Fix Description Spacing */
   .roleContainer {
-    margin-top: 2rem;
-    padding-left: 16px; /* Slightly reduce padding */
+    margin-top: 1.5rem; /* Reduced from 2.5rem to pull text up */
+    padding-left: 16px; 
     border-left-width: 2px;
-    width: 100%; /* Ensure container takes full width */
+    width: 100%; 
     max-width: 100%;
-    box-sizing: border-box; /* Include padding in width */
+    box-sizing: border-box; 
   }
 
   .subtitle {
-    font-size: 0.95rem; /* readable size */
+    font-size: 0.95rem; 
     width: 100%;
-    /* These 3 lines fix the text cut-off issue: */
     white-space: normal; 
     word-wrap: break-word;
     overflow-wrap: break-word;
-    padding-right: 10px; /* Safety buffer on the right */
+    padding-right: 10px; 
   }
 
-  /* Fix Hollow Text Stroke Width on small screens */
+  /* Refine Hollow Text Stroke for Clarity */
   .highlight {
     -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.85);
   }

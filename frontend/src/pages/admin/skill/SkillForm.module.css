@@ -1,0 +1,182 @@
+/* src/features/skills/SkillForm.module.css */
+
+/* --- FORM CONTAINER --- */
+.formCard {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  padding: 2rem;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Orange Top Border (The Brand Signature) */
+.formCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #ff5500; /* Admin Orange */
+  box-shadow: 0 0 10px rgba(255, 85, 0, 0.4);
+}
+
+/* --- GRID LAYOUT --- */
+.formGrid {
+  display: grid;
+  /* Auto-fit: Creates columns that are at least 200px wide. 
+     On mobile (<400px), this naturally forces a single column. */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* --- INPUTS --- */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.input {
+  background: #050505;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; /* Prevents iOS Zoom */
+  outline: none;
+  width: 100%;
+  transition: all 0.3s;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #ff5500;
+  background: #000;
+  box-shadow: 0 0 15px rgba(255, 85, 0, 0.1);
+}
+
+/* --- CHECKBOXES --- */
+.optionsRow {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-top: 10px;
+  flex-wrap: wrap; /* Wraps on tiny screens */
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #666;
+  user-select: none;
+  transition: color 0.3s;
+}
+
+.checkboxLabel input {
+  cursor: pointer;
+  accent-color: #ff5500; /* Colors the browser checkbox */
+  width: 16px;
+  height: 16px;
+}
+
+.checkboxLabel:hover {
+  color: #fff;
+}
+
+/* Highlight "Superpower" text when checked */
+.checkboxLabel input:checked + span.superText {
+  color: #ffd700; /* Gold */
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.checkboxLabel input:checked + span.activeText {
+  color: #00ff88; /* Green */
+}
+
+/* --- ACTION BUTTONS --- */
+.actionRow {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to right */
+  gap: 12px;
+  margin-top: 2rem;
+  border-top: 1px solid #222;
+  padding-top: 1.5rem;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  border-radius: 2px;
+}
+
+.submitBtn {
+  background: #fff;
+  color: #000;
+}
+
+.submitBtn:hover {
+  background: #ff5500;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+}
+
+.cancelBtn:hover {
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 600px) {
+  .formCard {
+    padding: 1.5rem;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr; /* Stack everything vertically */
+    gap: 1rem;
+  }
+
+  .actionRow {
+    flex-direction: column; /* Stack buttons */
+  }
+
+  .btn {
+    width: 100%; /* Full width buttons */
+    text-align: center;
+  }
+}

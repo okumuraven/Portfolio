@@ -3,13 +3,13 @@ import PublicLayout from "../layouts/public/PublicLayout";
 import AdminLayout from "../layouts/admin/AdminLayout";
 import Home from "../pages/public/Home/Home";
 import Login from "../pages/public/auth/Login";
-import PersonasAdminPage from "../pages/admin/Personas"; // <--- Import your admin personas page!
+import SkillMatrix from "../pages/public/SkillMatrix/SkillMatrix";
+import AdminSkillMatrix from "../pages/admin/skill/AdminSkillMatrix";
+import PersonasAdminPage from "../pages/admin/Personas";
 
-// Example admin pages -- stubs
 function AdminDashboardStub() {
   return <div>Admin Dashboard Coming Soon!</div>;
 }
-
 function NotFound() {
   return (
     <div style={{ textAlign: "center", padding: "4rem 1rem" }}>
@@ -20,31 +20,21 @@ function NotFound() {
   );
 }
 
-/**
- * Centralized Routing for App
- * - Splits public and admin routes using layouts
- * - 404 fallback included
- */
 export default function AppRoutes() {
   return (
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<Home />} />
+        <Route path="skill-matrix" element={<SkillMatrix />} />
         <Route path="auth/login" element={<Login />} />
-        {/* Add other public pages here as you build them */}
-        {/* <Route path="projects" element={<Projects />} /> */}
-        {/* <Route path="timeline" element={<Timeline />} /> */}
       </Route>
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboardStub />} />
         <Route path="personas" element={<PersonasAdminPage />} />
-        {/* Add other admin features per your structure: */}
-        {/* <Route path="skills" element={<SkillsAdminPage />} /> */}
-        {/* <Route path="achievements" element={<AchievementsAdminPage />} /> */}
-        {/* <Route path="activity" element={<SystemLogsAdminPage />} /> */}
+        <Route path="skills" element={<AdminSkillMatrix />} />
       </Route>
 
       {/* 404 fallback */}

@@ -1,0 +1,171 @@
+/* src/features/skills/SkillTable.module.css */
+
+/* --- TABLE CONTAINER --- */
+.tableContainer {
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden; /* Rounds the corners */
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  width: 100%;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+/* --- HEADERS --- */
+.dataTable thead {
+  background: #111;
+  border-bottom: 1px solid #333;
+}
+
+.dataTable th {
+  text-align: left;
+  padding: 1rem;
+  color: #888;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* --- ROWS & CELLS --- */
+.dataTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  vertical-align: middle;
+}
+
+.dataTable tbody tr {
+  transition: background 0.2s;
+}
+
+.dataTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* --- VISUAL INDICATORS --- */
+.skillName {
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.categoryBadge {
+  display: inline-block;
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.superpower {
+  color: #ffd700; /* Gold */
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  font-size: 1.1rem;
+}
+
+.activeDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #333;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.activeDot.on {
+  background: #00ff88; /* Cyber Green */
+  box-shadow: 0 0 6px #00ff88;
+}
+
+/* --- ACTIONS --- */
+.actionBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  margin-right: 8px;
+  transition: all 0.2s;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+.editBtn:hover:not(:disabled) {
+  border-color: #fff;
+  color: #fff;
+}
+
+.deleteBtn:hover:not(:disabled) {
+  border-color: #ff4444;
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.05);
+}
+
+.actionBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* --- MOBILE RESPONSIVENESS (THE MAGIC) --- */
+@media (max-width: 768px) {
+  /* Hide standard table headers */
+  .dataTable thead {
+    display: none;
+  }
+
+  /* Turn rows into cards */
+  .dataTable tbody tr {
+    display: block;
+    background: #0e0e0e;
+    margin-bottom: 1rem;
+    border: 1px solid #222;
+    padding: 1rem;
+    border-radius: 4px;
+    position: relative;
+  }
+
+  /* Stack cells vertically */
+  .dataTable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #222;
+    font-size: 0.9rem;
+  }
+
+  /* Remove border from last item */
+  .dataTable td:last-child {
+    border-bottom: none;
+    padding-top: 1rem;
+    justify-content: flex-start; /* Align buttons left */
+    gap: 10px;
+  }
+
+  /* Add Labels via CSS for context */
+  .dataTable td:nth-of-type(1)::before { content: "SKILL:"; color: #666; font-family: monospace; font-size: 0.75rem; }
+  .dataTable td:nth-of-type(2)::before { content: "CATEGORY:"; color: #666; font-family: monospace; font-size: 0.75rem; }
+  .dataTable td:nth-of-type(3)::before { content: "LEVEL:"; color: #666; font-family: monospace; font-size: 0.75rem; }
+  .dataTable td:nth-of-type(4)::before { content: "YEARS:"; color: #666; font-family: monospace; font-size: 0.75rem; }
+  .dataTable td:nth-of-type(5)::before { content: "ACTIVE:"; color: #666; font-family: monospace; font-size: 0.75rem; }
+  .dataTable td:nth-of-type(6)::before { content: "SUPERPOWER:"; color: #666; font-family: monospace; font-size: 0.75rem; }
+  .dataTable td:nth-of-type(7)::before { content: "ORDER:"; color: #666; font-family: monospace; font-size: 0.75rem; }
+
+  /* Tweaks for specific cells on mobile */
+  .skillName { font-size: 1.1rem; }
+}

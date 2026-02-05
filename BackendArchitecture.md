@@ -15,7 +15,7 @@ Infrastructure is separated from business logic, supporting scalability and clar
 ```text
 backend/
 │
-├── src/
+
 │   ├── server.js               # Entry: Loads app, starts HTTP server
 │   ├── app.js                  # Express setup: Middlewares, Routes, Error Handling
 │   │
@@ -32,14 +32,14 @@ backend/
 │   │
 │   ├── modules/                # FEATURES (Core Logic)
 │   │   ├── auth/               # Admin Login & JWT
-│   │   ├── roles/              # Persona Management ("Mode Switcher")
+│   │   ├── personas/              # Persona Management ("Mode Switcher")
 │   │   ├── skills/             # Skills
-│   │   ├── achievements/       # Dynamic Feed (Certs, Projects, Jobs)
+│   │   ├── Projects/       # Dynamic Feed (Certs, Projects, Jobs)
 │   │   ├── activity/           # Update tracking/logs
 │   │   └── contact/            # Contact Form logic
 │   │
 │   ├── middlewares/            # SHARED MIDDLEWARES
-│   │   ├── auth.middleware.js  # Admin route protection
+│   │   ├
 │   │   ├── error.middleware.js # Error handler
 │   │   ├── rateLimiter.js      # DDOS protection
 │   │   └── upload.middleware.js# Multer config for uploads
