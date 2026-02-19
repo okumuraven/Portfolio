@@ -241,7 +241,11 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
               value={form.persona_ids.map(String)}
               onChange={e => handleMultiChange("persona_ids", Array.from(e.target.selectedOptions, o => o.value))}
             >
-              {personas.map(p => <option value={String(p.id)} key={p.id}>{p.name}</option>)}
+              {personas.map(p => (
+                <option value={String(p.id)} key={p.id}>
+                  {p.title}{p.type ? ` (${p.type})` : ""}
+                </option>
+              ))}
             </select>
           </div>
         </div>

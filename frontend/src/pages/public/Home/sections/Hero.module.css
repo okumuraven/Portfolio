@@ -2,13 +2,14 @@
 
 .hero {
   /* Layout */
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   min-height: 90vh;
   width: 100%;
-  padding: 0 5vw;
+  padding: 80px 5vw 60px; /* Safe padding for navbar */
   position: relative;
-  align-content: center;
+  box-sizing: border-box;
   
   /* Background: Deep Void + Tech Grid */
   background-color: #050505;
@@ -18,16 +19,51 @@
   background-size: 40px 40px;
   overflow: hidden;
 
-  /* Default Accent (Will be overridden by JSX inline style) */
+  /* Default Accent (Overridden by JSX) */
   --accent-color: #00ff88; 
 }
 
-/* 1. Intro Tag - Dynamic & Glowing */
+/* --- TITLE & ICON ROW --- */
+.heroTitleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 1400px;
+  z-index: 2;
+}
+
+.heroIconWrap {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  margin-top: 5px; /* Aligns with text */
+}
+
+.heroIconImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroIcon {
+  font-size: 2rem;
+  color: var(--accent-color);
+}
+
+/* --- INTRO TAG --- */
 .introTag {
   font-family: 'Courier New', monospace;
   color: var(--accent-color); 
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
-  margin-bottom: 1.5rem;
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -45,18 +81,16 @@
   box-shadow: 0 0 8px var(--accent-color);
 }
 
-/* 2. Main Title - Massive & Asymmetrical */
+/* --- MAIN TITLE --- */
 .hero h1 {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(2.8rem, 11vw, 7.5rem); 
+  font-size: clamp(2.5rem, 8vw, 6.5rem); 
   font-weight: 800;
-  line-height: 0.9;
+  line-height: 0.95;
   letter-spacing: -0.04em;
   color: #fff;
   margin: 0;
-  z-index: 2;
   text-transform: uppercase;
-  max-width: 1400px;
   word-wrap: break-word; 
 }
 
@@ -68,6 +102,7 @@
   transition: all 0.4s ease;
   cursor: default;
   opacity: 0.9;
+  margin-top: 5px;
 }
 
 .highlight:hover {
@@ -77,15 +112,18 @@
   transform: translateX(10px);
 }
 
-/* 3. Role/Description Container */
+/* --- DATA LOGS (Role Container) --- */
 .roleContainer {
   margin-top: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  border-left: 2px solid #333;
+  gap: 15px;
+  border-left: 2px solid var(--accent-color);
   padding-left: 20px;
-  max-width: 650px;
+  max-width: 800px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+  padding-top: 10px;
+  padding-bottom: 10px;
   animation: slideIn 0.8s ease-out forwards;
 }
 
@@ -94,25 +132,38 @@
   to { opacity: 1; transform: translateX(0); }
 }
 
-.roleSwitch {
+/* System Labels */
+.dataBlock {
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dataLabel {
   font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
-  color: #888; 
-  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+  color: var(--accent-color);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .subtitle {
-  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
   color: #aaa;
   line-height: 1.6;
   white-space: pre-line; 
+  margin-top: 10px;
+  border-top: 1px dashed #333;
+  padding-top: 15px;
 }
 
-/* 4. Persona Switcher */
+/* --- PERSONA SWITCHER --- */
 .switcher {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -122,7 +173,7 @@
 .switcherLabel {
   font-family: 'Courier New', monospace;
   font-size: 0.75rem;
-  color: var(--accent-color);
+  color: #666;
   font-weight: 700;
 }
 
@@ -136,7 +187,7 @@
   text-transform: uppercase;
   cursor: pointer;
   outline: none;
-  transition: border-color 0.3s;
+  transition: all 0.3s;
   border-radius: 2px;
 }
 
@@ -151,7 +202,7 @@
   color: #fff;
 }
 
-/* 5. Desktop Decor */
+/* --- DESKTOP DECOR --- */
 .decorLine {
   position: absolute;
   right: 6vw;
@@ -175,7 +226,7 @@
   .decorLine { display: block; }
 }
 
-/* Loading/Error */
+/* --- LOADING / ERROR --- */
 .loader, .error {
   font-family: 'Courier New', monospace;
   color: var(--accent-color);
@@ -186,62 +237,55 @@
 .error { color: #ff4444; }
 
 /* =========================================
-   MOBILE RESPONSIVENESS (THE PROFESSIONAL FIX)
+   MOBILE RESPONSIVENESS
    ========================================= */
 @media (max-width: 768px) {
   .hero {
-    /* FIX 1: Tighter Top Padding */
-    /* 85px is enough to clear the navbar, removing the "huge space" */
-    padding: 85px 24px 60px 24px; 
-    
-    /* FIX 2: Align to Top instead of Center */
-    /* This snaps content up so it looks deliberate, not floating */
-    display: flex;
+    padding: 100px 24px 60px 24px; 
+    justify-content: flex-start;
+  }
+
+  /* Stack Icon and Text on Mobile */
+  .heroTitleRow {
     flex-direction: column;
-    justify-content: flex-start; 
-    
-    align-content: flex-start;
-    height: auto;
-    min-height: 100vh;
-    box-sizing: border-box; 
+    gap: 15px;
   }
 
-  /* FIX 3: Tighter Intro Tag */
+  .heroIconWrap {
+    width: 48px;
+    height: 48px;
+    margin-top: 0;
+  }
+
   .introTag {
-    font-size: 0.75rem;
-    margin-bottom: 1rem; /* Reduced from 1.5rem */
-    margin-top: 10px; /* Slight push if needed */
+    font-size: 0.7rem;
+    margin-bottom: 0.8rem;
   }
 
-  /* Fix Title Overflow */
   .hero h1 {
-    font-size: 3.5rem; 
-    line-height: 0.9;
-    width: 100%;
-    word-break: break-word; 
+    font-size: 3rem; /* Fixed safer size for old phones */
+    line-height: 1;
   }
 
-  /* Fix Description Spacing */
+  .highlight {
+    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.85);
+  }
+
   .roleContainer {
-    margin-top: 1.5rem; /* Reduced from 2.5rem to pull text up */
-    padding-left: 16px; 
-    border-left-width: 2px;
+    margin-top: 2rem;
+    padding-left: 15px; 
     width: 100%; 
     max-width: 100%;
     box-sizing: border-box; 
   }
 
-  .subtitle {
-    font-size: 0.95rem; 
-    width: 100%;
-    white-space: normal; 
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    padding-right: 10px; 
+  .dataBlock {
+    flex-direction: column; /* Stack label and data on small screens */
   }
 
-  /* Refine Hollow Text Stroke for Clarity */
-  .highlight {
-    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.85);
+  .subtitle {
+    font-size: 0.9rem; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 }
