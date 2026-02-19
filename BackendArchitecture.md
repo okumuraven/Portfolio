@@ -1,169 +1,144 @@
 # Backend Architecture Documentation
 
 ## 1. Overview
-This document outlines the architectural structure and **workflow best practices** for the Node.js/Express backend powering the **Dynamic Portfolio System**.
 
-The architecture follows a **Feature-Based Modular Pattern**. Unlike standard MVC frameworks that group files by type (e.g., all controllers together), this system groups files by **Domain Feature** (e.g., `auth`, `skills`, `achievements`).
+This document outlines the architectural structure and workflow best practices for the Node.js/Express backend powering the **Dynamic Portfolio System**.
 
-This modular design supports "Chameleon Mode," allowing the user to switch professional personas (e.g., Software Developer ↔ Cyber Analyst) without code refactoring.
+Architecture follows a **Feature-Based Modular Pattern**—domain features are separated for clarity, scalability, and rapid persona expansion ("Chameleon Mode").
 
 ---
 
 ## 2. Directory Structure
-Infrastructure is separated from business logic, supporting scalability and clarity.
+
+Infrastructure is separated from business logic with future-ready modular design.
 
 ```text
 backend/
 │
-
-│   ├── server.js               # Entry: Loads app, starts HTTP server
-│   ├── app.js                  # Express setup: Middlewares, Routes, Error Handling
-│   │
-│   ├── config/                 # GLOBAL CONFIG
-│   │   ├── env.js              # Env variable loader & validation
-│   │   ├── database.js         # PostgreSQL connection logic
-│   │   ├── cors.js             # Security: CORS settings
-│   │   └── logger.js           # Winston/Morgan logger config
-│   │
-│   ├── database/               # DB MANAGEMENT
-│   │   ├── index.js            # DB Interface (Pool/Client)
-│   │   ├── migrations/         # SQL/JS migration scripts
-│   │   └── seeds/              # Initial data (e.g., Default Persona)
-│   │
-│   ├── modules/                # FEATURES (Core Logic)
-│   │   ├── auth/               # Admin Login & JWT
-│   │   ├── personas/              # Persona Management ("Mode Switcher")
-│   │   ├── skills/             # Skills
-│   │   ├── Projects/       # Dynamic Feed (Certs, Projects, Jobs)
-│   │   ├── activity/           # Update tracking/logs
-│   │   └── contact/            # Contact Form logic
-│   │
-│   ├── middlewares/            # SHARED MIDDLEWARES
-│   │   ├
-│   │   ├── error.middleware.js # Error handler
-│   │   ├── rateLimiter.js      # DDOS protection
-│   │   └── upload.middleware.js# Multer config for uploads
-│   │
-│   ├── services/               # INFRA SERVICES
-│   │   ├── mailer.service.js   # Email sending
-│   │   ├── cloudStorage.service.js # S3/Cloudinary
-│   │   └── notification.service.js # Admin alerts
-│   │
-│   ├── utils/                  # HELPERS
-│   │   ├── response.js         # Standard API formatter
-│   │   ├── pagination.js       # Paged results helper
-│   │   └── constants.js        # Enums & Magic Strings
-│   │
-│   ├── errors/                 # CUSTOM ERRORS
-│   │   ├── NotFoundError.js
-│   │   └── ValidationError.js
-│   │
-│   └── routes.js               # Main Router
+├── server.js                   # Entry: Loads app, starts HTTP server
+├── app.js                      # Express setup: Middleware, Routing, Error Handling
 │
-├── migrations/                 # Node-pg-migrate migration scripts (see workflow below)
-├── storage/                    # Local temp uploads
+├── config/                     # GLOBAL CONFIG
+│   ├── env.js                  # Env loader & validation
+│   ├── database.js             # PostgreSQL connection logic
+│   ├── cors.js                 # CORS security config
+│   └── logger.js               # Logging (Winston/Morgan)
+│
+├── database/                   # DB MANAGEMENT
+│   ├── index.js                # DB Interface
+│   ├── migrations/             # SQL/JS migration scripts
+│   └── seeds/                  # Default data (e.g., admin user)
+│
+├── modules/                    # FEATURES (Core Domain Logic)
+│   ├── auth/                   # Admin/Login/JWT
+│   ├── personas/               # Persona/Mode Switcher
+│   ├── skills/                 # Skills endpoint
+│   ├── projects/               # Project CRUD, timeline feed
+│   ├── activity/               # Log and analytics tracking
+│   └── contact/                # Contact form/email logic
+│
+├── middlewares/                # SHARED MIDDLEWARES
+│   ├── auth.middleware.js      # Admin route protection (sometimes moved to modules/auth/)
+│   ├── error.middleware.js     # Central error handler
+│   ├── rateLimiter.js          # Basic DDOS prevention
+│   └── upload.middleware.js    # Multer setup
+│
+├── services/                   # INFRA SERVICES (Mailer, Cloud storage)
+│   ├── mailer.service.js
+│   ├── cloudStorage.service.js
+│   └── notification.service.js
+│
+├── utils/                      # HELPERS
+│   ├── response.js             # API response formatter
+│   ├── pagination.js           # Results paging
+│   └── constants.js            # Enums/Magic strings
+│
+├── errors/                     # CUSTOM ERROR CLASSES
+│   ├── NotFoundError.js
+│   └── ValidationError.js
+│
+├── routes.js                   # Central router composition
+│
+├── migrations/                 # node-pg-migrate scripts
+├── storage/                    # Local uploads (images/etc)
 ├── logs/                       # App logs
-├── tests/                      # Unit/Integration tests
-├── docs/                       # Dev/API docs
+├── tests/                      # Unit/Integration
+├── docs/                       # API/Dev docs
 └── package.json
 ```
 
 ---
 
-## 3. Database Migrations: **Best Practices & Proven Workflow (2026)**
+## 3. Database Migration Workflow (2026 Best Practices)
 
-### **A. Migration Tool**
-- Uses [node-pg-migrate](https://github.com/salsita/node-pg-migrate) and `pg` package.
-- Migration scripts are stored in `backend/migrations`.
+### A. Tooling
 
-### **B. Migration Workflow**
+- [node-pg-migrate](https://github.com/salsita/node-pg-migrate)
+- [pg](https://github.com/brianc/node-postgres)
 
-#### **Local Development**
+### B. Migration Workflow
 
-1. **Create a migration** (from backend directory):
+**Local Development**
+1. Create migration:
    ```sh
    npm run migrate-create -- create-users-table
    ```
-   - This generates a new file in `backend/migrations`.
-
-2. **Edit migration file**: Add SQL/JS steps for schema changes.
-
-3. **Apply migration** (run against your Dockerized PostgreSQL database):
+2. Edit migration file for schema changes.
+3. Apply migration:
    ```sh
    npm run migrate
    ```
-   - Applies new/pending migrations to the running database (uses `DATABASE_URL`).
+4. DB uses `.env` `DATABASE_URL` (see below).
 
-#### **Config requirements**
-- Ensure `pg` and `node-pg-migrate` are listed in `package.json`:
-    ```json
-    "dependencies": {
-      "pg": "...",
-      "node-pg-migrate": "...",
-      ...
-    }
-    ```
-- In `package.json` scripts:
-    ```json
-    "scripts": {
-      "migrate": "node-pg-migrate up",
-      "migrate-create": "node-pg-migrate create -m migrations"
-    }
-    ```
-- `DATABASE_URL` in `.env` should match Docker/Postgres settings (examples below).
+**Sample scripts in `package.json`:**
+```json
+"scripts": {
+  "migrate": "node-pg-migrate up",
+  "migrate-create": "node-pg-migrate create -m migrations"
+}
+```
 
-#### **Example .env (local development)**
+**.env sample:**
 ```
 DATABASE_URL=postgres://POSTGRES_USER:POSTGRES_PASSWORD@localhost:5432/POSTGRES_DB
 ```
-(_Adjust for your `docker-compose.yml`, database name, password, and user._)
 
-### **C. When To Run Migrations**
-- Whenever a migration file is added, edited, or pulled from git.
-- Whenever schema changes are made.
-- Run before booting backend for new features.
+**When to run migrations:**
+- New migration file added/updated (locally or via Git pull).
+- Schema changed for a new feature.
+- Before running new backend containers.
 
-### **D. Troubleshooting**
-- If `pg` not found, install with `npm install --save pg` in backend.
-- Avoid host/Docker node_modules confusion by running migrations locally first, then migrate Docker workflows if needed.
-
-### **E. Future-Proofing**
-- For production/CI/CD: Add migration run to your container entrypoint, or a dedicated migration service in `docker-compose.yml`.
-    ```yaml
-    migrate:
-      build: ./backend
-      command: npm run migrate
-      environment:
-        - DATABASE_URL=...
-      depends_on:
-        - db
-    ```
+**Troubleshooting:**
+- If `pg` missing: `npm install pg`
+- Avoid host/Docker confusion—run locally for node_modules, then migrate Docker.
 
 ---
 
-## 4. Docker Backend Notes
+## 4. Docker Backend
 
-- Backend is contained with a clean **Dockerfile** using Node 18+.
-- Avoid volume mount overwriting node_modules during migration runs.
-- For code/debug/test: use local workflow for migration, Dockerized backend for live dev.
+- Uses **Node 18+ Dockerfile** (see repo).
+- Migrations run before backend boots (manual or CI/CD).
+- Avoid overwriting node_modules/volume conflicts.
+- Dev: run migrations locally first, then backend in Docker.
 
 ---
 
-## 5. Summary & Workflow
+## 5. Workflow Summary
 
-**To update the database schema:**
-1. Create/edit migration in `backend/migrations`.
-2. Run `npm run migrate` from backend folder.
-3. Start backend service in Docker; app uses migrated schema.
-4. For team/CI: document migration process, consider automating in future release.
+1. Create/edit migration (`backend/migrations/`).
+2. Run `npm run migrate` (or `docker compose exec backend npm run migrate`).
+3. Start backend Docker service.
+4. For teams: document migration process, automate as needed.
 
 ---
 
 ## 6. References
+
 - [node-pg-migrate](https://salsita.github.io/node-pg-migrate/)
 - [Docker docs](https://docs.docker.com/get-started/)
 - [PostgreSQL docs](https://www.postgresql.org/docs/current/)
+- [Feature-Sliced Design](https://feature-sliced.design/)
 
 ---
 
-_Last updated: 2026-01-26 (includes migration workflow, solved Docker/node_modules issues, future CI/CD notes)_
+_Last updated: 2026-02-19 (fully modular, dockerized, with migration and robust persona mode)_ 

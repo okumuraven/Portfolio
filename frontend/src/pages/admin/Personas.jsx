@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { usePersonas } from "../../features/personas/usePersonas";
-import styles from "./Personas.module.css"; // Import your CSS
+import styles from "./Personas.module.css";
 
 const initialFormState = {
   title: "",
-  type: "current",             // "current", "past", "goal" ONLY (matches backend)
+  type: "current",
   period: "",
   summary: "",
   description: "",
@@ -13,7 +13,7 @@ const initialFormState = {
   accent_color: "#ff5500",
   cta: "",
   is_active: false,
-  availability: "open",         // "open", "consulting", "closed" ONLY (matches backend)
+  availability: "open",
   order: 1,
 };
 
@@ -35,6 +35,7 @@ export default function PersonasAdminPage() {
   const [form, setForm] = useState(initialFormState);
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
 
   // Handle Input Change
   const onChange = (e) => {
@@ -43,6 +44,7 @@ export default function PersonasAdminPage() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    setFieldErrors((prev) => ({ ...prev, [name]: "" })); // Clear field errors on change
   };
 
   // Start Editing Existing
@@ -53,31 +55,46 @@ export default function PersonasAdminPage() {
   };
 
   // Cancel edit
-  const cancelEdit = () => {
+  function cancelEdit() {
     setEditingId(null);
     setForm(initialFormState);
     setMessage("");
-  };
+    setFieldErrors({});
+  }
 
-  // --- CRITICAL: Payload must match your backend exactly! ---
+  // Validate form before submit
+  function validateForm(form) {
+    const errors = {};
+    if (!form.title) errors.title = "Title is required.";
+    if (!form.icon) errors.icon = "Icon is required (e.g. icon name or image url).";
+    if (!form.cta) errors.cta = "Call To Action is required.";
+    return errors;
+  }
+
+  // Payload matching backend contract
   const buildPayload = (form) => ({
-    title: form.title,
-    type: form.type,                        // enum: "current", "past", "goal"
+    title: form.title.trim(),
+    type: form.type,
     period: form.period || "",
     summary: form.summary || "",
     description: form.description || "",
     motivation: form.motivation || "",
-    icon: form.icon || "",
+    icon: form.icon,
     accent_color: form.accent_color || "#ff5500",
-    cta: form.cta || "",
-    is_active: !!form.is_active,             // boolean!
-    availability: form.availability,         // enum: "open", "consulting", "closed"
+    cta: form.cta,
+    is_active: !!form.is_active,
+    availability: form.availability,
     order: Number(form.order) || 1,
   });
 
-  // Submit create/update to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const errs = validateForm(form);
+    if (Object.keys(errs).length) {
+      setFieldErrors(errs);
+      setMessage("ERROR: Please fill all required fields.");
+      return;
+    }
     const payload = buildPayload(form);
     try {
       if (editingId) {
@@ -89,6 +106,7 @@ export default function PersonasAdminPage() {
       }
       setForm(initialFormState);
       setEditingId(null);
+      setFieldErrors({});
       refetch();
     } catch (err) {
       setMessage(`ERROR: ${err?.message || "Could not save."}`);
@@ -107,7 +125,6 @@ export default function PersonasAdminPage() {
     }
   };
 
-  // --- Render ---
   if (isLoading) return <div className={styles.container}>Loading System Data...</div>;
   if (isError) return <div className={styles.container} style={{color:'red'}}>Error: {error?.message}</div>;
 
@@ -116,7 +133,7 @@ export default function PersonasAdminPage() {
       {/* --- HEADER --- */}
       <div className={styles.header}>
         <div className={styles.title}>PERSONA_MANAGEMENT_PROTOCOL</div>
-        {message && <div style={{ color: "#00ff88", fontSize: "0.9rem" }}>{message}</div>}
+        {message && <div style={{ color: message.startsWith("ERROR") ? "#ff3333" : "#00ff88", fontSize: "0.9rem" }}>{message}</div>}
       </div>
 
       {/* --- DATA TABLE --- */}
@@ -174,8 +191,9 @@ export default function PersonasAdminPage() {
           {/* Row 1: Basics */}
           <div className={styles.formGrid}>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Title (Role Name)</label>
-              <input name="title" className={styles.input} value={form.title} onChange={onChange} required placeholder="e.g. Cyber Analyst" />
+              <label className={styles.label}>Title (Role Name) <span className={styles.req}>*</span></label>
+              <input name="title" className={styles.input} value={form.title} onChange={onChange} required />
+              {fieldErrors.title && <span className={styles.error}>{fieldErrors.title}</span>}
             </div>
             <div className={styles.inputGroup}>
               <label className={styles.label}>Type</label>
@@ -201,8 +219,9 @@ export default function PersonasAdminPage() {
               </div>
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Call To Action Text</label>
-              <input name="cta" className={styles.input} value={form.cta} onChange={onChange} placeholder="e.g. HIRE FOR SECURITY" />
+              <label className={styles.label}>Call To Action Text <span className={styles.req}>*</span></label>
+              <input name="cta" className={styles.input} value={form.cta} onChange={onChange} required placeholder="e.g. HIRE FOR SECURITY" />
+              {fieldErrors.cta && <span className={styles.error}>{fieldErrors.cta}</span>}
             </div>
           </div>
 
@@ -223,20 +242,21 @@ export default function PersonasAdminPage() {
           </div>
 
           <div className={styles.inputGroup}>
+            <label className={styles.label}>
+              Icon (URL or name) <span className={styles.req}>*</span>
+            </label>
+            <input name="icon" className={styles.input} value={form.icon} onChange={onChange} required placeholder="e.g. fa-shield-alt or image URL" />
+            {fieldErrors.icon && <span className={styles.error}>{fieldErrors.icon}</span>}
+          </div>
+
+          <div className={styles.inputGroup}>
             <label className={styles.label}>Full Description</label>
             <textarea name="description" className={styles.textarea} rows={3} value={form.description} onChange={onChange} />
           </div>
-              
           <div className={styles.inputGroup}>
             <label className={styles.label}>Motivation</label>
             <input name="motivation" className={styles.input} value={form.motivation} onChange={onChange} />
           </div>
-
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Icon (URL or name)</label>
-            <input name="icon" className={styles.input} value={form.icon} onChange={onChange} />
-          </div>
-
           {/* Actions */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "2rem" }}>
             <label className={styles.checkboxLabel}>

@@ -1,0 +1,210 @@
+/* src/pages/admin/Projects/ProjectsAdminPage.module.css */
+
+/* ... Keep Container ... */
+.container {
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box; /* Prevent side-scroll */
+}
+
+/* --- HEADER FIX --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #222;
+  padding-bottom: 1rem;
+  flex-wrap: wrap; /* Allows stacking */
+  gap: 1.5rem; /* Space between title and button */
+}
+
+.title {
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  /* CRITICAL FIX: Allow text wrapping */
+  white-space: normal; 
+  word-break: break-word;
+  line-height: 1.4;
+  max-width: 100%;
+}
+
+.title::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 24px;
+  min-width: 6px; /* Don't shrink */
+  background: #ff5500;
+}
+
+.createBtn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap; /* Keep button text on one line */
+}
+
+.createBtn:hover {
+  background: #ff5500;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+}
+
+/* ... Keep Table Styles ... */
+.tableContainer {
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.dataTable thead {
+  background: #111;
+  border-bottom: 1px solid #333;
+}
+
+.dataTable th {
+  text-align: left;
+  padding: 1rem;
+  color: #888;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.dataTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  color: #ccc;
+  vertical-align: middle;
+}
+
+/* --- CELL DETAILS --- */
+.thumbnail {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid #333;
+  background: #000;
+}
+
+.projectTitle {
+  font-weight: 700;
+  color: #fff;
+}
+
+.chip {
+  display: inline-block;
+  font-size: 0.7rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-right: 4px;
+  font-family: 'Courier New', monospace;
+  color: #aaa;
+}
+
+.statusDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.statusDot.visible { background: #00ff88; box-shadow: 0 0 5px #00ff88; }
+.statusDot.hidden { background: #333; }
+
+/* --- ACTIONS --- */
+.actionBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  margin-right: 8px;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.editBtn:hover { border-color: #fff; color: #fff; }
+.deleteBtn:hover { border-color: #ff4444; color: #ff4444; }
+
+/* --- MOBILE RESPONSIVE FIX --- */
+@media (max-width: 768px) {
+  /* 1. Stack Header Elements */
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 1rem; /* Smaller font */
+  }
+
+  .createBtn {
+    width: 100%; /* Full width button is easier to tap */
+    text-align: center;
+  }
+
+  /* 2. Table Card View */
+  .dataTable thead { display: none; }
+  .dataTable tbody tr {
+    display: block;
+    background: #0e0e0e;
+    margin-bottom: 1rem;
+    border: 1px solid #222;
+    padding: 1rem;
+  }
+  .dataTable td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #222;
+    text-align: right;
+  }
+  .dataTable td:last-child {
+    border-bottom: none;
+    padding-top: 1rem;
+    justify-content: flex-start;
+  }
+  
+  /* Labels */
+  .dataTable td:nth-child(1)::before { content: "PREVIEW:"; color: #666; font-size: 0.7rem; }
+  .dataTable td:nth-child(2)::before { content: "TITLE:"; color: #666; font-size: 0.7rem; }
+  .dataTable td:nth-child(3)::before { content: "CATEGORY:"; color: #666; font-size: 0.7rem; }
+  .dataTable td:nth-child(4)::before { content: "SKILLS:"; color: #666; font-size: 0.7rem; }
+  .dataTable td:nth-child(5)::before { content: "PERSONA:"; color: #666; font-size: 0.7rem; }
+  .dataTable td:nth-child(6)::before { content: "STATUS:"; color: #666; font-size: 0.7rem; }
+  .dataTable td:nth-child(7)::before { content: "ORDER:"; color: #666; font-size: 0.7rem; }
+}

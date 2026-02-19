@@ -6,6 +6,8 @@ import Login from "../pages/public/auth/Login";
 import SkillMatrix from "../pages/public/SkillMatrix/SkillMatrix";
 import AdminSkillMatrix from "../pages/admin/skill/AdminSkillMatrix";
 import PersonasAdminPage from "../pages/admin/Personas";
+import ProjectsPage from "../pages/public/Projects/ProjectsPage";
+import ProjectsAdminPage from "../pages/admin/Projects/ProjectsAdminPage";
 
 function AdminDashboardStub() {
   return <div>Admin Dashboard Coming Soon!</div>;
@@ -27,6 +29,7 @@ export default function AppRoutes() {
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<Home />} />
         <Route path="skill-matrix" element={<SkillMatrix />} />
+       <Route path="projects" element={<ProjectsPage />} />
         <Route path="auth/login" element={<Login />} />
       </Route>
 
@@ -35,6 +38,7 @@ export default function AppRoutes() {
         <Route index element={<AdminDashboardStub />} />
         <Route path="personas" element={<PersonasAdminPage />} />
         <Route path="skills" element={<AdminSkillMatrix />} />
+        <Route path="projects" element={<ProjectsAdminPage />} />
       </Route>
 
       {/* 404 fallback */}

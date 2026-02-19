@@ -8,38 +8,44 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-  // Fetch user (once) on mount if not already loaded
+  // Fetch user info on mount
   useEffect(() => {
     if (user === undefined) fetchUser();
   }, [user, fetchUser]);
 
-  // Redirect to login if NOT authenticated
+  // Redirect unauthenticated users to login page
   useEffect(() => {
     if (user === null) {
       navigate("/auth/login", { replace: true });
     }
   }, [user, navigate]);
 
-  // Sidebar toggle handlers w/esc to close
-  const toggleSidebar = useCallback(() => setSidebarOpen(open => !open), []);
-  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+  const toggleSidebar = useCallback(
+    () => setSidebarOpen(open => !open), []
+  );
+  const closeSidebar = useCallback(
+    () => setSidebarOpen(false), []
+  );
 
+  // Esc handler
   useEffect(() => {
     if (!isSidebarOpen) return;
-    const handleEsc = (e) => { if (e.key === "Escape") setSidebarOpen(false); };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
+    const escHandler = (e) => {
+      if (e.key === "Escape") setSidebarOpen(false);
+    };
+    window.addEventListener("keydown", escHandler);
+    return () => window.removeEventListener("keydown", escHandler);
   }, [isSidebarOpen]);
 
   const getLinkClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
 
-  // Early returns
+  // Show loading if user still loading
   if (user === undefined) return <div>Loading...</div>;
 
   return (
     <div className={styles.layoutWrapper}>
-      {/* MOBILE OVERLAY */}
+      {/* Overlay for mobile sidebar */}
       <div
         className={`${styles.overlay} ${isSidebarOpen ? styles.overlayOpen : ""}`}
         onClick={closeSidebar}
@@ -48,8 +54,7 @@ export default function AdminLayout() {
         tabIndex={0}
         onKeyPress={e => { if (e.key === "Enter") closeSidebar(); }}
       />
-
-      {/* SIDEBAR */}
+      {/* Sidebar navigation */}
       <aside
         className={`${styles.sidebar} ${isSidebarOpen ? styles.sidebarOpen : ""}`}
         aria-label="Admin Navigation"
@@ -85,7 +90,7 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* MAIN VIEW */}
+      {/* Main panel */}
       <div className={styles.mainWrapper}>
         <header className={styles.topHeader}>
           <button
