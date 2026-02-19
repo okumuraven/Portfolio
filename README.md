@@ -1,49 +1,53 @@
 # Dynamic Personal Portfolio
 
-A modern, full-stack portfolio system built with **React.js** (frontend), **Node.js/Express** (backend), and **PostgreSQL** (database).  
-This portfolio is dynamic, allowing real-time updates of skills, roles, achievements, and more—no redeploy required.
+A modern, full-stack, modular portfolio platform built with **React.js** (frontend), **Node.js/Express** (backend), and **PostgreSQL** (database).
+
+Easily showcase your projects, skills, achievements, and update your persona or content live—**no redeploy required**.
 
 ---
 
 ## 🚀 Features
 
-- **Dynamic Profile:** Instantly update skills, roles, and certifications via admin dashboard.
-- **Multi-role Persona:** Switch between fields (developer, cyber analyst, etc.) with persona-based theming/content.
-- **Achievements Timeline:** Visually showcase certificates, milestones, and ongoing learning.
-- **Seamless Contact:** WhatsApp and Gmail integration for easy client contact.
-- **Admin Dashboard:** Private interface for portfolio management (no code changes needed).
-- **Mobile-Friendly & Responsive:** Smooth UX everywhere.
+- **Persona Switching:** Instantly transform between focus areas (developer, cyber analyst, etc.) with adaptive branding and content.
+- **Dynamic Profile:** Update skills, roles, certifications, and highlights via a secure admin dashboard.
+- **Achievements Timeline:** Display certificates, milestones, and learning journey.
+- **Powerful Admin Dashboard:** End-to-end content management (roles, projects, personas, skills, and more).
+- **Contact Integration:** WhatsApp, Gmail linking for seamless outreach.
+- **Mobile-First & Responsive:** Optimized UX everywhere.
+- **File Uploads and Image Management:** Upload project images and instantly update live visuals.
 
 ---
 
 ## 🏗️ Project Structure
 
-See:
-- [`FrontendArchitecture.md`](./FrontendArchitecture.md) — *Frontend structure, conventions, decisions*
-- [`BackendArchitecture.md`](./BackendArchitecture.md) — *Backend structure, tech stack, API, DB*  
+See architecture details:
+- [`FrontendArchitecture.md`](./FrontendArchitecture.md): *Frontend (React) structure, patterns, and conventions*
+- [`BackendArchitecture.md`](./BackendArchitecture.md): *Backend (Express & Postgres) structure, migrations, API*
+- [`docker-compose.yml`](./docker-compose.yml): *Dev/test orchestration*
 
-High-level structure:
+Overall:
 ```
 /PORTFOLIO
   |-- BackendArchitecture.md
   |-- FrontendArchitecture.md
   |-- README.md
-  /frontend/  (React app)
-  /backend/   (Express API)
+  /frontend/   (React app)
+  /backend/    (Express API)
+  /docs/
 ```
 
 ---
 
 ## 🔧 Tech Stack
 
-| Layer      | Tech                             |
-|------------|----------------------------------|
-| Frontend   | React.js (+ CSS modules)         |
-| Backend    | Node.js, Express.js              |
-| Database   | PostgreSQL                       |
-| Styling    | CSS Modules / Custom themes      |
-| Auth       | JWT (admin area)                 |
-| Other      | REST API, file uploads (S3)      |
+| Layer    | Tech                                    |
+|----------|-----------------------------------------|
+| Frontend | React, CSS Modules, Recharts, React Query |
+| Backend  | Node.js, Express.js, JWT, Helmet, Joi   |
+| DB       | PostgreSQL, node-pg-migrate, pg-promise |
+| Auth     | JWT (admin area), bcrypt                |
+| Deploy   | Docker Compose (recommended for dev)    |
+| Extras   | Multer (uploads), custom theme system   |
 
 ---
 
@@ -58,37 +62,36 @@ cd portfolio
 
 ---
 
-### 2. Run with Docker (Recommended for dev/test)
+### 2. Run with Docker (Recommended)
 
-> This will bring up Postgres, backend and frontend—all connected.  
-> See `docker-compose.yml` for port mappings and ENV variables.
+**Spin up frontend, backend, and Postgres in one step:**
 
 ```bash
 docker compose up --build
 ```
 
-- The backend should run at http://localhost:5000
-- The frontend should run at http://localhost:3000
+- Backend: [http://localhost:5000](http://localhost:5000)
+- Frontend: [http://localhost:3000](http://localhost:3000)
 
-**Environment Variables:**  
-- Update `.env` in `/backend` and `/frontend` (copy from `.env.example` if present).
+**Config:**  
+- Edit the `.env` files in `/backend` and `/frontend` (sample with `.env.example`).
 
 ---
 
-### 3. Setup Backend (Manual/local alternative)
+### 3. Backend Manual Setup (Alternative to Docker)
 
 ```bash
 cd backend
 npm install
-cp .env.example .env   # Edit with your DB/API secrets
-npm run migrate        # Run your migrations (locally, or in container)
-npm run seed           # Optional: Seed demo data
+cp .env.example .env   # Set POSTGRES/PORT config
+npm run migrate        # Run db migrations
+npm run seed           # Seed initial data (admin/demo user)
 npm start
 ```
 
 ---
 
-### 4. Setup Frontend
+### 4. Frontend Setup
 
 ```bash
 cd ../frontend
@@ -98,41 +101,55 @@ npm start
 
 ---
 
-## 📝 Documentation
+## 📝 Documentation & Guides
 
-- **Frontend & Backend structures**: See respective architecture docs:
-  - [Frontend Architecture](./FrontendArchitecture.md)
-  - [Backend Architecture](./BackendArchitecture.md)
-- **API Reference**: Check `/backend/docs/API.md` (if present).
-- **Admin Usage**: Browse to `/admin`. Add/update roles, skills, achievements, contact.
+- [Frontend Architecture](./FrontendArchitecture.md)
+- [Backend Architecture](./BackendArchitecture.md)
+- API docs (see `/backend/docs/API.md` if present)
+- Admin panel: visit `/admin` route for content/portfolio management
 
 ---
 
 ## 🛠️ Database Migrations
 
-- To create a migration (from `/backend`):
+- **Create:**  
   ```bash
   npm run migrate-create -- [migration_name]
   ```
-- To apply migrations (ensure DB in Docker/localhost is running):
+- **Apply:**  
   ```bash
   npm run migrate
   ```
-  See `BackendArchitecture.md` for full workflow and troubleshooting.
+- Details: see [`BackendArchitecture.md`](./BackendArchitecture.md)
 
 ---
 
-## 💡 Customization
+## 💡 Customization & Extensions
 
-- Add new roles, skills, achievements from the admin dashboard.
-- Content, themes, and personas are managed live—no redeploy required.
+- Add/edit personas, skills, highlights, projects—live, with no code push.
+- Adjust themes and branding via admin or (soon) theme config files.
+- Expand API/features by adding new modules in backend/frontend.
 
 ---
 
 ## 🤝 Contributing
 
-PRs and suggestions welcome! Please see the contributing guide (if present).
+Contributions welcome! Please open an issue or PR to suggest improvements, add features, or report bugs.  
+For code guidelines or feature requests, see architecture docs.
 
 ---
 
-**For tech deep-dives, feature requests, or troubleshooting, check the architecture docs or open an issue.**
+## 🧑‍💻 Authors & Contact
+
+- Main Dev: [Your Name/Handle]
+- [Your Contact/Email/LinkedIn]
+
+---
+
+## 🏷️ License
+
+[MIT](./LICENSE) (or update as needed for your project)
+
+---
+
+**For deep-dives, support, or troubleshooting, check the architecture docs or open a repo issue.**

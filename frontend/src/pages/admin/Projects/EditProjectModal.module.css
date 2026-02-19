@@ -1,0 +1,207 @@
+/* src/pages/admin/Projects/EditProjectModal.module.css */
+
+/* ... Keep Overlay ... */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px; /* Safety padding from screen edge */
+}
+
+.modalContent {
+  background: #0a0a0a;
+  border: 1px solid #333;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh; /* Allow it to be tall */
+  overflow-y: auto; /* Scrollable inside */
+  border-radius: 4px;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  padding: 1.2rem;
+  border-bottom: 1px solid #222;
+  border-top: 3px solid #ff5500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  position: sticky; /* Keep title visible while scrolling */
+  top: 0;
+  z-index: 10;
+}
+
+.title {
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  color: #fff;
+  text-transform: uppercase;
+  /* Fix title overflow on mobile */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+/* Form Body */
+.formBody {
+  padding: 1.5rem;
+  padding-bottom: 3rem; /* Extra space at bottom */
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.fullWidth { grid-column: span 2; }
+
+/* ... Keep Input Styles ... */
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1rem;
+  /* Prevent overflow */
+  min-width: 0; 
+}
+
+.label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.input, .select, .textarea {
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px; /* CRITICAL: Prevents iOS Zoom */
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding is inside width */
+  border-radius: 2px;
+}
+
+.input:focus, .textarea:focus { border-color: #ff5500; outline: none; }
+.textarea { min-height: 100px; resize: vertical; }
+
+.sectionHeader {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #ff5500;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Collab Row */
+.collabRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 10px;
+  margin-bottom: 10px;
+  background: #111;
+  padding: 10px;
+  border: 1px solid #333;
+}
+
+.addCollabBtn {
+  background: transparent;
+  border: 1px dashed #444;
+  color: #888;
+  padding: 10px;
+  width: 100%;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.removeBtn {
+  background: #333;
+  color: #ff4444;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  padding: 1.5rem;
+  border-top: 1px solid #222;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  background: #111;
+  position: sticky; /* Always visible at bottom */
+  bottom: 0;
+  z-index: 10;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.cancelBtn { background: transparent; border: 1px solid #333; color: #888; }
+.saveBtn { background: #fff; color: #000; }
+
+/* --- MOBILE MODAL FIXES --- */
+@media (max-width: 768px) {
+  /* 1. Modal takes almost full screen */
+  .modalContent {
+    max-height: 95vh;
+    width: 100%;
+  }
+
+  /* 2. Stack Grid inputs */
+  .formGrid { grid-template-columns: 1fr; gap: 1rem; }
+  .fullWidth { grid-column: span 1; }
+
+  /* 3. Stack Collaborator Rows */
+  .collabRow {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 8px;
+  }
+  
+  .removeBtn {
+    width: 100%; /* Full width delete button */
+    margin-top: 5px;
+  }
+
+  /* 4. Footer Buttons */
+  .footer {
+    flex-direction: column-reverse; /* Stack Cancel below Save */
+    padding: 1rem;
+  }
+  
+  .btn { width: 100%; text-align: center; }
+}

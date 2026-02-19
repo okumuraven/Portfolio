@@ -1,0 +1,270 @@
+/* src/pages/public/Projects/ProjectsPage.module.css */
+
+/* --- CONTAINER --- */
+.container {
+  padding: 5rem 5vw;
+  background-color: #050505;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  
+  /* Tech Grid Background */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* --- HEADER --- */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.title span {
+  color: transparent;
+  -webkit-text-stroke: 1px #fff;
+}
+
+/* --- FILTER BAR --- */
+.filterBar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #222;
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #666;
+  padding: 10px 24px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.filterBtn:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.filterBtn.active {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* --- GRID --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2.5rem;
+}
+
+/* --- CARD --- */
+.card {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures uniform height */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #444;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Image Area */
+.imageContainer {
+  width: 100%;
+  height: 200px;
+  background: #111;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #222;
+}
+
+.projectImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .projectImg {
+  transform: scale(1.05);
+}
+
+.fallbackPattern {
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(45deg, #111 0px, #111 10px, #1a1a1a 10px, #1a1a1a 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fallbackIcon {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #444;
+  letter-spacing: 0.1em;
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid #444;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+}
+
+/* --- CARD CONTENT --- */
+.cardContent {
+  padding: 1.5rem;
+  flex: 1; /* Pushes footer down */
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.highlight {
+  font-size: 0.65rem;
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* --- THE NEW MISSION BRIEF (Description) --- */
+.brief {
+  font-size: 0.85rem;
+  color: #aaa; /* Softer than white */
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  
+  /* Technical "Data Block" Look */
+  border-left: 2px solid #333;
+  padding-left: 12px;
+  
+  /* Truncation Logic (Keeps cards even) */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Max 3 lines */
+  line-clamp: 3; /* Standard property for compatibility */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tech Stack Chips */
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto; /* Pushes to bottom of cardContent */
+}
+
+.techChip {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #888;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+/* --- FOOTER --- */
+.cardFooter {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #222;
+  background: #0e0e0e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.demoLink { color: #00ff88; }
+.repoLink { color: #ccc; }
+
+.loader {
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #666;
+  padding: 4rem;
+}
+
+/* --- MOBILE --- */
+@media (max-width: 768px) {
+  .container { padding: 3rem 1.5rem; overflow-x: hidden; }
+  
+  /* Swipeable Filters */
+  .filterBar {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    width: calc(100% + 3rem);
+    margin-left: -1.5rem;
+    padding-left: 1.5rem;
+    gap: 10px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .filterBar::-webkit-scrollbar { display: none; }
+  
+  .filterBtn { flex: 0 0 auto; }
+  
+  .grid { grid-template-columns: 1fr; }
+}
