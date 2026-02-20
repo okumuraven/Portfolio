@@ -34,7 +34,9 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
   // --- DATA LOADING ---
   useEffect(() => {
     getSkills().then(res => setSkills(res.data || [])).catch(() => setSkills([]));
-    getPersonas().then(res => setPersonas(res.data || [])).catch(() => setPersonas([]));
+    getPersonas()
+      .then(res => setPersonas(Array.isArray(res) ? res : []))  // <-- FIXED: use array directly!
+      .catch(() => setPersonas([]));
   }, []);
 
   // --- FORM INITIALIZATION ---

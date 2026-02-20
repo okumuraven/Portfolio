@@ -77,8 +77,17 @@ app.use((req, res, next) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
-// ---- Global Error Handler (must be last) ----
-const errorMiddleware = require('./middlewares/error.middleware');
-app.use(errorMiddleware);
+// ---- DEBUGGING GLOBAL ERROR HANDLER (MUST BE LAST) ----
+app.use((err, req, res, next) => {
+  // Print all errors and stacks to the terminal for dev purposes
+  console.error('--- EXPRESS ERROR HANDLER ---');
+  if (err && err.stack) {
+    console.error(err.stack);
+  } else {
+    console.error(err);
+  }
+  // Send the error message as JSON
+  res.status(500).json({ error: err && (err.message || err.toString()) });
+});
 
 module.exports = app;

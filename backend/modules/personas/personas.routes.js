@@ -13,10 +13,11 @@ const router = express.Router();
 // Get all active personas (for public site: landing/about/etc)
 router.get('/public', PersonasController.listPublic);
 
-// -------- ADMIN ROUTES (require authentication/authorization) --------
+// -------- SEMI-PUBLIC ROUTES --------
+// List all personas (for admin dropdowns/forms; publicly accessible for GET)
+router.get('/', PersonasController.listAdmin);   // <--- NO requireAdmin()
 
-// List all personas (admin table view)
-router.get('/', requireAdmin(), PersonasController.listAdmin);
+// -------- ADMIN ROUTES (require authentication/authorization) --------
 
 // Get a single persona by id
 router.get('/:id', requireAdmin(), personaExists, PersonasController.getOne);

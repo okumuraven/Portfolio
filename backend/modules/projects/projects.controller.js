@@ -1,4 +1,6 @@
 const ProjectsModel = require('./projects.model');
+const SkillsModel = require('../skills/skills.model');
+const PersonasModel = require('../personas/personas.model');
 const NotFoundError = require('../../errors/NotFoundError');
 const ValidationError = require('../../errors/ValidationError');
 
@@ -18,7 +20,32 @@ async function listProjects(req, res, next) {
     if (req.query.offset) opts.offset = Number(req.query.offset);
 
     const projects = await ProjectsModel.findAll(opts);
-    res.json({ data: projects });
+
+    // Enrich projects with Skill names and full Persona objects
+    const allSkills = await SkillsModel.findAll();
+    const allPersonas = await PersonasModel.findAll();
+
+    // Build lookup maps
+    const skillMap = {};
+    allSkills.forEach(s => { skillMap[s.id] = s.name; });
+
+    const personaMap = {};
+    allPersonas.forEach(p => {
+      personaMap[p.id] = { ...p }; // all persona fields
+    });
+
+    // Map project skills/persona_ids to names/full objects (with type-robust lookup)
+    const enriched = projects.map(p => ({
+      ...p,
+      skills: Array.isArray(p.skills)
+        ? p.skills.map(id => skillMap[id]).filter(Boolean)
+        : [],
+      personas: Array.isArray(p.persona_ids)
+        ? p.persona_ids.map(pid => personaMap[Number(pid)]).filter(Boolean)
+        : [],
+    }));
+
+    res.json({ data: enriched });
   } catch (err) {
     next(err);
   }
@@ -26,13 +53,35 @@ async function listProjects(req, res, next) {
 
 /**
  * GET /api/projects/:id
- * Get single project by ID
+ * Get single project by ID, enriched
  */
 async function getProject(req, res, next) {
   try {
     const { id } = req.params;
     const project = await ProjectsModel.findById(Number(id));
-    res.json({ data: project });
+
+    const allSkills = await SkillsModel.findAll();
+    const allPersonas = await PersonasModel.findAll();
+
+    const skillMap = {};
+    allSkills.forEach(s => { skillMap[s.id] = s.name; });
+
+    const personaMap = {};
+    allPersonas.forEach(p => {
+      personaMap[p.id] = { ...p };
+    });
+
+    const enriched = {
+      ...project,
+      skills: Array.isArray(project.skills)
+        ? project.skills.map(id => skillMap[id]).filter(Boolean)
+        : [],
+      personas: Array.isArray(project.persona_ids)
+        ? project.persona_ids.map(pid => personaMap[Number(pid)]).filter(Boolean)
+        : [],
+    };
+
+    res.json({ data: enriched });
   } catch (err) {
     next(err);
   }
