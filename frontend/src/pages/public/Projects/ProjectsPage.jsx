@@ -3,25 +3,29 @@ import React, { useState, useEffect } from "react";
 import { getProjects } from "../../../api/projects.api";
 import styles from "./ProjectsPage.module.css";
 
-// List of shown categories
 const categoryList = ["All", "Client", "Personal", "Open Source", "Hackathon", "Other"];
 
-// Helper: robust image path handling
 const API_BASE = "http://localhost:5000";
 function getImageSrc(img) {
-  if (!img) return null; // Let the fallback handle it
+  if (!img) return null; 
   if (img.startsWith("storage/projects")) return `${API_BASE}/${img}`;
   if (img.startsWith("/storage/projects")) return `${API_BASE}${img}`;
   if (/^https?:\/\//.test(img)) return img;
-  return `${API_BASE}/storage/projects/${img}`; // Default assumption
+  return `${API_BASE}/storage/projects/${img}`; 
+}
+
+// Helper to format dates cleanly without messy slashes
+function formatLogDate(dateString) {
+  const date = new Date(dateString);
+  // Example output: "Oct 2023" or "24 Oct 2023" depending on your preference.
+  // Using short format is cleaner for UI
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short' });
 }
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [category, setCategory] = useState("All");
   const [loading, setLoading] = useState(true);
-  
-  // Track broken images per project ID
   const [imgErrorMap, setImgErrorMap] = useState({});
 
   useEffect(() => {
@@ -35,7 +39,6 @@ export default function ProjectsPage() {
       .finally(() => setLoading(false));
   }, [category]);
 
-  // Mark specific project image as broken
   function handleImgError(id) {
     setImgErrorMap(prev => ({ ...prev, [id]: true }));
   }
@@ -85,7 +88,6 @@ export default function ProjectsPage() {
                       loading="lazy"
                     />
                   ) : (
-                    // Fallback Pattern if Error or No Image
                     <div className={styles.fallbackPattern}>
                       <span className={styles.fallbackIcon}>[ NO_SIGNAL ]</span>
                     </div>
@@ -96,12 +98,47 @@ export default function ProjectsPage() {
                 {/* Info Section */}
                 <div className={styles.cardContent}>
                   <div className={styles.cardTitle}>{project.title}</div>
-                  
+
+                  {/* --- NEW STYLED DATE DISPLAY --- */}
+                  {(project.date_start || project.date_end) && (
+                    <div className={styles.projectDates}>
+                      {project.date_start && (
+                        <span className={styles.dateItem}>
+                          <span className={styles.dateLabel}>INIT:</span>
+                          <span className={styles.dateValue}>{formatLogDate(project.date_start)}</span>
+                        </span>
+                      )}
+                      
+                      {project.date_start && project.date_end && (
+                        <span className={styles.dateSeparator}>{"//"}</span>
+                      )}
+                      
+                      {project.date_end && (
+                        <span className={styles.dateItem}>
+                          <span className={styles.dateLabel}>END:</span>
+                          <span className={styles.dateValue}>{formatLogDate(project.date_end)}</span>
+                        </span>
+                      )}
+
+                      {/* Optional: Show "Present" if started but not ended */}
+                      {project.date_start && !project.date_end && (
+                        <>
+                          <span className={styles.dateSeparator}>{"//"}</span>
+                          <span className={styles.dateItem}>
+                            <span className={styles.dateLabel}>STATUS:</span>
+                            <span className={styles.dateValue} style={{color: '#00ff88'}}>ACTIVE</span>
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Highlight */}
                   {project.highlight && (
                     <div className={styles.highlight}>★ {project.highlight}</div>
                   )}
 
-                  {/* --- NEW MISSION BRIEF (DESCRIPTION) --- */}
+                  {/* Description */}
                   {project.description && (
                     <div className={styles.brief} title={project.description}>
                       {project.description}
@@ -121,13 +158,25 @@ export default function ProjectsPage() {
                 {/* Footer */}
                 <div className={styles.cardFooter}>
                   {project.repo_link ? (
-                    <a href={project.repo_link} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.repoLink}`}>
+                    <a
+                      href={project.repo_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${styles.link} ${styles.repoLink}`}
+                    >
                       &lt;/&gt; SOURCE
                     </a>
-                  ) : <span />}
-                  
+                  ) : (
+                    <span />
+                  )}
+
                   {project.demo_link && (
-                    <a href={project.demo_link} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.demoLink}`}>
+                    <a
+                      href={project.demo_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${styles.link} ${styles.demoLink}`}
+                    >
                       LIVE DEMO &rarr;
                     </a>
                   )}
