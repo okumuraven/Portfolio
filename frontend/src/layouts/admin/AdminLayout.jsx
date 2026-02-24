@@ -40,7 +40,6 @@ export default function AdminLayout() {
   const getLinkClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
 
-  // Show loading if user still loading
   if (user === undefined) return <div>Loading...</div>;
 
   return (
@@ -76,8 +75,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/projects" className={getLinkClass} onClick={closeSidebar}>
             / Projects
           </NavLink>
-          <NavLink to="/admin/achievements" className={getLinkClass} onClick={closeSidebar}>
-            / Timeline_Feed
+          {/* Updated Timeline tab */}
+          <NavLink to="/admin/timeline" className={getLinkClass} onClick={closeSidebar}>
+            / Timeline
           </NavLink>
           <NavLink to="/admin/activity" className={getLinkClass} onClick={closeSidebar}>
             / System_Logs

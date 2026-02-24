@@ -8,10 +8,13 @@ import AdminSkillMatrix from "../pages/admin/skill/AdminSkillMatrix";
 import PersonasAdminPage from "../pages/admin/Personas";
 import ProjectsPage from "../pages/public/Projects/ProjectsPage";
 import ProjectsAdminPage from "../pages/admin/Projects/ProjectsAdminPage";
+import TimelinePage from "../pages/public/Timeline/TimelinePage";
+import TimelineAdmin from "../pages/admin/TimelineAdmin";
 
 function AdminDashboardStub() {
   return <div>Admin Dashboard Coming Soon!</div>;
 }
+
 function NotFound() {
   return (
     <div style={{ textAlign: "center", padding: "4rem 1rem" }}>
@@ -29,7 +32,8 @@ export default function AppRoutes() {
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<Home />} />
         <Route path="skill-matrix" element={<SkillMatrix />} />
-       <Route path="projects" element={<ProjectsPage />} />
+        <Route path="projects" element={<ProjectsPage />} />
+        <Route path="timeline" element={<TimelinePage />} />
         <Route path="auth/login" element={<Login />} />
       </Route>
 
@@ -39,6 +43,7 @@ export default function AppRoutes() {
         <Route path="personas" element={<PersonasAdminPage />} />
         <Route path="skills" element={<AdminSkillMatrix />} />
         <Route path="projects" element={<ProjectsAdminPage />} />
+        <Route path="timeline" element={<TimelineAdmin />} />
       </Route>
 
       {/* 404 fallback */}
