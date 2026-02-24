@@ -14,20 +14,12 @@ const allowedOrigins = [
   'https://xqtqz6hp-5000.euw.devtunnels.ms',
 ];
 
-// ---- Relax CORP for static images ----
-// Only for /storage/projects, not APIs
-app.use(
-  '/storage/projects',
-  helmet({
-    crossOriginResourcePolicy: { policy: "cross-origin" }
-  })
-);
-
 // ---- Static Images: CORS for `/storage/projects` ----
 app.use(
   '/storage/projects',
   cors({
     origin: function (origin, callback) {
+      // Allow tools/curl with empty origin
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
       callback(new Error('Not allowed by CORS'));
@@ -35,8 +27,6 @@ app.use(
     credentials: true,
   })
 );
-
-// ---- Serve static project images ----
 app.use('/storage/projects', express.static('storage/projects'));
 
 // ---- All Other CORS (APIs) ----
@@ -59,10 +49,13 @@ app.use(express.urlencoded({ extended: true })); // Handles form-data uploads
 app.get('/', (req, res) => res.send('Portfolio Backend API Running!'));
 
 // ==== ROUTE ATTACHMENTS ====
+// Modular, clear order
+
 const authRoutes = require('./modules/auth/auth.routes');
 const personasRoutes = require('./modules/personas/personas.routes');
 const skillsRoutes = require('./modules/skills/skills.routes');
 const projectsRoutes = require('./modules/projects/projects.routes');
+const timelineRoutes = require('./modules/timeline/timeline.routes'); // <-- Timeline module
 
 app.use('/api/auth', authRoutes);
 app.use('/api/personas', personasRoutes);
@@ -71,23 +64,16 @@ app.use('/api/skills', skillsRoutes);
 app.use('/skills', skillsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/projects', projectsRoutes);
+app.use('/api/timeline', timelineRoutes);      // <-- Register Timeline module
+app.use('/timeline', timelineRoutes);          // (Optional) Classic, if you also want un-prefixed access
 
 // ---- 404 Handler ----
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
-// ---- DEBUGGING GLOBAL ERROR HANDLER (MUST BE LAST) ----
-app.use((err, req, res, next) => {
-  // Print all errors and stacks to the terminal for dev purposes
-  console.error('--- EXPRESS ERROR HANDLER ---');
-  if (err && err.stack) {
-    console.error(err.stack);
-  } else {
-    console.error(err);
-  }
-  // Send the error message as JSON
-  res.status(500).json({ error: err && (err.message || err.toString()) });
-});
+// ---- Global Error Handler (must be last) ----
+const errorMiddleware = require('./middlewares/error.middleware');
+app.use(errorMiddleware);
 
 module.exports = app;

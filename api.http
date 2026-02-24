@@ -11,6 +11,7 @@ Content-Type: application/json
 
 ### Get current user
 GET http://localhost:5000/api/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImVtYWlsIjoiam9zZXJhdmVsaW51eEBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3Njk2OTgyMzEsImV4cCI6MTc2OTcwNTQzMX0.2Oe23A8mjVj06-479RGtJv4G98T6FKKebtLdeO_RLTw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoib2t1bXVyYXZlbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzE2NjE1ODMsImV4cCI6MTc3MTY2ODc4M30.ZyL-g-Ooq6MxEDM7s7Hb5dHBrcer66KBgubcerOBubs
 
 ###
+GET http://localhost:5000/api/projects
