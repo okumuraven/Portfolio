@@ -1,0 +1,174 @@
+/* src/components/timeline/TimelineAdminTable.module.css */
+
+.tableContainer {
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow-x: auto; /* Safety for small screens */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+/* --- HEADERS --- */
+.table thead {
+  background: #111;
+  border-bottom: 1px solid #333;
+}
+
+.table th {
+  text-align: left;
+  padding: 1.2rem 1rem;
+  color: #888;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* --- ROWS & CELLS --- */
+.table td {
+  padding: 1rem;
+  border-bottom: 1px solid #1a1a1a;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover:not(.editRow) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cellTitle {
+  font-weight: 700;
+  color: #fff;
+}
+
+.cellType {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+/* --- STATUS INDICATORS --- */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 2px;
+  background: #111;
+  border: 1px solid #222;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dot.active { background: #00ff88; box-shadow: 0 0 5px #00ff88; }
+.dot.inactive { background: #ff4444; }
+.dot.reviewed { background: #ff5500; box-shadow: 0 0 5px #ff5500; }
+.dot.pending { background: #444; }
+
+/* --- ACTIONS --- */
+.actionBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.editBtn:hover { border-color: #fff; color: #fff; }
+.deleteBtn:hover { border-color: #ff4444; color: #ff4444; }
+.actionBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* --- INLINE EDIT MODE --- */
+.editRow {
+  background: #050505;
+}
+
+.editCell {
+  padding: 1.5rem !important;
+  border-left: 2px solid #ff5500; /* Orange accent on the left */
+}
+
+/* --- EMPTY STATE --- */
+.emptyState {
+  padding: 3rem;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS (Card View)
+   ========================================= */
+@media (max-width: 768px) {
+  .table thead {
+    display: none; /* Hide headers */
+  }
+  
+  .table tbody tr {
+    display: block;
+    background: #0e0e0e;
+    margin-bottom: 1rem;
+    border: 1px solid #222;
+    padding: 0.5rem 1rem;
+  }
+  
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #222;
+    text-align: right;
+  }
+  
+  .table td:last-child {
+    border-bottom: none;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start; /* Align buttons left */
+  }
+  
+  /* Use data-label attribute to create mobile headers */
+  .table td::before {
+    content: attr(data-label);
+    color: #666;
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* Special handling for Edit Mode on Mobile */
+  .table td.editCell {
+    display: block;
+    padding: 1rem 0;
+    border: none;
+  }
+  .table td.editCell::before {
+    content: none; /* Hide label when editing */
+  }
+}

@@ -1,0 +1,95 @@
+/* src/pages/public/Timeline/TimelinePage.module.css */
+
+/* --- CONTAINER --- */
+.container {
+  padding: 5rem 5vw;
+  background-color: #050505;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  
+  /* Tech Grid Background */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* --- HEADER --- */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.title {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.title span {
+  color: transparent;
+  -webkit-text-stroke: 1px #fff; /* Hollow text effect */
+}
+
+.subtitle {
+  font-family: 'Courier New', monospace;
+  color: #888;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* --- SYSTEM STATES --- */
+.loader, .error, .empty {
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #666;
+  padding: 4rem 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px dashed #222;
+  background: rgba(10, 10, 10, 0.5);
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 4px;
+}
+
+.error {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.05);
+}
+
+.errorMsg {
+  display: block;
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 10px;
+  text-transform: none;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .container {
+    padding: 4rem 1.5rem;
+  }
+  
+  .header {
+    margin-bottom: 3rem;
+  }
+  
+  /* Force title to wrap nicely on very small screens */
+  .title span {
+    display: block; 
+  }
+}

@@ -1,5 +1,6 @@
 /* src/pages/admin/Timeline/TimelineAdmin.module.css */
 
+/* --- CONTAINER --- */
 .container {
   color: #e0e0e0;
   font-family: 'Inter', sans-serif;
@@ -75,10 +76,12 @@
 /* --- LAYOUT SPACING --- */
 .formWrapper {
   margin-bottom: 3rem;
+  width: 100%;
 }
 
 .tableWrapper {
   margin-bottom: 3rem;
+  width: 100%;
 }
 
 /* --- MOBILE RESPONSIVE --- */

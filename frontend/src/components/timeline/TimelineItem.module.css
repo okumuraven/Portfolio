@@ -1,0 +1,221 @@
+/* src/components/timeline/TimelineItem.module.css */
+
+.item {
+  position: relative;
+  padding-left: 80px; /* Space for the line and node */
+  margin-bottom: 2.5rem;
+  animation: slideIn 0.5s ease-out forwards;
+  opacity: 0; /* Starts hidden for animation */
+}
+
+/* Stagger animations for a cool loading effect */
+.item:nth-child(1) { animation-delay: 0.1s; }
+.item:nth-child(2) { animation-delay: 0.2s; }
+.item:nth-child(3) { animation-delay: 0.3s; }
+.item:nth-child(4) { animation-delay: 0.4s; }
+.item:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* --- THE GLOWING NODE --- */
+.node {
+  position: absolute;
+  top: 1.5rem; /* Aligns with the title */
+  left: 34px; /* Perfectly centers on the 2px line at left: 39px */
+  width: 12px;
+  height: 12px;
+  background: #000;
+  border: 2px solid #ff5500; /* Default Orange */
+  border-radius: 50%;
+  z-index: 2;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 85, 0, 0.4);
+}
+
+.item:hover .node {
+  background: #ff5500;
+  box-shadow: 0 0 15px #ff5500;
+  transform: scale(1.2);
+}
+
+/* --- THE DATA CARD --- */
+.card {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid #222;
+  border-radius: 4px;
+  padding: 1.5rem 2rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.item:hover .card {
+  border-color: #444;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  transform: translateY(-3px);
+}
+
+/* Subtle accent line inside the card */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: #222;
+  transition: background 0.3s ease;
+}
+
+.item:hover .card::before {
+  background: #ff5500;
+}
+
+/* --- HEADER (Title & Icon) --- */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+  padding: 2px;
+  border: 1px solid #333;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.typeBadge {
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  color: #aaa;
+  background: #111;
+  border: 1px solid #333;
+  padding: 3px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- TIMELINE DATES --- */
+.dateRow {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.dateValue {
+  color: #aaa;
+}
+
+.activeStatus {
+  color: #00ff88;
+  text-shadow: 0 0 5px rgba(0, 255, 136, 0.4);
+}
+
+/* --- DESCRIPTION LOG --- */
+.description {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  border-left: 2px solid #222;
+  padding-left: 15px;
+}
+
+/* --- ACTIONS (Proof Link) --- */
+.proofLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #888;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid #333;
+  padding: 6px 12px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  background: #050505;
+}
+
+.proofLink:hover {
+  color: #00ff88;
+  border-color: #00ff88;
+  background: rgba(0, 255, 136, 0.05);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+}
+
+/* --- COMPACT MODE --- */
+.itemCompact {
+  margin-bottom: 1.5rem;
+  padding-left: 50px; /* Tighter spacing */
+}
+
+.itemCompact .node {
+  left: 14px;
+  width: 10px;
+  height: 10px;
+  top: 1.2rem;
+}
+
+.itemCompact .card {
+  padding: 1rem 1.5rem;
+}
+
+.itemCompact .title {
+  font-size: 1.1rem;
+}
+
+.itemCompact .dateRow {
+  margin-bottom: 0;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .item {
+    padding-left: 50px; /* Reduce side padding */
+    margin-bottom: 2rem;
+  }
+  
+  .node {
+    left: 19px; /* Align with mobile line */
+  }
+
+  .card {
+    padding: 1.25rem 1rem;
+  }
+  
+  .title {
+    font-size: 1.1rem;
+  }
+  
+  .dateRow {
+    flex-wrap: wrap; /* Stack dates if needed */
+  }
+}
