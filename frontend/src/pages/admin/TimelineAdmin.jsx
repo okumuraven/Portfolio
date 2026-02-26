@@ -9,7 +9,7 @@ import {
 import TimelineAdminTable from "../../components/timeline/TimelineAdminTable";
 import TimelineForm from "../../components/timeline/TimelineForm";
 import { useAuth } from "../../hooks/useAuth";
-import styles from "./TimelineAdmin.module.css";
+import styles from "./TimelineAdmin.module.css"; // Ensure this path matches!
 
 const getTimelineItems = (data) =>
   Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
@@ -77,7 +77,7 @@ const TimelineAdmin = () => {
       <div className={styles.formWrapper}>
         <TimelineForm
           mode="create"
-          onSubmit={addMutation.mutate} // ✅ Mutation function directly, not object!
+          onSubmit={addMutation.mutate}
           isLoading={addMutation.isLoading}
         />
       </div>

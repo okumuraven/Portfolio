@@ -1,10 +1,12 @@
 import React from 'react';
+import styles from './TimelineItem.module.css';
 
-// Helper: formats year/month or full date
-function formatDate(date) {
-  if (!date) return '';
-  const options = { year: 'numeric', month: 'short' };
-  return new Date(date).toLocaleDateString(undefined, options);
+// Helper: Formats the date cleanly (e.g., "Oct 2023")
+function formatLogDate(dateString) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'UNKNOWN';
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short' });
 }
 
 const TimelineItem = ({ event, compact = false }) => {
@@ -16,33 +18,70 @@ const TimelineItem = ({ event, compact = false }) => {
     type,
     icon,
     proof_link,
-    // Add other fields as needed (skills, personas, etc)
+    // profile_link // <-- uncomment if you add this on backend
   } = event;
 
   return (
-    <li className={`timeline-item ${compact ? 'compact' : ''}`}>
-      <div className="timeline-title">
-        {icon && <img src={icon} alt="" className="timeline-icon" />}
-        <strong>{title}</strong>
-        {type && <span className={`timeline-type ${type}`}>{type}</span>}
+    <li className={`${styles.item} ${compact ? styles.itemCompact : ''}`}>
+      <div className={styles.node}></div>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          {icon && (
+            <img
+              src={icon}
+              alt="Event Asset"
+              className={styles.icon}
+              onError={(e) => e.target.style.display = 'none'}
+            />
+          )}
+          <h3 className={styles.title}>{title || 'UNKNOWN_EVENT'}</h3>
+          {type && <span className={styles.typeBadge}>{type}</span>}
+        </div>
+        <div className={styles.dateRow}>
+          {date_start && (
+            <span>INIT: <span className={styles.dateValue}>{formatLogDate(date_start)}</span></span>
+          )}
+          {date_start && date_end && <span>{"//"}</span>}
+          {date_end && (
+            <span>END: <span className={styles.dateValue}>{formatLogDate(date_end)}</span></span>
+          )}
+          {date_start && !date_end && (
+            <>
+              <span>{"//"}</span>
+              <span className={styles.activeStatus}>STATUS: ONGOING</span>
+            </>
+          )}
+        </div>
+        {/* Description (Hidden in compact mode) */}
+        {!compact && description && (
+          <div className={styles.description}>
+            {description}
+          </div>
+        )}
+        {/* Proof / Verification Action Button */}
+        {proof_link && (
+          <a
+            href={proof_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.proofLink}
+          >
+            [ View Proof ] &rarr;
+          </a>
+        )}
+        {/* Example for future: if you want a profile button
+        {profile_link && (
+          <a
+            href={profile_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.profileLink}
+          >
+            [ View Profile ] &rarr;
+          </a>
+        )}
+        */}
       </div>
-      <div className="timeline-date">
-        {formatDate(date_start)}
-        {date_end ? ` — ${formatDate(date_end)}` : ''}
-      </div>
-      {!compact && description && (
-        <div className="timeline-desc">{description}</div>
-      )}
-      {proof_link && (
-        <a
-          href={proof_link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="timeline-proof"
-        >
-          View Proof
-        </a>
-      )}
     </li>
   );
 };
