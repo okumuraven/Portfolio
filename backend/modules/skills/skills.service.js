@@ -1,26 +1,11 @@
 const SkillsModel = require("./skills.model");
+const TimelineService = require("../timeline/timeline.service"); // Adjust path to timeline service
 
-/**
- * Skill Service Layer
- * - Calls SkillsModel for CRUD
- * - Handles business logic, caching, advanced filtering, etc.
- */
 const SkillsService = {
-  /**
-   * List all skills, with filters and advanced processing.
-   * Can later add caching, joins (personas/projects), categorization, sorting, etc.
-   * @param {Object} opts - filter object
-   */
   async listSkills(opts = {}) {
-    // Here you could add additional business logic!
-    // Example: only return public skills, or enrich with persona/project details.
     return SkillsModel.findAll(opts);
   },
 
-  /**
-   * Get a single skill by ID, throw if not found
-   * @param {number} id
-   */
   async getSkillOrThrow(id) {
     const skill = await SkillsModel.findById(id);
     if (!skill) {
@@ -31,44 +16,66 @@ const SkillsService = {
     return skill;
   },
 
-  /**
-   * Create a new skill (with business rules, e.g., enforce unique order for superpowers, etc.)
-   * @param {Object} skillData
-   */
   async createSkill(skillData) {
-    // Example business rule: only X skills can be "superpower" = true.
-    // Or, normalize skills, sanitize input before saving.
-    // ...add extra hooks here later!
-    return SkillsModel.create(skillData);
+    const created = await SkillsModel.create(skillData);
+
+    // Timeline event sync
+    const timelineEvent = SkillsService.toTimelineEvent(created);
+    const exists = await TimelineService.findByProviderEvent("skill-matrix", `skill-${created.id}`);
+    if (!exists) {
+      await TimelineService.create(timelineEvent);
+    }
+    return created;
   },
 
-  /**
-   * Update existing skill by ID
-   * @param {number} id
-   * @param {Object} changes
-   */
   async updateSkill(id, changes) {
-    // Example business rule: update "updated_at" or check allowed changes
-    // ...add checks here
-    return SkillsModel.update(id, changes);
+    const updated = await SkillsModel.update(id, changes);
+
+    // Timeline event sync
+    const timelineEvent = SkillsService.toTimelineEvent(updated);
+    const exists = await TimelineService.findByProviderEvent("skill-matrix", `skill-${updated.id}`);
+    if (exists) {
+      await TimelineService.update(exists.id, timelineEvent);
+    } else {
+      await TimelineService.create(timelineEvent);
+    }
+    return updated;
   },
 
-  /**
-   * Delete a skill by ID
-   * @param {number} id
-   */
   async deleteSkill(id) {
+    // Remove timeline event if exists
+    const exists = await TimelineService.findByProviderEvent("skill-matrix", `skill-${id}`);
+    if (exists) {
+      await TimelineService.remove(exists.id);
+    }
     return SkillsModel.remove(id);
   },
 
-  /**
-   * Bulk update skill orders (for drag-drop reordering, etc.)
-   * @param {Array<{id: number, order: number}>} list
-   */
   async batchUpdateOrder(list) {
-    // You may want a transaction here!
     const updates = list.map(({ id, order }) => SkillsModel.update(id, { order }));
     return Promise.all(updates);
+  },
+
+  toTimelineEvent(skill) {
+    return {
+      type: "skill",
+      title: skill.name,
+      description: `Level: ${skill.level} | Category: ${skill.category}${skill.superpower ? " | Superpower!" : ""}`,
+      date_start: skill.updated_at || skill.created_at,
+      icon: skill.icon || null,
+      proof_link: skill.cert_link || null,
+      source: "internal",
+      source_name: "Internal: Skill Matrix",
+      source_url: null,
+      skill_ids: [skill.id],
+      persona_ids: skill.persona_ids || [],
+      order: skill.order !== undefined ? skill.order : null,
+      visible: skill.active !== undefined ? !!skill.active : true,
+      reviewed: true,
+      automated: true,
+      provider: "skill-matrix",
+      provider_event_id: `skill-${skill.id}`,
+    };
   }
 };
 

@@ -1,3 +1,4 @@
+const ProjectsService = require('./projects.service');
 const ProjectsModel = require('./projects.model');
 const SkillsModel = require('../skills/skills.model');
 const PersonasModel = require('../personas/personas.model');
@@ -25,16 +26,14 @@ async function listProjects(req, res, next) {
     const allSkills = await SkillsModel.findAll();
     const allPersonas = await PersonasModel.findAll();
 
-    // Build lookup maps
     const skillMap = {};
     allSkills.forEach(s => { skillMap[s.id] = s.name; });
 
     const personaMap = {};
     allPersonas.forEach(p => {
-      personaMap[p.id] = { ...p }; // all persona fields
+      personaMap[p.id] = { ...p };
     });
 
-    // Map project skills/persona_ids to names/full objects (with type-robust lookup)
     const enriched = projects.map(p => ({
       ...p,
       skills: Array.isArray(p.skills)
@@ -103,18 +102,15 @@ async function createProject(req, res, next) {
       }
     });
 
-    // Handle image upload
     if (req.file && req.file.filename) {
       payload.image = `/storage/projects/${req.file.filename}`;
     }
 
-    // Visibility default
     if (typeof payload.visible === 'undefined') payload.visible = true;
-
-    // Order default for new
     if (typeof payload.order === 'undefined') payload.order = null;
 
-    const project = await ProjectsModel.create(payload);
+    // *** USE SERVICE for timeline sync ***
+    const project = await ProjectsService.createProject(payload);
     res.status(201).json({ data: project });
   } catch (err) {
     next(err);
@@ -130,7 +126,6 @@ async function updateProject(req, res, next) {
     const { id } = req.params;
     let payload = { ...req.body };
 
-    // Parse array fields
     ['skills', 'persona_ids', 'collaborators'].forEach(field => {
       if (typeof payload[field] === 'string') {
         try { payload[field] = JSON.parse(payload[field]); }
@@ -142,7 +137,8 @@ async function updateProject(req, res, next) {
       payload.image = `/storage/projects/${req.file.filename}`;
     }
 
-    const updated = await ProjectsModel.update(Number(id), payload);
+    // *** USE SERVICE for timeline sync ***
+    const updated = await ProjectsService.updateProject(Number(id), payload);
     res.json({ data: updated });
   } catch (err) {
     next(err);
@@ -151,12 +147,14 @@ async function updateProject(req, res, next) {
 
 /**
  * DELETE /api/projects/:id (admin)
- * Delete project by ID
+ * Delete project by ID and sync with timeline
  */
 async function deleteProject(req, res, next) {
   try {
     const { id } = req.params;
-    await ProjectsModel.remove(Number(id));
+
+    // *** USE SERVICE for timeline sync ***
+    await ProjectsService.deleteProject(Number(id));
     res.status(204).end();
   } catch (err) {
     next(err);

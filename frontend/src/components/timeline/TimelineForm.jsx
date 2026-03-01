@@ -1,7 +1,6 @@
-// src/components/timeline/TimelineForm.jsx
 import React from 'react';
 import TimelineEventForm from '../forms/TimelineEventForm';
-import styles from './TimelineForm.module.css'; // Import the new styles
+import styles from './TimelineForm.module.css';
 
 const TimelineForm = ({
   mode = 'create',
@@ -11,8 +10,6 @@ const TimelineForm = ({
   onCancel,
   extraFields
 }) => {
-  
-  // Debug wrapper (Kept perfectly intact)
   const debugOnSubmit = data => {
     console.log('[DEBUG] TimelineForm onSubmit called with:', data);
     if (typeof onSubmit === "function") onSubmit(data);
@@ -21,13 +18,9 @@ const TimelineForm = ({
 
   return (
     <div className={styles.formPanel}>
-      
-      {/* Dynamic Technical Header */}
       <h3 className={styles.panelHeader}>
         {mode === 'edit' ? 'MODIFY_EVENT_RECORD' : 'INITIALIZE_NEW_EVENT'}
       </h3>
-      
-      {/* The core form component we styled previously */}
       <TimelineEventForm
         initialValues={initialValues}
         onSubmit={debugOnSubmit}
@@ -36,7 +29,6 @@ const TimelineForm = ({
         onCancel={onCancel}
         extraFields={extraFields}
       />
-      
     </div>
   );
 };

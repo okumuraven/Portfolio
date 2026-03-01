@@ -1,7 +1,8 @@
+// src/components/timeline/TimelineItem.jsx
 import React from 'react';
-import styles from './TimelineItem.module.css';
+import styles from './TimelineItem.module.css'; // Import the CSS
 
-// Helper: Formats the date cleanly (e.g., "Oct 2023")
+// Helper: Formats date cleanly (e.g., "Oct 2023")
 function formatLogDate(dateString) {
   if (!dateString) return '';
   const date = new Date(dateString);
@@ -18,47 +19,63 @@ const TimelineItem = ({ event, compact = false }) => {
     type,
     icon,
     proof_link,
-    // profile_link // <-- uncomment if you add this on backend
+    source_name,
+    source_url,
   } = event;
 
   return (
     <li className={`${styles.item} ${compact ? styles.itemCompact : ''}`}>
+      
+      {/* The Glowing Timeline Node */}
       <div className={styles.node}></div>
+      
+      {/* The Data Card */}
       <div className={styles.card}>
+
+        {/* Header: Icon, Title, Type */}
         <div className={styles.header}>
           {icon && (
             <img
               src={icon}
               alt="Event Asset"
               className={styles.icon}
-              onError={(e) => e.target.style.display = 'none'}
+              onError={(e) => (e.target.style.display = 'none')}
             />
           )}
           <h3 className={styles.title}>{title || 'UNKNOWN_EVENT'}</h3>
           {type && <span className={styles.typeBadge}>{type}</span>}
         </div>
+
+        {/* Timeline Dates */}
         <div className={styles.dateRow}>
           {date_start && (
-            <span>INIT: <span className={styles.dateValue}>{formatLogDate(date_start)}</span></span>
+            <span>
+              INIT: <span className={styles.dateValue}>{formatLogDate(date_start)}</span>
+            </span>
           )}
-          {date_start && date_end && <span>{"//"}</span>}
+          
+          {date_start && date_end && <span>{" // "}</span>}
+          
           {date_end && (
-            <span>END: <span className={styles.dateValue}>{formatLogDate(date_end)}</span></span>
+            <span>
+              END: <span className={styles.dateValue}>{formatLogDate(date_end)}</span>
+            </span>
           )}
+          
           {date_start && !date_end && (
             <>
-              <span>{"//"}</span>
+              <span>{" // "}</span>
               <span className={styles.activeStatus}>STATUS: ONGOING</span>
             </>
           )}
         </div>
-        {/* Description (Hidden in compact mode) */}
+
+        {/* Description */}
         {!compact && description && (
-          <div className={styles.description}>
-            {description}
-          </div>
+          <div className={styles.description}>{description}</div>
         )}
-        {/* Proof / Verification Action Button */}
+
+        {/* Proof / Verification Action */}
         {proof_link && (
           <a
             href={proof_link}
@@ -66,21 +83,30 @@ const TimelineItem = ({ event, compact = false }) => {
             rel="noopener noreferrer"
             className={styles.proofLink}
           >
-            [ View Proof ] &rarr;
+            [ VERIFY_ASSET ] &rarr;
           </a>
         )}
-        {/* Example for future: if you want a profile button
-        {profile_link && (
-          <a
-            href={profile_link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.profileLink}
-          >
-            [ View Profile ] &rarr;
-          </a>
+
+        {/* Source Attribution (Telemetry) */}
+        {source_name && (
+          <div className={styles.sourceRow}>
+            <span className={styles.sourceLabel}>
+              ORIGIN_NODE // <span className={styles.sourceValue}>{source_name}</span>
+            </span>
+            
+            {source_url && (
+              <a
+                href={source_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.sourceLink}
+              >
+                [ ACCESS_SOURCE ] &rarr;
+              </a>
+            )}
+          </div>
         )}
-        */}
+
       </div>
     </li>
   );
