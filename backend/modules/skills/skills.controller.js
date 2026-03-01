@@ -1,8 +1,8 @@
-const SkillsModel = require("./skills.model");
+const SkillsService = require("./skills.service"); // USE SERVICE!
+const SkillsModel = require("./skills.model"); // Only for list/filter
 
 /**
  * List skills (with query filtering)
- * Supports: ?active=true&personaId=2&category=Backend&level=Expert&superpower=true
  */
 exports.listSkills = async (req, res, next) => {
   try {
@@ -47,15 +47,13 @@ exports.getSkill = async (req, res, next) => {
  */
 exports.createSkill = async (req, res, next) => {
   try {
-    // Input validation should happen in middleware before here!
     const skill = req.body;
-    // Ensure array fields are always arrays (not undefined/null)
     skill.persona_ids = Array.isArray(skill.persona_ids) ? skill.persona_ids : [];
     skill.project_links = Array.isArray(skill.project_links) ? skill.project_links : [];
-    // Allow "order" to be null/number
     if (skill.order === "") skill.order = null;
 
-    const created = await SkillsModel.create(skill);
+    // USE SERVICE!
+    const created = await SkillsService.createSkill(skill);
     res.status(201).json(created);
   } catch (err) {
     next(err);
@@ -73,7 +71,8 @@ exports.updateSkill = async (req, res, next) => {
     skill.project_links = Array.isArray(skill.project_links) ? skill.project_links : [];
     if (skill.order === "") skill.order = null;
 
-    const updated = await SkillsModel.update(id, skill);
+    // USE SERVICE!
+    const updated = await SkillsService.updateSkill(id, skill);
     res.json(updated);
   } catch (err) {
     next(err);
@@ -86,7 +85,9 @@ exports.updateSkill = async (req, res, next) => {
 exports.deleteSkill = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
-    await SkillsModel.remove(id);
+
+    // USE SERVICE!
+    await SkillsService.deleteSkill(id);
     res.json({ success: true });
   } catch (err) {
     next(err);

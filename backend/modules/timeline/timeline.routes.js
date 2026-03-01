@@ -8,7 +8,7 @@ const {
 
 const router = express.Router();
 
-router.get("/by-provider/event", TimelineController.findByProviderEvent); // <-- This must be first!
+router.get("/by-provider/event", TimelineController.findByProviderEvent); // Keep this first
 
 router.get("/", TimelineController.listTimeline);
 router.get("/:id", TimelineController.getTimelineEvent);

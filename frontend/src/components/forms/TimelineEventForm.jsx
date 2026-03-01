@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './TimelineEventForm.module.css'; // Import exact styles
+import styles from './TimelineEventForm.module.css';
 
 const initialState = {
   title: '',
@@ -14,6 +14,8 @@ const initialState = {
   automated: false,
   provider: null,
   provider_event_id: null,
+  source_name: '',
+  source_url: '',
   skill_ids: [],
   order: null,
   source: 'internal',
@@ -23,7 +25,7 @@ const TimelineEventForm = ({
   initialValues = initialState,
   onSubmit,
   loading = false,
-  submitText = 'DEPLOY_EVENT', // Default to technical styling
+  submitText = 'DEPLOY_EVENT',
   onCancel,
   extraFields,
 }) => {
@@ -49,13 +51,11 @@ const TimelineEventForm = ({
 
   function handleSubmit(e) {
     e.preventDefault();
-
     if (!form.title.trim() || !form.date_start) {
       setError('[ SYSTEM_ERR ]: Title and Start Date are strictly required.');
       return;
     }
     setError('');
-
     const payload = {
       title: form.title,
       type: form.type,
@@ -69,15 +69,14 @@ const TimelineEventForm = ({
       automated: !!form.automated,
       provider: form.provider || null,
       provider_event_id: form.provider_event_id || null,
+      source_name: form.source_name || null,
+      source_url: form.source_url || null,
       skill_ids: Array.isArray(form.skill_ids) ? form.skill_ids : [],
       order: form.order !== null && form.order !== '' && !isNaN(form.order) ? Number(form.order) : null,
       source: form.source || 'internal',
     };
-
     if (payload.order === null) delete payload.order;
-
     console.log('[DEBUG] handleSubmit payload sent to backend:', payload);
-
     if (typeof onSubmit === 'function') {
       onSubmit(payload);
     } else {
@@ -87,14 +86,8 @@ const TimelineEventForm = ({
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} autoComplete="off">
-      
-      {/* Error Output */}
       {error && <div className={styles.errorBox}>{error}</div>}
-
-      {/* Grid Layout for Inputs */}
       <div className={styles.formGrid}>
-        
-        {/* ROW 1 */}
         <div className={styles.inputGroup}>
           <label className={styles.label}>Event Title *</label>
           <input
@@ -109,7 +102,6 @@ const TimelineEventForm = ({
             autoFocus
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label className={styles.label}>Event Type</label>
           <input
@@ -122,8 +114,6 @@ const TimelineEventForm = ({
             placeholder="e.g. Certification, Role, Milestone"
           />
         </div>
-
-        {/* ROW 2 */}
         <div className={styles.inputGroup}>
           <label className={styles.label}>Init Date (Start) *</label>
           <input
@@ -136,7 +126,6 @@ const TimelineEventForm = ({
             required
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label className={styles.label}>Term Date (End)</label>
           <input
@@ -148,8 +137,6 @@ const TimelineEventForm = ({
             disabled={loading}
           />
         </div>
-
-        {/* ROW 3: Full Width Description */}
         <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
           <label className={styles.label}>Event Log (Description)</label>
           <textarea
@@ -163,8 +150,6 @@ const TimelineEventForm = ({
             placeholder="Detail the milestone, responsibilities, or outcome..."
           />
         </div>
-
-        {/* ROW 4 */}
         <div className={styles.inputGroup}>
           <label className={styles.label}>Icon Asset (URL)</label>
           <input
@@ -177,7 +162,6 @@ const TimelineEventForm = ({
             placeholder="https://..."
           />
         </div>
-
         <div className={styles.inputGroup}>
           <label className={styles.label}>Verification Link</label>
           <input
@@ -190,10 +174,32 @@ const TimelineEventForm = ({
             placeholder="Link to Certificate, Repo, etc."
           />
         </div>
-        
-      </div> {/* End Form Grid */}
-
-      {/* ROW 5: Switches / System Flags */}
+        {/* --- Smart Attribution Fields Added Below --- */}
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Source Name</label>
+          <input
+            className={styles.input}
+            name="source_name"
+            value={form.source_name || ''}
+            onChange={handleChange}
+            disabled={loading}
+            maxLength={128}
+            placeholder="e.g. LinkedIn, GitHub, Internal"
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Source URL</label>
+          <input
+            className={styles.input}
+            name="source_url"
+            value={form.source_url || ''}
+            onChange={handleChange}
+            disabled={loading}
+            maxLength={1024}
+            placeholder="Link to original source event"
+          />
+        </div>
+      </div>
       <div className={styles.optionsRow}>
         <label className={styles.checkboxLabel}>
           <input
@@ -206,7 +212,6 @@ const TimelineEventForm = ({
           />
           <span style={{color: form.visible ? '#00ff88' : 'inherit'}}>STATUS: VISIBLE</span>
         </label>
-
         <label className={styles.checkboxLabel}>
           <input
             className={styles.checkboxInput}
@@ -218,7 +223,6 @@ const TimelineEventForm = ({
           />
           <span style={{color: form.reviewed ? '#ff5500' : 'inherit'}}>FLAG: REVIEWED</span>
         </label>
-
         <label className={styles.checkboxLabel}>
           <input
             className={styles.checkboxInput}
@@ -231,35 +235,29 @@ const TimelineEventForm = ({
           <span style={{color: form.automated ? '#00e5ff' : 'inherit'}}>TYPE: AUTOMATED</span>
         </label>
       </div>
-
-      {/* Extra Fields Extensibility */}
+      {/* Extra extensibility fields */}
       {extraFields && (
         <div className={`${styles.inputGroup} ${styles.fullWidth}`} style={{marginTop: '1rem'}}>
           {typeof extraFields === 'function' ? extraFields(form, handleChange) : extraFields}
         </div>
       )}
-
-      {/* Actions */}
       <div className={styles.actionRow}>
         {onCancel && (
-          <button 
-            className={`${styles.btn} ${styles.cancelBtn}`} 
-            type="button" 
+          <button
+            className={`${styles.btn} ${styles.cancelBtn}`}
+            type="button"
             onClick={onCancel}
             disabled={loading}
-          >
-            CANCEL_OP
-          </button>
+          >CANCEL_OP</button>
         )}
-        <button 
-          className={`${styles.btn} ${styles.saveBtn}`} 
-          type="submit" 
+        <button
+          className={`${styles.btn} ${styles.saveBtn}`}
+          type="submit"
           disabled={loading}
         >
           {loading ? 'PROCESSING...' : submitText}
         </button>
       </div>
-
     </form>
   );
 };

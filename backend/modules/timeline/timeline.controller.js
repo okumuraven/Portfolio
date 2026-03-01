@@ -1,5 +1,6 @@
 const TimelineModel = require("./timeline.model");
 
+// List (optionally filtered) timeline events
 exports.listTimeline = async (req, res, next) => {
   try {
     const {
@@ -28,6 +29,7 @@ exports.listTimeline = async (req, res, next) => {
   }
 };
 
+// Get single timeline event by ID
 exports.getTimelineEvent = async (req, res, next) => {
   try {
     const event = await TimelineModel.findById(Number(req.params.id));
@@ -41,10 +43,12 @@ exports.getTimelineEvent = async (req, res, next) => {
   }
 };
 
+// Create new timeline event (with all supported fields)
 exports.createTimelineEvent = async (req, res, next) => {
   try {
     const payload = req.body;
     if (!Array.isArray(payload.skill_ids)) payload.skill_ids = [];
+    // It is safe to pass source_name/source_url/profile_link, etc.
     const created = await TimelineModel.create(payload);
     res.status(201).json({ data: created });
   } catch (err) {
@@ -53,6 +57,7 @@ exports.createTimelineEvent = async (req, res, next) => {
   }
 };
 
+// Update timeline event by ID
 exports.updateTimelineEvent = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -66,6 +71,7 @@ exports.updateTimelineEvent = async (req, res, next) => {
   }
 };
 
+// Delete timeline event by ID
 exports.deleteTimelineEvent = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
@@ -77,6 +83,7 @@ exports.deleteTimelineEvent = async (req, res, next) => {
   }
 };
 
+// Find timeline event by provider and provider_event_id
 exports.findByProviderEvent = async (req, res, next) => {
   try {
     const { provider, provider_event_id } = req.query;

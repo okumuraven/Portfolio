@@ -47,6 +47,22 @@ const validateTimelineEvent = [
     .isString()
     .isLength({ max: 128 }).withMessage("Provider event id must be a string of max 128 chars."),
 
+  body("source_name")
+    .optional({ nullable: true })
+    .isString()
+    .isLength({ max: 128 }).withMessage("Source name must be a string of max 128 chars."),
+
+  body("source_url")
+    .optional({ nullable: true })
+    .isString()
+    .isLength({ max: 1024 }).withMessage("Source URL must be a string of max 1024 chars.")
+    .custom((value) => {
+      if (value && value.length && !/^https?:\/\//i.test(value)) {
+        throw new Error("Source URL must be a valid URL (start with http or https)");
+      }
+      return true;
+    }),
+
   body("visible")
     .optional()
     .toBoolean()
@@ -101,7 +117,7 @@ const validateTimelineEvent = [
  * Validate patch request for updating a timeline event (all fields optional).
  */
 const validateTimelinePatch = [
-  ...validateTimelineEvent.slice(0, -1), // use same validations as above except custom error handler
+  ...validateTimelineEvent.slice(0, -1),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

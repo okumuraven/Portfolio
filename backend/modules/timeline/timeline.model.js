@@ -4,9 +4,6 @@ const db = require('../../database');
  * Timeline Model: CRUD and advanced queries for timeline feed/events.
  */
 const TimelineModel = {
-  /**
-   * Find all timeline events, with optional filters.
-   */
   async findAll(opts = {}) {
     const filters = [];
     const values = [];
@@ -50,32 +47,32 @@ const TimelineModel = {
     return db.any(query, values);
   },
 
-  /**
-   * Get single timeline event by ID.
-   */
   async findById(id) {
     return db.oneOrNone('SELECT * FROM timeline WHERE id = $1', [id]);
   },
 
-  /**
-   * Create a new timeline event (with required default for 'source').
-   */
   async create(event) {
     return db.one(`
       INSERT INTO timeline (
         type, title, date_start, date_end, description, skill_ids,
-        icon, proof_link, source, provider, provider_event_id, visible,
-        automated, reviewed, "order", created_at, updated_at
+        icon, proof_link,
+        source, provider, provider_event_id,
+        source_name, source_url,
+        visible, automated, reviewed, "order", created_at, updated_at
       ) VALUES (
         $[type], $[title], $[date_start], $[date_end], $[description], $[skill_ids],
-        $[icon], $[proof_link], $[source], $[provider], $[provider_event_id], $[visible],
-        $[automated], $[reviewed], $[order], NOW(), NOW()
+        $[icon], $[proof_link],
+        $[source], $[provider], $[provider_event_id],
+        $[source_name], $[source_url],
+        $[visible], $[automated], $[reviewed], $[order], NOW(), NOW()
       )
       RETURNING *
     `, {
       ...event,
       skill_ids: Array.isArray(event.skill_ids) ? event.skill_ids : [],
-      source: event.source ?? 'internal', // <<--- Always supply source!
+      source: event.source ?? 'internal',
+      source_name: event.source_name ?? null,
+      source_url: event.source_url ?? null,
       visible: event.visible !== undefined ? event.visible : true,
       automated: event.automated !== undefined ? event.automated : false,
       reviewed: event.reviewed !== undefined ? event.reviewed : false,
@@ -83,9 +80,6 @@ const TimelineModel = {
     });
   },
 
-  /**
-   * Update an existing timeline event by ID (with required default for 'source').
-   */
   async update(id, event) {
     return db.one(`
       UPDATE timeline SET
@@ -100,6 +94,8 @@ const TimelineModel = {
         source = $[source],
         provider = $[provider],
         provider_event_id = $[provider_event_id],
+        source_name = $[source_name],
+        source_url = $[source_url],
         visible = $[visible],
         automated = $[automated],
         reviewed = $[reviewed],
@@ -111,21 +107,17 @@ const TimelineModel = {
       ...event,
       id,
       skill_ids: Array.isArray(event.skill_ids) ? event.skill_ids : [],
-      source: event.source ?? 'internal', // <<--- Always supply source!
+      source: event.source ?? 'internal',
+      source_name: event.source_name ?? null,
+      source_url: event.source_url ?? null,
       order: event.order ?? null,
     });
   },
 
-  /**
-   * Delete timeline event by ID.
-   */
   async remove(id) {
     return db.result('DELETE FROM timeline WHERE id = $1', [id]);
   },
 
-  /**
-   * Find by external provider and provider_event_id (for sync/dedup).
-   */
   async findByProviderEvent(provider, provider_event_id) {
     return db.oneOrNone(
       'SELECT * FROM timeline WHERE provider = $1 AND provider_event_id = $2',
