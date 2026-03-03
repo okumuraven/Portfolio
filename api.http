@@ -12,11 +12,13 @@ GET http://localhost:5000/api/timeline
 
 ### Get current user
 GET http://localhost:5000/api/auth/me
-Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoib2t1bXVyYXZlbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIwMjg5OTgsImV4cCI6MTc3MjAzNjE5OH0.5UjQl7F8JWaxAX9HIaPa3uSD1PmZzNhvdPqWRqj02XY
-GET http://localhost:5000/api/projects
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoib2t1bXVyYXZlbkBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzI1MjE3NjksImV4cCI6MTc3MjUyODk2OX0._NlZG_mYh711r3vzYTI6ncKQcs0owtLiMRdsaItpM8o
 
 ###
 GET http://localhost:5000/api/timeline
+
+###
+GET http://localhost:5000/api/contact 
 
 
 GET http://localhost:5000/api/timeline/:id
