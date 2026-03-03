@@ -1,0 +1,229 @@
+/* src/pages/public/Contact/ContactCard.module.css */
+
+.contactCard {
+  display: flex;
+  gap: 2.5rem;
+  background: rgba(10, 10, 10, 0.85);
+  border: 1px solid #222;
+  border-left: 3px solid #00ff88; /* Secure Green Accent */
+  padding: 3rem;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+/* Subtle background scanline effect */
+.contactCard::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 136, 0.02) 3px,
+    rgba(0, 255, 136, 0.02) 3px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- AVATAR & TACTICAL FRAME --- */
+.avatarWrapper {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+/* Tactical Corner Brackets */
+.avatarWrapper::before,
+.avatarWrapper::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.avatarWrapper::before {
+  top: -5px;
+  left: -5px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.avatarWrapper::after {
+  bottom: -5px;
+  right: -5px;
+  border-left: none;
+  border-top: none;
+}
+
+.contactCard:hover .avatarWrapper::before,
+.contactCard:hover .avatarWrapper::after {
+  border-color: #00ff88;
+  width: 30px;
+  height: 30px;
+}
+
+.avatar {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 2px;
+  filter: grayscale(100%) contrast(1.2); /* Black & White by default */
+  transition: all 0.4s ease;
+  display: block;
+}
+
+.contactCard:hover .avatar {
+  filter: grayscale(0%) contrast(1); /* Color on hover */
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+/* --- DATA SECTION --- */
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  width: 100%;
+}
+
+.sysStatus {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  color: #00ff88;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.blink {
+  animation: blinker 1.5s linear infinite;
+  width: 8px;
+  height: 8px;
+  background: #00ff88;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+@keyframes blinker {
+  50% { opacity: 0; }
+}
+
+.realName {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Metadata Row (Location & Directive) */
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #aaa;
+  border-bottom: 1px dashed #333;
+  padding-bottom: 1rem;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.label {
+  color: #555;
+}
+
+.coreDirective {
+  color: #00e5ff; /* Cyan pop for the directive */
+}
+
+/* Summaries */
+.summary {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.philosophy {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #222;
+  border-left: 2px solid #ff5500;
+  padding: 1rem 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: #aaa;
+  line-height: 1.5;
+  border-radius: 2px;
+}
+
+.philosophyLabel {
+  color: #ff5500;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .contactCard {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  
+  .avatarWrapper {
+    margin: 0 auto;
+  }
+  
+  .avatar {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .sysStatus {
+    justify-content: center;
+  }
+  
+  .realName {
+    font-size: 2rem;
+  }
+  
+  .metadata {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .philosophy {
+    text-align: left; /* Keep philosophy readable */
+  }
+}

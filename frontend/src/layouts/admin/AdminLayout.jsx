@@ -20,12 +20,8 @@ export default function AdminLayout() {
     }
   }, [user, navigate]);
 
-  const toggleSidebar = useCallback(
-    () => setSidebarOpen(open => !open), []
-  );
-  const closeSidebar = useCallback(
-    () => setSidebarOpen(false), []
-  );
+  const toggleSidebar = useCallback(() => setSidebarOpen(open => !open), []);
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 
   // Esc handler
   useEffect(() => {
@@ -75,9 +71,11 @@ export default function AdminLayout() {
           <NavLink to="/admin/projects" className={getLinkClass} onClick={closeSidebar}>
             / Projects
           </NavLink>
-          {/* Updated Timeline tab */}
           <NavLink to="/admin/timeline" className={getLinkClass} onClick={closeSidebar}>
             / Timeline
+          </NavLink>
+          <NavLink to="/admin/contact" className={getLinkClass} onClick={closeSidebar}>
+            / Contact_Profile
           </NavLink>
           <NavLink to="/admin/activity" className={getLinkClass} onClick={closeSidebar}>
             / System_Logs

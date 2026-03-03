@@ -1,0 +1,125 @@
+/* src/pages/admin/Contact/ContactAdmin.module.css */
+
+/* --- CONTAINER --- */
+.container {
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- HEADER --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid #222;
+  padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title {
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* The Orange Admin Accent Line */
+.title::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 24px;
+  min-width: 6px;
+  background: #ff5500; 
+  box-shadow: 0 0 8px rgba(255, 85, 0, 0.4);
+}
+
+/* --- TACTICAL BUTTON --- */
+.addBtn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+}
+
+.addBtn:hover {
+  background: #ff5500;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+}
+
+/* --- SYSTEM STATES (Loading / Error) --- */
+.loader, .error {
+  padding: 3rem;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #888;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(10, 10, 10, 0.5);
+  border: 1px dashed #333;
+  border-radius: 4px;
+  margin-top: 2rem;
+}
+
+.error {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.05);
+}
+
+/* --- LAYOUT SPACING --- */
+.formWrapper {
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.tableWrapper {
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .addBtn {
+    width: 100%;
+    text-align: center;
+    padding: 12px 20px;
+  }
+  
+  .title {
+    font-size: 1.1rem;
+  }
+}

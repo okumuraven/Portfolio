@@ -1,0 +1,133 @@
+/* src/pages/public/Contact/SocialLinks.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section Label */
+.sectionLabel {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border-bottom: 1px dashed #222;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.socialLinksRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  justify-content: center;
+}
+
+/* --- THE COMMAND BUTTONS --- */
+.socialButton {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid #333;
+  padding: 14px 28px;
+  color: #aaa;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+}
+
+/* Tactical Brackets added via CSS */
+.socialButton::before {
+  content: '[';
+  color: #444;
+  transition: color 0.3s ease;
+  margin-right: 5px;
+}
+.socialButton::after {
+  content: ']';
+  color: #444;
+  transition: color 0.3s ease;
+  margin-left: 5px;
+}
+
+.socialLabel {
+  z-index: 1;
+}
+
+/* --- DEFAULT HOVER STATE --- */
+.socialButton:hover {
+  background: #000;
+  border-color: #00ff88;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2), inset 0 0 10px rgba(0, 255, 136, 0.1);
+  transform: translateY(-3px);
+}
+
+.socialButton:hover::before,
+.socialButton:hover::after {
+  color: #00ff88;
+}
+
+/* --- BRAND SPECIFIC HOVER GLOWS --- */
+.socialButton[data-network="linkedin"]:hover { 
+  border-color: #0077b5; 
+  box-shadow: 0 0 15px rgba(0, 119, 181, 0.3), inset 0 0 10px rgba(0, 119, 181, 0.1); 
+}
+.socialButton[data-network="linkedin"]:hover::before, .socialButton[data-network="linkedin"]:hover::after { color: #0077b5; }
+
+.socialButton[data-network="github"]:hover { 
+  border-color: #fff; 
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1); 
+}
+.socialButton[data-network="github"]:hover::before, .socialButton[data-network="github"]:hover::after { color: #fff; }
+
+.socialButton[data-network="twitter"]:hover { 
+  border-color: #1da1f2; 
+  box-shadow: 0 0 15px rgba(29, 161, 242, 0.3), inset 0 0 10px rgba(29, 161, 242, 0.1); 
+}
+.socialButton[data-network="twitter"]:hover::before, .socialButton[data-network="twitter"]:hover::after { color: #1da1f2; }
+
+.socialButton[data-network="whatsapp"]:hover { 
+  border-color: #25d366; 
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.3), inset 0 0 10px rgba(37, 211, 102, 0.1); 
+}
+.socialButton[data-network="whatsapp"]:hover::before, .socialButton[data-network="whatsapp"]:hover::after { color: #25d366; }
+
+.socialButton[data-network="email"]:hover { 
+  border-color: #ff5500; 
+  box-shadow: 0 0 15px rgba(255, 85, 0, 0.3), inset 0 0 10px rgba(255, 85, 0, 0.1); 
+}
+.socialButton[data-network="email"]:hover::before, .socialButton[data-network="email"]:hover::after { color: #ff5500; }
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .socialLinksRow {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .socialButton {
+    width: 100%; /* Full width for easy tapping */
+    padding: 16px;
+    font-size: 0.95rem; /* Slightly larger text on mobile */
+  }
+}

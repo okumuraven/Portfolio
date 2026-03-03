@@ -11,6 +11,10 @@ import ProjectsAdminPage from "../pages/admin/Projects/ProjectsAdminPage";
 import TimelinePage from "../pages/public/Timeline/TimelinePage";
 import TimelineAdmin from "../pages/admin/TimelineAdmin";
 
+// NEW: Contact pages
+import Contact from "../pages/public/Contact/Contact";
+import ContactAdmin from "../pages/admin/ContactAdmin/ContactAdmin";
+
 function AdminDashboardStub() {
   return <div>Admin Dashboard Coming Soon!</div>;
 }
@@ -34,6 +38,7 @@ export default function AppRoutes() {
         <Route path="skill-matrix" element={<SkillMatrix />} />
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="timeline" element={<TimelinePage />} />
+        <Route path="contact" element={<Contact />} />
         <Route path="auth/login" element={<Login />} />
       </Route>
 
@@ -44,6 +49,8 @@ export default function AppRoutes() {
         <Route path="skills" element={<AdminSkillMatrix />} />
         <Route path="projects" element={<ProjectsAdminPage />} />
         <Route path="timeline" element={<TimelineAdmin />} />
+        {/* NEW: Contact/Profile Admin Management */}
+        <Route path="contact" element={<ContactAdmin />} />
       </Route>
 
       {/* 404 fallback */}

@@ -19,7 +19,6 @@ app.use(
   '/storage/projects',
   cors({
     origin: function (origin, callback) {
-      // Allow tools/curl with empty origin
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
       callback(new Error('Not allowed by CORS'));
@@ -43,7 +42,7 @@ app.use(
 
 // ---- Request Body Parsing ----
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Handles form-data uploads
+app.use(express.urlencoded({ extended: true }));
 
 // ---- Health Check ----
 app.get('/', (req, res) => res.send('Portfolio Backend API Running!'));
@@ -55,7 +54,9 @@ const authRoutes = require('./modules/auth/auth.routes');
 const personasRoutes = require('./modules/personas/personas.routes');
 const skillsRoutes = require('./modules/skills/skills.routes');
 const projectsRoutes = require('./modules/projects/projects.routes');
-const timelineRoutes = require('./modules/timeline/timeline.routes'); // <-- Timeline module
+const timelineRoutes = require('./modules/timeline/timeline.routes');
+// >>>> NEW: import contact routes
+const contactRoutes = require('./modules/contact/contact.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/personas', personasRoutes);
@@ -64,15 +65,18 @@ app.use('/api/skills', skillsRoutes);
 app.use('/skills', skillsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/projects', projectsRoutes);
-app.use('/api/timeline', timelineRoutes);      // <-- Register Timeline module
-app.use('/timeline', timelineRoutes);          // (Optional) Classic, if you also want un-prefixed access
+app.use('/api/timeline', timelineRoutes);
+app.use('/timeline', timelineRoutes);
+
+// >>>> ADD YOUR CONTACT MODULE ROUTE
+app.use('/api/contact', contactRoutes);
 
 // ---- 404 Handler ----
 app.use((req, res, next) => {
   res.status(404).json({ error: 'Not Found' });
 });
 
-// ---- Global Error Handler (must be last) ----
+// ---- Global Error Handler ----
 const errorMiddleware = require('./middlewares/error.middleware');
 app.use(errorMiddleware);
 
