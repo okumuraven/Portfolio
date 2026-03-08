@@ -7,20 +7,30 @@ const app = express();
 // ---- Security Headers ----
 app.use(helmet());
 
-// ---- Allowed Frontends (Include your Vercel domain!) ----
+// ---- Allowed Frontends ----
 const allowedOrigins = [
   'http://localhost:3000',
   'https://xqtqz6hp-3000.euw.devtunnels.ms',
   'https://xqtqz6hp-5000.euw.devtunnels.ms',
-  'https://portfolio-okumuravens-projects.vercel.app', // <---- YOUR VERCEL FRONTEND DOMAIN
+  'https://portfolio-okumuravens-projects.vercel.app',
 ];
 
-// ---- Dynamic Origin Checking ----
+// ---- Dynamic Origin Checking (also matches any Vercel deployment) ----
 const corsOptions = {
   origin: function (origin, callback) {
-    // allow REST tools/server-to-server/no-origin requests
+    console.log("CORS request from:", origin);
+    // Always allow REST tools/server-side/no origin (e.g. curl, Postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+
+    // Allow all .vercel.app subdomains (for all production & preview deployments)
+    if (
+      allowedOrigins.includes(origin) ||
+      /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)
+    ) {
+      return callback(null, true);
+    }
+
+    console.log("CORS BLOCKED:", origin);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
@@ -29,7 +39,7 @@ const corsOptions = {
 // ---- CORS for Static Images ----
 app.use('/storage/projects', cors(corsOptions), express.static('storage/projects'));
 
-// ---- CORS for All Other APIs ----
+// ---- CORS for all other APIs ----
 app.use(cors(corsOptions));
 
 // ---- Request Body Parsing ----
@@ -40,8 +50,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => res.send('Portfolio Backend API Running!'));
 
 // ==== ROUTE ATTACHMENTS ====
-// Modular, clear order
-
+// Modular and clear order
 const authRoutes = require('./modules/auth/auth.routes');
 const personasRoutes = require('./modules/personas/personas.routes');
 const skillsRoutes = require('./modules/skills/skills.routes');
