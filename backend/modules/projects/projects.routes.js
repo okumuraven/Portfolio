@@ -4,7 +4,6 @@ const router = express.Router();
 // Controller and middleware imports
 const projectsController = require('./projects.controller');
 const requireAuth = require('../auth/auth.middleware');
-const uploadMiddleware = require('../../middlewares/upload.middleware');
 
 // --- Public Endpoints ---
 
@@ -16,19 +15,17 @@ router.get('/:id', projectsController.getProject);
 
 // --- Admin Endpoints (JWT-protected) ---
 
-// Create new project with image/file upload
+// Create new project (image as URL, NO file upload)
 router.post(
   '/',
   requireAuth(['admin']),
-  uploadMiddleware.single('image'),
   projectsController.createProject
 );
 
-// Update project (supports file upload)
+// Update project (image as URL, NO file upload)
 router.patch(
   '/:id',
   requireAuth(['admin']),
-  uploadMiddleware.single('image'),
   projectsController.updateProject
 );
 
