@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 
 const app = express();
 
@@ -15,29 +16,29 @@ const allowedOrigins = [
   'https://portfolio-okumuravens-projects.vercel.app',
 ];
 
-// ---- Dynamic Origin Checking (also matches any Vercel deployment) ----
+// ---- Dynamic Origin Checking ----
 const corsOptions = {
   origin: function (origin, callback) {
     console.log("CORS request from:", origin);
-    // Always allow REST tools/server-side/no origin (e.g. curl, Postman)
     if (!origin) return callback(null, true);
-
-    // Allow all .vercel.app subdomains (for all production & preview deployments)
     if (
       allowedOrigins.includes(origin) ||
       /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)
     ) {
       return callback(null, true);
     }
-
     console.log("CORS BLOCKED:", origin);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
 };
 
-// ---- CORS for Static Images ----
-app.use('/storage/projects', cors(corsOptions), express.static('storage/projects'));
+// ---- CORS + Static serving for uploaded images ----
+app.use(
+  '/storage/projects',
+  cors(corsOptions),
+  express.static(path.join(__dirname, 'storage/projects'))
+);
 
 // ---- CORS for all other APIs ----
 app.use(cors(corsOptions));
@@ -50,7 +51,6 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => res.send('Portfolio Backend API Running!'));
 
 // ==== ROUTE ATTACHMENTS ====
-// Modular and clear order
 const authRoutes = require('./modules/auth/auth.routes');
 const personasRoutes = require('./modules/personas/personas.routes');
 const skillsRoutes = require('./modules/skills/skills.routes');
