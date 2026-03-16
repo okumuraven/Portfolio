@@ -23,7 +23,7 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
     visible: true,
     order: "",
     collaborators: [],
-    image: null,
+    image: "", // image URL!
   });
 
   const [skills, setSkills] = useState([]);
@@ -35,7 +35,7 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
   useEffect(() => {
     getSkills().then(res => setSkills(res.data || [])).catch(() => setSkills([]));
     getPersonas()
-      .then(res => setPersonas(Array.isArray(res) ? res : []))  // <-- FIXED: use array directly!
+      .then(res => setPersonas(Array.isArray(res) ? res : []))
       .catch(() => setPersonas([]));
   }, []);
 
@@ -49,7 +49,7 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
           skills: Array.isArray(project.skills) ? project.skills.map(Number) : [],
           persona_ids: Array.isArray(project.persona_ids) ? project.persona_ids.map(Number) : [],
           collaborators: Array.isArray(project.collaborators) ? project.collaborators : [],
-          image: null,
+          image: project.image || "",
           highlight: project.highlight || "",
         });
       } else {
@@ -67,22 +67,18 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
           visible: true,
           order: "",
           collaborators: [],
-          image: null,
+          image: "",
         });
       }
     }
   }, [open, project]);
 
   function handleChange(e) {
-    const { name, value, type, checked, files } = e.target;
+    const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
       setForm(f => ({ ...f, [name]: checked }));
-    } else if (type === "file") {
-      setForm(f => ({ ...f, image: files[0] }));
-    } else if (type === "url" || type === "text") {
-      setForm(f => ({ ...f, [name]: value.trim() }));
     } else {
-      setForm(f => ({ ...f, [name]: value }));
+      setForm(f => ({ ...f, [name]: value.trim() }));
     }
   }
 
@@ -117,26 +113,20 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
     setSaving(true);
     setError("");
     try {
-      const fd = new FormData();
-      const standardFields = [
-        "title", "description", "category", "date_start", "date_end",
-        "demo_link", "repo_link", "highlight", "order"
-      ];
-      standardFields.forEach(k => {
-        if (form[k] !== undefined && form[k] !== null) fd.append(k, form[k]);
-      });
-      fd.append("visible", form.visible);
-
-      fd.append("skills", JSON.stringify(form.skills.map(Number)));
-      fd.append("persona_ids", JSON.stringify(form.persona_ids.map(Number)));
-      fd.append("collaborators", JSON.stringify(form.collaborators));
-      if (form.image) fd.append("image", form.image);
+      // Prepare JSON payload (no file uploads!)
+      const payload = {
+        ...form,
+        skills: form.skills.map(Number),
+        persona_ids: form.persona_ids.map(Number),
+        collaborators: form.collaborators,
+        image: form.image && form.image.length > 0 ? form.image : null,
+      };
 
       let saved;
       if (isEdit) {
-        saved = await updateProject(project.id, fd);
+        saved = await updateProject(project.id, payload);
       } else {
-        saved = await createProject(fd);
+        saved = await createProject(payload);
       }
       onSave(saved);
       onClose();
@@ -213,10 +203,16 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
             <input name="repo_link" type="url" className={styles.input} value={form.repo_link || ""} onChange={handleChange} placeholder="https://github.com/..." />
           </div>
           <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-            <label className={styles.label}>Cover Image</label>
-            <div className={styles.fileInputWrapper}>
-              <input name="image" type="file" accept="image/*" className={styles.fileInput} onChange={handleChange} />
-            </div>
+            <label className={styles.label}>Cover Image URL</label>
+            <input
+              name="image"
+              type="url"
+              className={styles.input}
+              value={form.image || ""}
+              onChange={handleChange}
+              placeholder="https://cdn.example.com/image.png"
+              required // or omit if not required
+            />
             {isEdit && <span style={{fontSize:'0.7rem', color:'#666', marginTop:'4px'}}>* Leaving blank keeps current image</span>}
           </div>
         </div>
