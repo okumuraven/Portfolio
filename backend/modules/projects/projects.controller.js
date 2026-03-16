@@ -5,6 +5,14 @@ const PersonasModel = require('../personas/personas.model');
 const NotFoundError = require('../../errors/NotFoundError');
 const ValidationError = require('../../errors/ValidationError');
 
+// Util to get backend base URL (for production/deployment)
+function getBackendBaseUrl(req) {
+  return (
+    process.env.BACKEND_BASE_URL ||
+    (req.protocol + '://' + req.get('host'))
+  );
+}
+
 /**
  * GET /api/projects
  * List projects (supports filters via query params)
@@ -88,7 +96,7 @@ async function getProject(req, res, next) {
 
 /**
  * POST /api/projects (admin)
- * Create new project (with image upload, validation)
+ * Create new project (with image upload and external image url support)
  */
 async function createProject(req, res, next) {
   try {
@@ -102,8 +110,25 @@ async function createProject(req, res, next) {
       }
     });
 
+    // Handling image logic (file upload OR direct URL string)
     if (req.file && req.file.filename) {
-      payload.image = `/storage/projects/${req.file.filename}`;
+      const baseURL = getBackendBaseUrl(req);
+      payload.image = `${baseURL}/storage/projects/${req.file.filename}`;
+    } else if (
+      typeof payload.image === 'string' &&
+      payload.image.startsWith('http')
+    ) {
+      // Valid external URL
+      payload.image = payload.image;
+    } else if (
+      typeof payload.image === 'string' &&
+      payload.image.length > 0
+    ) {
+      // If only a path, build full URL
+      const baseURL = getBackendBaseUrl(req);
+      payload.image = `${baseURL}${payload.image}`;
+    } else {
+      payload.image = null; // fallback, will fail validation if required
     }
 
     if (typeof payload.visible === 'undefined') payload.visible = true;
@@ -119,7 +144,7 @@ async function createProject(req, res, next) {
 
 /**
  * PATCH /api/projects/:id (admin)
- * Update existing project (partial, image upload supported)
+ * Update existing project (partial, image upload and external url supported)
  */
 async function updateProject(req, res, next) {
   try {
@@ -133,8 +158,21 @@ async function updateProject(req, res, next) {
       }
     });
 
+    // Handling image logic (file upload OR direct URL string)
     if (req.file && req.file.filename) {
-      payload.image = `/storage/projects/${req.file.filename}`;
+      const baseURL = getBackendBaseUrl(req);
+      payload.image = `${baseURL}/storage/projects/${req.file.filename}`;
+    } else if (
+      typeof payload.image === 'string' &&
+      payload.image.startsWith('http')
+    ) {
+      payload.image = payload.image;
+    } else if (
+      typeof payload.image === 'string' &&
+      payload.image.length > 0
+    ) {
+      const baseURL = getBackendBaseUrl(req);
+      payload.image = `${baseURL}${payload.image}`;
     }
 
     // *** USE SERVICE for timeline sync ***
