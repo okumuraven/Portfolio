@@ -1,24 +1,19 @@
-// src/pages/public/Projects/ProjectsPage.jsx
 import React, { useState, useEffect } from "react";
 import { getProjects } from "../../../api/projects.api";
 import styles from "./ProjectsPage.module.css";
 
 const categoryList = ["All", "Client", "Personal", "Open Source", "Hackathon", "Other"];
 
-const API_BASE = "http://localhost:5000";
+// Image helper for "link icon method": use URL or fallback
 function getImageSrc(img) {
-  if (!img) return null; 
-  if (img.startsWith("storage/projects")) return `${API_BASE}/${img}`;
-  if (img.startsWith("/storage/projects")) return `${API_BASE}${img}`;
-  if (/^https?:\/\//.test(img)) return img;
-  return `${API_BASE}/storage/projects/${img}`; 
+  if (!img) return "/default-thumb.png"; // fallback icon local asset
+  if (/^https?:\/\//.test(img)) return img; // full URL (CDN, cloud, github, etc.)
+  return "/default-thumb.png"; // fallback for anything else
 }
 
-// Helper to format dates cleanly without messy slashes
+// Helper to format dates cleanly
 function formatLogDate(dateString) {
   const date = new Date(dateString);
-  // Example output: "Oct 2023" or "24 Oct 2023" depending on your preference.
-  // Using short format is cleaner for UI
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short' });
 }
 
@@ -79,6 +74,7 @@ export default function ProjectsPage() {
                 
                 {/* Image Area */}
                 <div className={styles.imageContainer}>
+                  {/* Show image if exists and not errored, fallback if broken or missing */}
                   {!imgErrorMap[project.id] && project.image ? (
                     <img
                       src={getImageSrc(project.image)}
@@ -120,7 +116,6 @@ export default function ProjectsPage() {
                         </span>
                       )}
 
-                      {/* Optional: Show "Present" if started but not ended */}
                       {project.date_start && !project.date_end && (
                         <>
                           <span className={styles.dateSeparator}>{"//"}</span>
@@ -133,19 +128,16 @@ export default function ProjectsPage() {
                     </div>
                   )}
 
-                  {/* Highlight */}
                   {project.highlight && (
                     <div className={styles.highlight}>★ {project.highlight}</div>
                   )}
 
-                  {/* Description */}
                   {project.description && (
                     <div className={styles.brief} title={project.description}>
                       {project.description}
                     </div>
                   )}
 
-                  {/* Tech Stack */}
                   {!!(project.skills && project.skills.length) && (
                     <div className={styles.techStack}>
                       {project.skills.map((sk, i) => (
@@ -169,7 +161,6 @@ export default function ProjectsPage() {
                   ) : (
                     <span />
                   )}
-
                   {project.demo_link && (
                     <a
                       href={project.demo_link}
