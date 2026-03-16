@@ -1,14 +1,21 @@
 import axios from 'axios';
 
-// Get the API base URL from env for production
+// Always ensure API_BASE_URL ends with /api in all environments
 const API_BASE_URL =
   process.env.NODE_ENV === 'development'
-    ? (window.location.hostname.endsWith('.devtunnels.ms')
-        ? 'https://xqtqz6hp-5000.euw.devtunnels.ms/api'
-        : 'http://localhost:5000/api')
-    : process.env.REACT_APP_API_URL;
+    ? (
+        window.location.hostname.endsWith('.devtunnels.ms')
+          ? 'https://xqtqz6hp-5000.euw.devtunnels.ms/api'
+          : 'http://localhost:5000/api'
+      )
+    : (
+        // If your Vercel env var ends WITHOUT /api, add it here:
+        process.env.REACT_APP_API_URL.endsWith('/api')
+          ? process.env.REACT_APP_API_URL
+          : process.env.REACT_APP_API_URL + '/api'
+      );
 
-// If you want to see what base URL is used (for debugging), uncomment:
+// For debugging, you can uncomment:
 // console.log("Using API base URL:", API_BASE_URL);
 
 const http = axios.create({
