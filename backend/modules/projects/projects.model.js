@@ -16,7 +16,6 @@ const ProjectsModel = {
     const values = [];
     let idx = 1;
 
-    // Professional pattern: filters added dynamically only if provided
     if (opts.visible !== undefined) {
       filters.push(`visible = $${idx++}`);
       values.push(!!opts.visible);
@@ -65,10 +64,12 @@ const ProjectsModel = {
    * @returns {Promise<Object>} created row
    */
   async create(project) {
-    // Check required fields (add more as needed)
-    if (!project.title || !project.category || !project.image) {
-      throw new ValidationError('Missing required fields: title, category, image');
+    // Validation: require title, category, image can be a URL or null
+    if (!project.title || !project.category) {
+      throw new ValidationError('Missing required fields: title, category');
     }
+    // Image is OPTIONAL, but recommended: if you want to require, add !project.image check
+    // Skills must be an array with at least one value
     if (!Array.isArray(project.skills) || project.skills.length < 1) {
       throw new ValidationError('Project must have at least one skill.');
     }
@@ -100,7 +101,6 @@ const ProjectsModel = {
    * @returns {Promise<Object>} updated row
    */
   async update(id, project) {
-    // Build dynamic set clause just like in skills/personas
     const allowed = [
       'title', 'description', 'category', 'skills', 'persona_ids',
       'date_start', 'date_end', 'demo_link', 'repo_link', 'image', 'highlight',
