@@ -5,21 +5,12 @@ const PersonasModel = require('../personas/personas.model');
 const NotFoundError = require('../../errors/NotFoundError');
 const ValidationError = require('../../errors/ValidationError');
 
-// Util to get backend base URL (for production/deployment)
-function getBackendBaseUrl(req) {
-  return (
-    process.env.BACKEND_BASE_URL ||
-    (req.protocol + '://' + req.get('host'))
-  );
-}
-
 /**
  * GET /api/projects
  * List projects (supports filters via query params)
  */
 async function listProjects(req, res, next) {
   try {
-    // Parse query params for filtering
     const opts = {};
     if (typeof req.query.visible !== 'undefined') opts.visible = req.query.visible === 'true';
     if (req.query.category) opts.category = req.query.category;
@@ -29,8 +20,6 @@ async function listProjects(req, res, next) {
     if (req.query.offset) opts.offset = Number(req.query.offset);
 
     const projects = await ProjectsModel.findAll(opts);
-
-    // Enrich projects with Skill names and full Persona objects
     const allSkills = await SkillsModel.findAll();
     const allPersonas = await PersonasModel.findAll();
 
@@ -38,9 +27,7 @@ async function listProjects(req, res, next) {
     allSkills.forEach(s => { skillMap[s.id] = s.name; });
 
     const personaMap = {};
-    allPersonas.forEach(p => {
-      personaMap[p.id] = { ...p };
-    });
+    allPersonas.forEach(p => { personaMap[p.id] = { ...p }; });
 
     const enriched = projects.map(p => ({
       ...p,
@@ -74,9 +61,7 @@ async function getProject(req, res, next) {
     allSkills.forEach(s => { skillMap[s.id] = s.name; });
 
     const personaMap = {};
-    allPersonas.forEach(p => {
-      personaMap[p.id] = { ...p };
-    });
+    allPersonas.forEach(p => { personaMap[p.id] = { ...p }; });
 
     const enriched = {
       ...project,
@@ -96,13 +81,13 @@ async function getProject(req, res, next) {
 
 /**
  * POST /api/projects (admin)
- * Create new project (with image upload and external image url support)
+ * Create new project (image = URL only)
  */
 async function createProject(req, res, next) {
   try {
     let payload = { ...req.body };
 
-    // Parse json/array fields if needed (supports form-data)
+    // Parse json/array fields if needed
     ['skills', 'persona_ids', 'collaborators'].forEach(field => {
       if (typeof payload[field] === 'string') {
         try { payload[field] = JSON.parse(payload[field]); }
@@ -110,31 +95,14 @@ async function createProject(req, res, next) {
       }
     });
 
-    // Handling image logic (file upload OR direct URL string)
-    if (req.file && req.file.filename) {
-      const baseURL = getBackendBaseUrl(req);
-      payload.image = `${baseURL}/storage/projects/${req.file.filename}`;
-    } else if (
-      typeof payload.image === 'string' &&
-      payload.image.startsWith('http')
-    ) {
-      // Valid external URL
-      payload.image = payload.image;
-    } else if (
-      typeof payload.image === 'string' &&
-      payload.image.length > 0
-    ) {
-      // If only a path, build full URL
-      const baseURL = getBackendBaseUrl(req);
-      payload.image = `${baseURL}${payload.image}`;
-    } else {
-      payload.image = null; // fallback, will fail validation if required
-    }
+    // Accept image as a URL or string
+    payload.image = typeof payload.image === 'string' && payload.image.length > 0
+      ? payload.image
+      : null;
 
     if (typeof payload.visible === 'undefined') payload.visible = true;
     if (typeof payload.order === 'undefined') payload.order = null;
 
-    // *** USE SERVICE for timeline sync ***
     const project = await ProjectsService.createProject(payload);
     res.status(201).json({ data: project });
   } catch (err) {
@@ -144,7 +112,7 @@ async function createProject(req, res, next) {
 
 /**
  * PATCH /api/projects/:id (admin)
- * Update existing project (partial, image upload and external url supported)
+ * Update project (image = URL only)
  */
 async function updateProject(req, res, next) {
   try {
@@ -158,24 +126,11 @@ async function updateProject(req, res, next) {
       }
     });
 
-    // Handling image logic (file upload OR direct URL string)
-    if (req.file && req.file.filename) {
-      const baseURL = getBackendBaseUrl(req);
-      payload.image = `${baseURL}/storage/projects/${req.file.filename}`;
-    } else if (
-      typeof payload.image === 'string' &&
-      payload.image.startsWith('http')
-    ) {
+    // Accept image as a URL or string
+    if (typeof payload.image === 'string' && payload.image.length > 0) {
       payload.image = payload.image;
-    } else if (
-      typeof payload.image === 'string' &&
-      payload.image.length > 0
-    ) {
-      const baseURL = getBackendBaseUrl(req);
-      payload.image = `${baseURL}${payload.image}`;
     }
 
-    // *** USE SERVICE for timeline sync ***
     const updated = await ProjectsService.updateProject(Number(id), payload);
     res.json({ data: updated });
   } catch (err) {
@@ -190,8 +145,6 @@ async function updateProject(req, res, next) {
 async function deleteProject(req, res, next) {
   try {
     const { id } = req.params;
-
-    // *** USE SERVICE for timeline sync ***
     await ProjectsService.deleteProject(Number(id));
     res.status(204).end();
   } catch (err) {
