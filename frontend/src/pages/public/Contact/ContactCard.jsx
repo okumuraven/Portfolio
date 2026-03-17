@@ -1,124 +1,154 @@
-import React from "react";
-import styles from "./ContactCard.module.css";
+/* src/pages/public/Contact/ContactCard.module.css */
 
-/**
- * Professional, dynamic contact/about card.
- * Displays all relevant fields passed from profile API/admin.
- */
-export default function ContactCard(props) {
-  // Recommended keys for specially styled sections
-  const {
-    real_name,
-    avatar_url,
-    status,
-    base,
-    location,
-    primary_mode,
-    secondary_mode,
-    about_summary,
-    core_directive,
-    philosophy,
-    human_layer,
-    work_philosophy,
-    ...otherFields // Collect all other fields (future extensibility)
-  } = props;
+.contactCard {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  border-left: 3px solid #00ff88; /* Neon Green Operative Line */
+  padding: 3rem 4rem;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  return (
-    <div className={styles.contactCard}>
-      {/* AVATAR / PROFILE IMAGE */}
-      {avatar_url && (
-        <div className={styles.avatarWrapper}>
-          <img
-            className={styles.avatar}
-            src={avatar_url}
-            alt={real_name || "Operative Profile"}
-            loading="lazy"
-            onError={(e) => (e.target.style.display = 'none')}
-          />
-        </div>
-      )}
+/* --- AVATAR --- */
+.avatarWrapper {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: flex-start;
+}
 
-      <div className={styles.infoSection}>
-        {/* STATUS */}
-        {status && (
-          <div className={styles.sysStatus}>
-            <span className={styles.blink}></span>
-            OPERATIVE_STATUS: {status}
-          </div>
-        )}
-        {/* NAME */}
-        <h2 className={styles.realName}>
-          {real_name || "UNKNOWN_OPERATIVE"}
-        </h2>
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  object-fit: cover;
+  filter: grayscale(20%) contrast(120%);
+}
 
-        {/* KEY METADATA ROWS */}
-        <div className={styles.metadata}>
-          {base && (
-            <div className={styles.metaItem}>
-              <span className={styles.label}>BASE //</span> {base}
-            </div>
-          )}
-          {location && (
-            <div className={styles.metaItem}>
-              <span className={styles.label}>LOC //</span> {location}
-            </div>
-          )}
-          {primary_mode && (
-            <div className={styles.metaItem}>
-              <span className={styles.label}>PRIMARY_MODE //</span> {primary_mode}
-            </div>
-          )}
-          {secondary_mode && (
-            <div className={styles.metaItem}>
-              <span className={styles.label}>SECONDARY_MODE //</span> {secondary_mode}
-            </div>
-          )}
-          {core_directive && (
-            <div className={styles.metaItem}>
-              <span className={styles.label}>DIRECTIVE //</span>
-              <span className={styles.coreDirective}>{core_directive}</span>
-            </div>
-          )}
-        </div>
+/* --- TEXT & HEADINGS --- */
+.realName {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0.5rem 0 2rem 0;
+  line-height: 1.1;
+  word-wrap: break-word; /* Prevents overflow */
+}
 
-        {/* MISSION SUMMARY */}
-        {about_summary && (
-          <p className={styles.summary}>{about_summary}</p>
-        )}
+/* --- METADATA GRID (The Location/Directive block) --- */
+.metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between rows */
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px dashed #222;
+}
 
-        {/* HUMAN_LAYER (Soft bio, interests, etc) */}
-        {human_layer && (
-          <div className={styles.humanLayer}>
-            <span className={styles.humanLayerLabel}>HUMAN_LAYER:</span>
-            {human_layer}
-          </div>
-        )}
+.metaItem {
+  display: flex;
+  align-items: flex-start;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: #aaa;
+  line-height: 1.5;
+}
 
-        {/* PHILOSOPHY */}
-        {philosophy && (
-          <div className={styles.philosophy}>
-            <span className={styles.philosophyLabel}>OPERATIONAL_PHILOSOPHY:</span>
-            {philosophy}
-          </div>
-        )}
+/* The Label (Left Side) */
+.label {
+  color: #666;
+  width: 140px; /* Fixed width so all labels align perfectly on PC */
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
 
-        {/* WORK PHILOSOPHY */}
-        {work_philosophy && (
-          <div className={styles.workPhilosophy}>
-            <span className={styles.workPhilosophyLabel}>WORK_PHILOSOPHY:</span>
-            {work_philosophy}
-          </div>
-        )}
+/* Specific Field Colors */
+.coreDirective { color: #00e5ff; }
 
-        {/* Render any future fields dynamically (optional) */}
-        {Object.keys(otherFields).map(key =>
-          otherFields[key] ? (
-            <div key={key} className={styles.metaItem}>
-              <span className={styles.label}>{key.replace(/_/g, ' ').toUpperCase()} {"//"}</span> {otherFields[key]}
-            </div>
-          ) : null
-        )}
-      </div>
-    </div>
-  );
+/* --- SUMMARIES --- */
+.summary, .humanLayer {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.humanLayerLabel {
+  display: block;
+  font-family: 'Courier New', monospace;
+  color: #888;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* --- PHILOSOPHY BOX --- */
+.philosophy, .workPhilosophy {
+  background: rgba(255, 85, 0, 0.03);
+  border: 1px solid #1a1a1a;
+  border-left: 2px solid #ff5500; /* Orange Tactical Line */
+  padding: 1.5rem 2rem;
+  font-family: 'Courier New', monospace;
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.philosophyLabel, .workPhilosophyLabel {
+  display: block;
+  color: #ff5500;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS (The Fix)
+   ========================================= */
+@media (max-width: 768px) {
+  
+  /* Shrink the card padding to utilize mobile screen width */
+  .contactCard {
+    padding: 2rem 1.5rem;
+    border-left-width: 2px;
+  }
+
+  /* Shrink the massive name to fit the screen */
+  .realName {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* CRITICAL: Stack the labels ABOVE the text on mobile, instead of side-by-side */
+  .metaItem {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  /* Remove fixed width on mobile so text flows naturally */
+  .label {
+    width: auto; 
+    font-size: 0.8rem;
+  }
+
+  /* Shrink text sizing slightly for readability */
+  .metaItem, .coreDirective {
+    font-size: 0.85rem;
+  }
+
+  .summary {
+    font-size: 0.9rem;
+  }
+
+  .philosophy, .workPhilosophy {
+    padding: 1rem 1.25rem;
+    font-size: 0.8rem;
+  }
 }
