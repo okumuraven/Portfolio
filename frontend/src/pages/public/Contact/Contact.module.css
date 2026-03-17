@@ -1,110 +1,96 @@
 /* src/pages/public/Contact/Contact.module.css */
 
-/* --- MAIN CONTAINER --- */
 .contactRoot {
-  padding: 5rem 5vw;
+  min-height: 80vh;
+  padding: 6rem 2rem 4rem;
   background-color: #050505;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  min-height: 100vh;
-  
-  /* Tech Grid Background */
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+  color: #e0e0e0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Inter', sans-serif;
+  background-image: 
+    linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
 }
 
-/* --- HEADER --- */
+/* --- HEADERS --- */
 .header {
   text-align: center;
   margin-bottom: 4rem;
-  animation: fadeInDown 0.6s ease-out;
-  width: 100%;
-}
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .title {
-  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-family: 'Courier New', monospace;
+  font-size: 3.5rem;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
-  line-height: 1.1;
+  margin: 0;
+  letter-spacing: 0.05em;
+  color: #fff;
 }
 
 .title span {
   color: transparent;
-  -webkit-text-stroke: 1px #fff; /* Hollow text effect */
+  -webkit-text-stroke: 1px #888;
 }
 
 .subtitle {
   font-family: 'Courier New', monospace;
-  color: #888;
   font-size: 0.9rem;
+  color: #666;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  margin-top: 1rem;
 }
 
 /* --- CONTENT LAYOUT --- */
 .contentWrapper {
+  width: 100%;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
-  gap: 4rem; /* Big space between the dossier card and the social links */
-  width: 100%;
-  max-width: 1000px;
-  animation: fadeIn 0.8s ease-out;
+  gap: 3rem;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* --- SYSTEM STATES --- */
+/* --- STATES --- */
 .loader, .error, .empty {
-  text-align: center;
   font-family: 'Courier New', monospace;
-  color: #00ff88; /* Green for loading to look like a secure handshake */
-  padding: 4rem 2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  border: 1px dashed #222;
-  background: rgba(10, 10, 10, 0.5);
-  width: 100%;
-  max-width: 600px;
-  border-radius: 4px;
-  margin-top: 2rem;
+  font-size: 1rem;
+  color: #00ff88;
+  margin-top: 10rem;
+  text-align: center;
+  animation: pulse 1.5s infinite;
 }
 
-.error {
-  color: #ff4444;
-  border-color: #ff4444;
-  background: rgba(255, 68, 68, 0.05);
+.error { color: #ff4444; }
+.empty { color: #888; animation: none; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-.empty {
-  color: #666;
-}
-
-/* --- MOBILE RESPONSIVE --- */
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
 @media (max-width: 768px) {
   .contactRoot {
-    padding: 4rem 1.5rem;
+    padding: 5rem 1rem 3rem; /* Reduced horizontal padding for mobile */
   }
-  
+
   .header {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
   }
-  
+
+  .title {
+    font-size: 2.2rem; /* Scaled down for mobile */
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+  }
+
   .contentWrapper {
-    gap: 3rem; /* Tighter spacing on mobile */
+    gap: 2rem;
   }
 }
