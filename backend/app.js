@@ -14,6 +14,8 @@ const allowedOrigins = [
   'https://xqtqz6hp-3000.euw.devtunnels.ms',
   'https://xqtqz6hp-5000.euw.devtunnels.ms',
   'https://portfolio-okumuravens-projects.vercel.app',
+  'https://okumuraven.me',              // added for new custom domain
+  'https://www.okumuraven.me',          // added for www redirect
 ];
 
 // ---- Dynamic Origin Checking ----
@@ -23,7 +25,8 @@ const corsOptions = {
     if (!origin) return callback(null, true);
     if (
       allowedOrigins.includes(origin) ||
-      /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)
+      /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) ||
+      /^https:\/\/(www\.)?okumuraven\.me$/.test(origin)          // allow both www and non-www .me domain
     ) {
       return callback(null, true);
     }
