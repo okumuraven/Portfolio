@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+>
+  <url>
+    <loc>https://okumuraven.me/</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://okumuraven.me/"/>
+    <!-- add www support or other languages if you serve them -->
+  </url>
+  <url>
+    <loc>https://okumuraven.me/projects</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://okumuraven.me/projects"/>
+  </url>
+  <url>
+    <loc>https://okumuraven.me/skill-matrix</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://okumuraven.me/skill-matrix"/>
+  </url>
+  <url>
+    <loc>https://okumuraven.me/timeline</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://okumuraven.me/timeline"/>
+  </url>
+  <url>
+    <loc>https://okumuraven.me/contact</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://okumuraven.me/contact"/>
+  </url>
+  <!-- Example: add project details page if public -->
+  <!--
+  <url>
+    <loc>https://okumuraven.me/projects/yourprojectslug</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://okumuraven.me/projects/yourprojectslug"/>
+  </url>
+  -->
+</urlset>
