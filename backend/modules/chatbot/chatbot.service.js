@@ -4,6 +4,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const ChatbotModel = require('./chatbot.model');
 
 // Initialize Gemini client (requires GEMINI_API_KEY in .env)
+const configEnv = require('../../config/env');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const ChatbotService = {
@@ -15,25 +16,20 @@ const ChatbotService = {
    * @returns {Promise<string>} The AI's response text
    */
   async processChat(userMessage, history = [], ipAddress = 'unknown') {
-    // 1. Fetch live config from database
-    const config = await ChatbotModel.getConfig();
-    if (!config || !config.is_active) {
+    // 1. Fetch live status from database
+    const dbConfig = await ChatbotModel.getConfig();
+    if (!dbConfig || !dbConfig.is_active) {
       throw new Error("Chatbot is currently offline.");
     }
 
-    // 2. Load and parse the system prompt template
+    // 2. Load the permanent system prompt from file (never overridden by DB)
     const promptPath = path.join(__dirname, 'prompts', 'estimatorPrompt.txt');
-    let systemPromptTemplate = fs.readFileSync(promptPath, 'utf8');
+    const systemPromptTemplate = fs.readFileSync(promptPath, 'utf8');
 
-    // Override text file if DB has custom instructions
-    if (config.system_prompt) {
-      systemPromptTemplate = config.system_prompt;
-    }
-
-    // Inject live pricing
+    // 3. Inject permanent pricing from config/env
     const systemPromptMessage = systemPromptTemplate
-      .replace('{{base_website_price}}', config.base_website_price || 'N/A')
-      .replace('{{hourly_rate}}', config.hourly_rate || 'N/A');
+      .replace('{{base_website_price}}', configEnv.CHATBOT_BASE_PRICE || '500')
+      .replace('{{hourly_rate}}', configEnv.CHATBOT_HOURLY_RATE || '50');
 
     try {
       // 3. Initialize the Gemini Model
