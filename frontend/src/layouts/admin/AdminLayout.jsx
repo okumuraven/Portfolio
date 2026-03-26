@@ -80,6 +80,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/activity" className={getLinkClass} onClick={closeSidebar}>
             / System_Logs
           </NavLink>
+          <NavLink to="/admin/chatbot" className={getLinkClass} onClick={closeSidebar}>
+            / AI_Estimator_Config
+          </NavLink>
         </nav>
         <div className={styles.backLinkWrapper}>
           <Link to="/" className={styles.backLink}>

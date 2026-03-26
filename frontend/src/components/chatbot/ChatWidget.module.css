@@ -1,0 +1,357 @@
+/* src/features/chatbot/ChatWidget.module.css */
+
+.widgetContainer {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- THE TACTICAL TRIGGER BUTTON --- */
+.bubbleBtn {
+  background: #050505;
+  border: 1px solid #00e5ff;
+  color: #00e5ff;
+  padding: 1rem 1.5rem;
+  border-radius: 30px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.bubbleBtn:hover {
+  background: rgba(0, 229, 255, 0.1);
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
+  transform: translateY(-3px);
+}
+
+.ping {
+  width: 8px;
+  height: 8px;
+  background-color: #00ff88;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00ff88;
+  animation: pulse 2s infinite;
+}
+
+/* --- THE TERMINAL WINDOW --- */
+.chatWindow {
+  width: 400px;
+  height: 600px;
+  max-height: 80vh;
+  background: rgba(5, 5, 5, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #1a1a1a;
+  border-left: 2px solid #00e5ff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.3s ease-out;
+  overflow: hidden;
+}
+
+/* Header */
+.chatHeader {
+  background: #0a0a0a;
+  padding: 1.2rem;
+  border-bottom: 1px dashed #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  font-family: 'Courier New', monospace;
+  color: #fff;
+  font-size: 1rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.headerTitle span {
+  color: #00ff88;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: #ff4444;
+}
+
+/* Body & Messages */
+.chatBody {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.chatBody::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatBody::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+.chatBody::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+.msgWrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+}
+
+.msgWrapper.ai {
+  align-self: flex-start;
+}
+
+.msgWrapper.user {
+  align-self: flex-end;
+}
+
+.msgLabel {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.msgWrapper.ai .msgLabel {
+  color: #00e5ff;
+}
+
+.msgAi,
+.msgUser {
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.msgAi {
+  background: #111;
+  border: 1px solid #222;
+  color: #ddd;
+  border-top-left-radius: 0;
+}
+
+.msgUser {
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: #fff;
+  border-top-right-radius: 0;
+}
+
+/* --- PARSED MARKDOWN STYLES (NEW) --- */
+.msgAi strong {
+  color: #00e5ff;
+  font-weight: 600;
+}
+
+.msgHeading {
+  color: #00e5ff;
+  font-family: 'Courier New', monospace;
+  margin: 1rem 0 0.5rem 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.msgPara {
+  margin: 0 0 0.8rem 0;
+}
+
+.msgPara:last-child {
+  margin-bottom: 0;
+}
+
+.msgBullet {
+  margin-left: 1.2rem;
+  margin-bottom: 0.4rem;
+  list-style-type: square;
+}
+
+.msgBullet::marker {
+  color: #00e5ff;
+}
+
+/* --- CONTACT TABS (NEW) --- */
+.contactTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+  border-top: 1px dashed #333;
+  padding-top: 1rem;
+}
+
+.contactTab {
+  background: transparent;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contactTab:hover {
+  background: rgba(0, 255, 136, 0.1);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Footer / Input Area */
+.chatFooter {
+  padding: 1rem;
+  background: #0a0a0a;
+  border-top: 1px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inputPrefix {
+  font-family: 'Courier New', monospace;
+  color: #00ff88;
+  font-weight: bold;
+}
+
+.chatInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.chatInput::placeholder {
+  color: #444;
+}
+
+.sendBtn {
+  background: transparent;
+  border: none;
+  color: #00e5ff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s, color 0.2s;
+  padding: 0.5rem;
+}
+
+.sendBtn:hover:not(:disabled) {
+  transform: translateX(3px);
+  color: #fff;
+}
+
+.sendBtn:disabled {
+  color: #444;
+  cursor: not-allowed;
+}
+
+/* Animations */
+.processing {
+  font-family: 'Courier New', monospace;
+  color: #00ff88;
+  font-size: 0.85rem;
+  animation: blink 1s infinite;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 768px) {
+  .widgetContainer {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 99999;
+  }
+
+  .chatWindow {
+    position: fixed;
+    bottom: 5rem;
+    /* Sits right above the trigger button */
+    right: 1rem;
+    width: calc(100vw - 2rem);
+    height: 65vh;
+    /* Prevents keyboard from crushing the UI */
+    max-height: 600px;
+  }
+
+  .chatInput {
+    font-size: 16px;
+    /* CRITICAL: Prevents iOS Safari from auto-zooming in on the input field */
+  }
+}

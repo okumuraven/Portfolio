@@ -30,7 +30,8 @@ frontend/
 │   │   ├── personas.api.js
 │   │   ├── skills.api.js
 │   │   ├── achievements.api.js
-│   │   └── activity.api.js
+│   │   ├── activity.api.js
+│   │   └── chatbot.api.js      # AI chat interactions
 │   │
 │   ├── layouts/                # Page Shells (separated for public/admin)
 │   │   ├── public/
@@ -56,7 +57,8 @@ frontend/
 │   │   ├── ui/                 # Atomic UI (Button, Card, Badge)
 │   │   ├── timeline/           # Timeline/Feed blocks
 │   │   ├── forms/              # Inputs, Validation, Forms
-│   │   └── feedback/           # Modals, Toasts, Spinners
+│   │   ├── feedback/           # Modals, Toasts, Spinners
+│   │   └── chatbot/            # AI Pricing Assistant Widget
 │   │
 │   ├── hooks/                  # Custom Global Hooks
 │   │   ├── useAuth.js
