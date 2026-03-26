@@ -17,12 +17,7 @@ function renderInline(text) {
   });
 }
 
-// Contact link icon map
-const CONTACT_ICONS = {
-  whatsapp: '💬',
-  email: '✉️',
-  'voice call': '📞',
-};
+
 
 function renderAiMessage(content) {
   const lines = content.split('\n');
