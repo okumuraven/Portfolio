@@ -14,6 +14,7 @@ import TimelineAdmin from "../pages/admin/TimelineAdmin";
 // NEW: Contact pages
 import Contact from "../pages/public/Contact/Contact";
 import ContactAdmin from "../pages/admin/ContactAdmin/ContactAdmin";
+import ChatbotAdmin from "../pages/admin/Chatbot/ChatbotAdmin";
 
 function AdminDashboardStub() {
   return <div>Admin Dashboard Coming Soon!</div>;
@@ -51,6 +52,8 @@ export default function AppRoutes() {
         <Route path="timeline" element={<TimelineAdmin />} />
         {/* NEW: Contact/Profile Admin Management */}
         <Route path="contact" element={<ContactAdmin />} />
+        {/* Chatbot Admin Config */}
+        <Route path="chatbot" element={<ChatbotAdmin />} />
       </Route>
 
       {/* 404 fallback */}

@@ -25,8 +25,10 @@ const corsOptions = {
     if (!origin) return callback(null, true);
     if (
       allowedOrigins.includes(origin) ||
+      /^https:\/\/.*\.devtunnels\.ms$/.test(origin) ||
       /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) ||
-      /^https:\/\/(www\.)?okumuraven\.me$/.test(origin)          // allow both www and non-www .me domain
+      /^https:\/\/(www\.)?okumuraven\.me$/.test(origin) ||
+      /^http:\/\/(192\.168|10\.|172\.(1[6-9]|2[0-9]|3[0-1]))\./.test(origin) // Allow local LAN testing
     ) {
       return callback(null, true);
     }
@@ -60,6 +62,8 @@ const skillsRoutes = require('./modules/skills/skills.routes');
 const projectsRoutes = require('./modules/projects/projects.routes');
 const timelineRoutes = require('./modules/timeline/timeline.routes');
 const contactRoutes = require('./modules/contact/contact.routes');
+const chatbotRoutes = require('./modules/chatbot/chatbot.routes');
+const chatbotAdminRoutes = require('./modules/chatbot/chatbot.admin.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/personas', personasRoutes);
@@ -71,6 +75,8 @@ app.use('/projects', projectsRoutes);
 app.use('/api/timeline', timelineRoutes);
 app.use('/timeline', timelineRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/ai-chat', chatbotRoutes);
+app.use('/api/admin/ai-pricing', chatbotAdminRoutes);
 
 // ---- 404 Handler ----
 app.use((req, res, next) => {

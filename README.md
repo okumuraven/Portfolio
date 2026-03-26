@@ -9,10 +9,11 @@ Easily showcase your projects, skills, achievements, and update your persona or 
 ## 🚀 Features
 
 - **Persona Switching:** Instantly transform between focus areas (developer, cyber analyst, etc.) with adaptive branding and content.
+- **AI Pricing Chatbot:** A professional Virtual Operative proxy powered by Google Gemini (1.5 Flash) that handles project estimation, phased build strategies, and direct contact redirection.
 - **Dynamic Profile:** Update skills, roles, certifications, and highlights via a secure admin dashboard.
 - **Achievements Timeline:** Display certificates, milestones, and learning journey.
 - **Powerful Admin Dashboard:** End-to-end content management (roles, projects, personas, skills, and more).
-- **Contact Integration:** WhatsApp, Gmail linking for seamless outreach.
+- **Contact Integration:** WhatsApp, Gmail, and Voice Call linking for seamless outreach, integrated directly into the AI chat experience.
 - **Mobile-First & Responsive:** Optimized UX everywhere.
 - **File Uploads and Image Management:** Upload project images and instantly update live visuals.
 

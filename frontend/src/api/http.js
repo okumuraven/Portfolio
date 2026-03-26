@@ -5,8 +5,8 @@ const API_BASE_URL =
   process.env.NODE_ENV === 'development'
     ? (
         window.location.hostname.endsWith('.devtunnels.ms')
-          ? 'https://xqtqz6hp-5000.euw.devtunnels.ms/api'
-          : 'http://localhost:5000/api'
+          ? `https://${window.location.hostname.replace('-3000', '-5000')}/api`
+          : `http://${window.location.hostname}:5000/api`
       )
     : (
         // If your Vercel env var ends WITHOUT /api, add it here:

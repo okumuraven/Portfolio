@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
+import ChatWidget from "../../components/chatbot/ChatWidget";
 import styles from "./PublicLayout.module.css";
 import logo from "./logo.jpeg"; 
 
@@ -119,6 +120,9 @@ export default function PublicLayout() {
         &copy; {new Date().getFullYear()} JoseRaven01.
         {/* Optional: <a href="mailto:your@email.com" style={{marginLeft: 16}}>Contact</a> */}
       </footer>
+
+      {/* Floating Chat Widget */}
+      <ChatWidget />
     </div>
   );
 }

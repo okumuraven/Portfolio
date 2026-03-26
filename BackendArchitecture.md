@@ -35,7 +35,8 @@ backend/
 │   ├── skills/                 # Skills endpoint
 │   ├── projects/               # Project CRUD, timeline feed
 │   ├── activity/               # Log and analytics tracking
-│   └── contact/                # Contact form/email logic
+│   ├── contact/                # Contact form/email logic
+│   └── chatbot/                # AI Pricing Assistant (Gemini API Integration)
 │
 ├── middlewares/                # SHARED MIDDLEWARES
 │   ├── auth.middleware.js      # Admin route protection (sometimes moved to modules/auth/)
