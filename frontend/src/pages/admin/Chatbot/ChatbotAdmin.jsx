@@ -11,19 +11,13 @@ export default function ChatbotAdmin() {
   });
 
   const [form, setForm] = useState({
-    is_active: false,
-    base_website_price: "",
-    hourly_rate: "",
-    system_prompt: ""
+    is_active: false
   });
 
   useEffect(() => {
     if (data) {
       setForm({
-        is_active: Boolean(data.is_active),
-        base_website_price: data.base_website_price || "",
-        hourly_rate: data.hourly_rate || "",
-        system_prompt: data.system_prompt || ""
+        is_active: Boolean(data.is_active)
       });
     }
   }, [data]);
@@ -32,13 +26,13 @@ export default function ChatbotAdmin() {
     mutationFn: updateChatbotConfig,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["chatbot-config"] });
-      alert(">> CONFIGURATION SAVED TO SECURE STORAGE.");
+      alert(">> STATUS UPDATED ON SECURE STORAGE.");
     }
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm(f => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+    const { checked } = e.target;
+    setForm({ is_active: checked });
   };
 
   const handleSubmit = (e) => {
@@ -52,10 +46,14 @@ export default function ChatbotAdmin() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>AI_ESTIMATOR_CONFIG</h2>
+        <h2 className={styles.title}>AI_ESTIMATOR_CONTROL</h2>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.formCard}>
+
+        <div className={styles.infoBox}>
+          <p>The chatbot pricing tiers and professional rules are now <strong>PERMANENTly</strong> linked to the system core. You can only control the online status from this terminal.</p>
+        </div>
 
         {/* ONLINE/OFFLINE TOGGLE */}
         <div className={styles.statusContainer}>
@@ -73,47 +71,12 @@ export default function ChatbotAdmin() {
           </label>
         </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>BASE WEBSITE PRICE ($)</label>
-          <input
-            type="number"
-            name="base_website_price"
-            value={form.base_website_price}
-            onChange={handleChange}
-            className={styles.input}
-            placeholder="e.g. 500"
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>HOURLY RATE ($)</label>
-          <input
-            type="number"
-            name="hourly_rate"
-            value={form.hourly_rate}
-            onChange={handleChange}
-            className={styles.input}
-            placeholder="e.g. 45"
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>SYSTEM PROMPT (AI BRAIN INSTRUCTIONS)</label>
-          <textarea
-            name="system_prompt"
-            value={form.system_prompt}
-            onChange={handleChange}
-            className={styles.textarea}
-            placeholder="Instructions for the AI..."
-          />
-        </div>
-
         <button
           type="submit"
           disabled={mutation.isPending}
           className={styles.submitBtn}
         >
-          {mutation.isPending ? "UPDATING..." : "SAVE CONFIGURATION"}
+          {mutation.isPending ? "UPDATING..." : "SAVE STATUS"}
         </button>
 
       </form>
