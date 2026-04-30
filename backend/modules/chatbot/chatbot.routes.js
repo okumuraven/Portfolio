@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ChatbotController = require('./chatbot.controller');
 const rateLimit = require('express-rate-limit');
+const { setCacheControl } = require('../../middlewares/cache.middleware');
 
 // Max 10 messages per 15 minutes per IP to prevent LLM abuse
 const chatLimiter = rateLimit({
@@ -12,7 +13,7 @@ const chatLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-router.get('/status', ChatbotController.getStatus);
+router.get('/status', setCacheControl(), ChatbotController.getStatus);
 router.post('/', chatLimiter, ChatbotController.handleChat);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import ChatWidget from "../../components/chatbot/ChatWidget";
+import TerminalLoader from "../../components/feedback/TerminalLoader";
 import styles from "./PublicLayout.module.css";
 import logo from "./logo.jpeg"; 
 
@@ -16,6 +17,7 @@ const ADMIN_LABEL_MOBILE = "Admin Portal";
 
 export default function PublicLayout() {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [isAppLoading, setAppLoading] = useState(true);
   const location = useLocation();
 
   // Close menu on route change
@@ -38,6 +40,10 @@ export default function PublicLayout() {
     if (exact) return location.pathname === to;
     return location.pathname.startsWith(to) && to !== "/";
   };
+
+  if (isAppLoading) {
+    return <TerminalLoader onComplete={() => setAppLoading(false)} />;
+  }
 
   return (
     <div className={styles.layoutWrapper}>

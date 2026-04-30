@@ -2,6 +2,7 @@ const express = require("express");
 const SkillsController = require("./skills.controller");
 const { validateSkill } = require("./skills.middlewares");
 const requireAdmin = require("../auth/auth.middleware"); // Adjust path as needed if you moved middleware
+const { setCacheControl } = require("../../middlewares/cache.middleware");
 
 const router = express.Router();
 
@@ -9,8 +10,8 @@ const router = express.Router();
  * PUBLIC ROUTES
  * Anyone can view/filter skills (for public Skill Matrix page)
  */
-router.get("/", SkillsController.listSkills);
-router.get("/:id", SkillsController.getSkill);
+router.get("/", setCacheControl(), SkillsController.listSkills);
+router.get("/:id", setCacheControl(), SkillsController.getSkill);
 
 /**
  * ADMIN ROUTES (Protected: Create, Update, Delete)
