@@ -6,16 +6,17 @@ const {
   checkUniqueActivePersona,
 } = require('./personas.middlewares');
 const requireAdmin = require('../auth/auth.middleware');
+const { setCacheControl } = require('../../middlewares/cache.middleware');
 
 const router = express.Router();
 
 // -------- PUBLIC ROUTES --------
 // Get all active personas (for public site: landing/about/etc)
-router.get('/public', PersonasController.listPublic);
+router.get('/public', setCacheControl(), PersonasController.listPublic);
 
 // -------- SEMI-PUBLIC ROUTES --------
 // List all personas (for admin dropdowns/forms; publicly accessible for GET)
-router.get('/', PersonasController.listAdmin);   // <--- NO requireAdmin()
+router.get('/', setCacheControl(), PersonasController.listAdmin);   // <--- NO requireAdmin()
 
 // -------- ADMIN ROUTES (require authentication/authorization) --------
 

@@ -4,14 +4,15 @@ const router = express.Router();
 // Controller and middleware imports
 const projectsController = require('./projects.controller');
 const requireAuth = require('../auth/auth.middleware');
+const { setCacheControl } = require('../../middlewares/cache.middleware');
 
 // --- Public Endpoints ---
 
 // List all projects (with optional filters)
-router.get('/', projectsController.listProjects);
+router.get('/', setCacheControl(), projectsController.listProjects);
 
 // Get single project by ID
-router.get('/:id', projectsController.getProject);
+router.get('/:id', setCacheControl(), projectsController.getProject);
 
 // --- Admin Endpoints (JWT-protected) ---
 

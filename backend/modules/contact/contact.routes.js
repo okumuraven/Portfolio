@@ -3,11 +3,12 @@ const router = express.Router();
 
 const ContactController = require("./contact.controller");
 const requireAdmin = require("../auth/auth.middleware"); // Adjust path if needed
+const { setCacheControl } = require("../../middlewares/cache.middleware");
 
 // --- PUBLIC ROUTES ---
 
 // Get visible contact/profile info (for frontend about/contact rendering)
-router.get("/", ContactController.getContactProfile);
+router.get("/", setCacheControl(), ContactController.getContactProfile);
 
 // --- ADMIN ROUTES (JWT-protected for admin panel only) ---
 

@@ -5,13 +5,14 @@ const {
   validateTimelineEvent,
   validateTimelinePatch,
 } = require("./timeline.middlewares");
+const { setCacheControl } = require("../../middlewares/cache.middleware");
 
 const router = express.Router();
 
-router.get("/by-provider/event", TimelineController.findByProviderEvent); // Keep this first
+router.get("/by-provider/event", setCacheControl(), TimelineController.findByProviderEvent); // Keep this first
 
-router.get("/", TimelineController.listTimeline);
-router.get("/:id", TimelineController.getTimelineEvent);
+router.get("/", setCacheControl(), TimelineController.listTimeline);
+router.get("/:id", setCacheControl(), TimelineController.getTimelineEvent);
 
 // ADMIN ROUTES (protected)
 router.post(
