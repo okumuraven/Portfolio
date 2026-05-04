@@ -10,6 +10,7 @@ import ProjectsPage from "../pages/public/Projects/ProjectsPage";
 import ProjectsAdminPage from "../pages/admin/Projects/ProjectsAdminPage";
 import TimelinePage from "../pages/public/Timeline/TimelinePage";
 import TimelineAdmin from "../pages/admin/TimelineAdmin";
+import RecoveryAdmin from "../pages/admin/Recovery/RecoveryAdmin";
 
 // NEW: Contact pages
 import Contact from "../pages/public/Contact/Contact";
@@ -50,6 +51,7 @@ export default function AppRoutes() {
         <Route path="skills" element={<AdminSkillMatrix />} />
         <Route path="projects" element={<ProjectsAdminPage />} />
         <Route path="timeline" element={<TimelineAdmin />} />
+        <Route path="recovery" element={<RecoveryAdmin />} />
         {/* NEW: Contact/Profile Admin Management */}
         <Route path="contact" element={<ContactAdmin />} />
         {/* Chatbot Admin Config */}
