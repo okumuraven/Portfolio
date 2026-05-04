@@ -1,94 +1,143 @@
 .container {
-  padding: 2rem;
+  padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
   color: #fff;
   font-family: 'Courier New', Courier, monospace;
 }
 
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+}
+
 .header {
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #333;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #333;
   padding-bottom: 1rem;
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: #00ff00;
+  margin: 0;
+  word-break: break-all;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.75rem;
+    letter-spacing: 2px;
+  }
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 1024px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
   }
 }
 
 .card {
-  background: #111;
-  border: 1px solid #333;
-  padding: 1.5rem;
-  border-radius: 4px;
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  padding: 1.25rem;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
 }
 
 .clockCard {
-  grid-column: span 2;
   text-align: center;
-  background: linear-gradient(135deg, #111 0%, #0a0a0a 100%);
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
   border-color: #00ff00;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 1024px) {
   .clockCard {
-    grid-column: span 1;
+    grid-column: span 2;
   }
 }
 
 .clockTitle {
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 0.5rem;
+  font-size: 0.7rem;
+  color: #00ff00;
+  margin-bottom: 0.75rem;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
 }
 
 .clockTime {
-  font-size: 3.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  color: #00ff00;
-  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 480px) {
+  .clockTime {
+    font-size: 3rem;
+    gap: 1rem;
+  }
+}
+
+.clockUnit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.clockValue {
+  line-height: 1;
+}
+
+.clockLabel {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-top: 0.25rem;
 }
 
 .panicButton {
   background: #ff0000;
   color: #fff;
   border: none;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  font-weight: bold;
+  padding: 1.25rem;
+  font-size: 1rem;
+  font-weight: 800;
   text-transform: uppercase;
   cursor: pointer;
-  border-radius: 4px;
   width: 100%;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 1px;
 }
 
-.panicButton:hover {
-  background: #cc0000;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+.panicButton:active {
+  transform: scale(0.98);
+  filter: brightness(1.2);
 }
 
-.panicButton:disabled {
-  background: #555;
-  cursor: not-allowed;
+.card h3 {
+  font-size: 0.9rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  color: #00ff00;
+  border-left: 3px solid #00ff00;
+  padding-left: 0.75rem;
+  text-transform: uppercase;
 }
 
 .formGroup {
