@@ -1,0 +1,181 @@
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #00ff00;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #111;
+  border: 1px solid #333;
+  padding: 1.5rem;
+  border-radius: 4px;
+}
+
+.clockCard {
+  grid-column: span 2;
+  text-align: center;
+  background: linear-gradient(135deg, #111 0%, #0a0a0a 100%);
+  border-color: #00ff00;
+}
+
+@media (max-width: 900px) {
+  .clockCard {
+    grid-column: span 1;
+  }
+}
+
+.clockTitle {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.clockTime {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  margin-bottom: 1rem;
+}
+
+.panicButton {
+  background: #ff0000;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 100%;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+}
+
+.panicButton:hover {
+  background: #cc0000;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+.panicButton:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.input, .textarea, .select {
+  width: 100%;
+  background: #222;
+  border: 1px solid #444;
+  padding: 0.8rem;
+  color: #fff;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.button {
+  background: #00ff00;
+  color: #000;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.button:disabled {
+  background: #555;
+}
+
+.logs {
+  margin-top: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.logEntry {
+  padding: 0.5rem;
+  border-bottom: 1px solid #222;
+  font-size: 0.9rem;
+}
+
+.logMeta {
+  color: #888;
+  font-size: 0.75rem;
+}
+
+.redirection {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #000;
+  border-left: 4px solid #ff0000;
+  white-space: pre-wrap;
+  color: #ffcccc;
+  animation: flicker 0.1s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.95; }
+  100% { opacity: 1; }
+}
+
+.reasonsList {
+  list-style: none;
+  padding: 0;
+}
+
+.reasonItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #222;
+}
+
+.deleteBtn {
+  background: transparent;
+  color: #ff3333;
+  border: none;
+  cursor: pointer;
+}

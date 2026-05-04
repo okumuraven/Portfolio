@@ -64,6 +64,7 @@ const timelineRoutes = require('./modules/timeline/timeline.routes');
 const contactRoutes = require('./modules/contact/contact.routes');
 const chatbotRoutes = require('./modules/chatbot/chatbot.routes');
 const chatbotAdminRoutes = require('./modules/chatbot/chatbot.admin.routes');
+const recoveryRoutes = require('./modules/recovery/recovery.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/personas', personasRoutes);
@@ -77,6 +78,7 @@ app.use('/timeline', timelineRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/ai-chat', chatbotRoutes);
 app.use('/api/admin/ai-pricing', chatbotAdminRoutes);
+app.use('/api/admin/recovery', recoveryRoutes);
 
 // ---- 404 Handler ----
 app.use((req, res, next) => {

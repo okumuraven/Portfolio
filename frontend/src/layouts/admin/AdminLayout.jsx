@@ -83,6 +83,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/chatbot" className={getLinkClass} onClick={closeSidebar}>
             / AI_Estimator_Config
           </NavLink>
+          <NavLink to="/admin/recovery" className={getLinkClass} onClick={closeSidebar}>
+            / Recovery_System
+          </NavLink>
         </nav>
         <div className={styles.backLinkWrapper}>
           <Link to="/" className={styles.backLink}>
