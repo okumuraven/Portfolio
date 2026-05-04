@@ -11,10 +11,12 @@ const SobrietyClock = ({ lastReset }) => {
   });
 
   useEffect(() => {
+    if (!lastReset) return;
+
     const calculate = () => {
       const start = new Date(lastReset);
       const now = new Date();
-      const diff = now - start;
+      const diff = Math.max(0, now - start);
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
@@ -30,17 +32,33 @@ const SobrietyClock = ({ lastReset }) => {
   }, [lastReset]);
 
   const getStatusColor = () => {
+    if (!lastReset) return '#555';
     if (elapsed.days < 7) return '#ff3333'; // Critical
     if (elapsed.days < 30) return '#ffcc00'; // Warning
     if (elapsed.days < 90) return '#00ccff'; // Stable
     return '#00ff00'; // Optimal
   };
 
+  const color = getStatusColor();
+
   return (
-    <div className={styles.clockTime} style={{ color: getStatusColor(), textShadow: `0 0 10px ${getStatusColor()}88` }}>
-      {elapsed.days}d {String(elapsed.hours).padStart(2, '0')}h{' '}
-      {String(elapsed.minutes).padStart(2, '0')}m{' '}
-      {String(elapsed.seconds).padStart(2, '0')}s
+    <div className={styles.clockTime} style={{ color, textShadow: `0 0 15px ${color}44` }}>
+      <div className={styles.clockUnit}>
+        <span className={styles.clockValue}>{elapsed.days}</span>
+        <span className={styles.clockLabel}>Days</span>
+      </div>
+      <div className={styles.clockUnit}>
+        <span className={styles.clockValue}>{String(elapsed.hours).padStart(2, '0')}</span>
+        <span className={styles.clockLabel}>Hrs</span>
+      </div>
+      <div className={styles.clockUnit}>
+        <span className={styles.clockValue}>{String(elapsed.minutes).padStart(2, '0')}</span>
+        <span className={styles.clockLabel}>Min</span>
+      </div>
+      <div className={styles.clockUnit}>
+        <span className={styles.clockValue}>{String(elapsed.seconds).padStart(2, '0')}</span>
+        <span className={styles.clockLabel}>Sec</span>
+      </div>
     </div>
   );
 };
