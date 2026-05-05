@@ -1,14 +1,12 @@
 const RecoveryModel = require('./recovery.model');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const configEnv = require('../../config/env');
 
-// Ensure env vars are loaded
-require('../../config/env');
-
-// We'll initialize the AI client inside a helper to ensure keys are ready
+// Initialization helper to ensure we use the correct key
 const getAIClient = () => {
-  const key = process.env.RECOVERY_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+  const key = configEnv.RECOVERY_GEMINI_API_KEY || configEnv.GEMINI_API_KEY;
   if (!key) {
-    throw new Error("Missing Gemini API Key in environment.");
+    throw new Error("Missing Gemini API Key in system configuration.");
   }
   return new GoogleGenerativeAI(key);
 };
@@ -56,7 +54,7 @@ const RecoveryService = {
     try {
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash", // Use 1.5-flash as it's more reliable
+        model: "gemini-flash-latest",
         systemInstruction: `
           You are a Virtual Operative AI and a professional therapist. 
           The user is experiencing a strong urge to relapse into an addiction.
@@ -80,7 +78,7 @@ const RecoveryService = {
     try {
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-flash-latest",
         systemInstruction: `
           You are the "Recovery Sentinel" – a high-level AI expert system specializing in addiction recovery, behavioral psychology, and cognitive behavioral therapy.
           Your purpose is to provide deep, analytical, and empathetic support to the user (a software engineer) who is managing a long-term recovery journey.
@@ -96,14 +94,25 @@ const RecoveryService = {
         `,
       });
 
-      const geminiHistory = (history || []).map(msg => ({
-        role: msg.role === 'ai' ? 'model' : 'user',
-        parts: [{ text: msg.content }]
-      }));
-
-      // Ensure history starts with 'user' if it exists
-      if (geminiHistory.length > 0 && geminiHistory[0].role === 'model') {
-        geminiHistory.shift();
+      const geminiHistory = [];
+      if (Array.isArray(history)) {
+        // Map history ensuring we don't have consecutive same roles
+        history.forEach(msg => {
+          const role = msg.role === 'ai' ? 'model' : 'user';
+          if (geminiHistory.length > 0 && geminiHistory[geminiHistory.length - 1].role === role) {
+            geminiHistory[geminiHistory.length - 1].parts[0].text += `\n\n${msg.content}`;
+          } else {
+            geminiHistory.push({
+              role: role,
+              parts: [{ text: msg.content }]
+            });
+          }
+        });
+        
+        // Gemini API REQUIRES history to start with 'user'
+        if (geminiHistory.length > 0 && geminiHistory[0].role === 'model') {
+          geminiHistory.shift();
+        }
       }
 
       const chat = model.startChat({ history: geminiHistory });
@@ -111,7 +120,8 @@ const RecoveryService = {
       return result.response.text();
     } catch (error) {
       console.error("[RecoveryService] AI Chat Error:", error.message);
-      throw new Error("Recovery Sentinel is temporarily offline. Focus on your core protocols.");
+      // Re-throw to be caught by controller
+      throw error;
     }
   },
 
