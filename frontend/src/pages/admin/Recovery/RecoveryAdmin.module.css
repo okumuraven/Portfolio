@@ -10,7 +10,7 @@
 }
 
 .container {
-  padding: 1.5rem;
+  padding: 1rem;
   max-width: 1400px;
   margin: 0 auto;
   color: #fff;
@@ -18,7 +18,7 @@
   background-color: var(--dark-bg);
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .scanline {
@@ -38,28 +38,23 @@
   100% { transform: translateY(100vh); }
 }
 
-@media (max-width: 600px) {
-  .container {
-    padding: 1rem;
-  }
-}
-
 /* HEADER REFINEMENT */
 .header {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border-color);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
+  flex-wrap: wrap; /* Allow wrapping on very small screens */
 }
 
 .brandIcon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   background: var(--neon-green);
   color: #000;
   display: flex;
@@ -68,26 +63,30 @@
   font-weight: 900;
   border-radius: 4px;
   font-family: var(--font-mono);
+  font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 .title {
   font-family: var(--font-mono);
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: var(--neon-green);
   margin: 0;
   font-weight: 800;
+  word-break: break-word;
 }
 
 .metaRow {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-  font-size: 0.65rem;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.6rem;
   color: #444;
   font-family: var(--font-mono);
+  flex-wrap: wrap;
 }
 
 .divider {
@@ -98,13 +97,14 @@
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 @media (min-width: 1024px) {
   .grid {
     grid-template-columns: repeat(12, 1fr);
     grid-auto-rows: min-content;
+    gap: 1.25rem;
   }
 }
 
@@ -112,32 +112,40 @@
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  padding: 1.25rem;
+  padding: 1rem;
   position: relative;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  min-width: 0; /* Fix flexbox overflow issues */
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 1.25rem;
+  }
 }
 
 .card:hover {
   border-color: #333;
-  transform: translateY(-2px);
 }
 
 .cardHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid #111;
+  gap: 0.5rem;
 }
 
 .cardHeaderLeft {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  min-width: 0;
 }
 
 .cardIndicator {
@@ -145,16 +153,20 @@
   height: 4px;
   background-color: #333;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .card h3 {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   margin: 0;
   color: #666;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   font-weight: 700;
   font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* CLOCK CARD */
@@ -171,20 +183,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
+  width: 100%;
 }
 
 .clockTime {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  flex-wrap: wrap; /* Allow wrapping on very small mobiles */
 }
 
 .clockUnit {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 60px;
+  min-width: 45px;
+}
+
+@media (min-width: 400px) {
+  .clockUnit { min-width: 60px; }
 }
 
 @media (min-width: 768px) {
@@ -193,9 +213,13 @@
 
 .clockValue {
   font-family: var(--font-mono);
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   font-weight: 900;
   line-height: 1;
+}
+
+@media (min-width: 400px) {
+  .clockValue { font-size: 2rem; }
 }
 
 @media (min-width: 768px) {
@@ -203,46 +227,54 @@
 }
 
 .clockLabel {
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   text-transform: uppercase;
   color: #333;
-  letter-spacing: 1px;
-  margin-top: 0.5rem;
+  letter-spacing: 0.5px;
+  margin-top: 0.25rem;
 }
 
 .clockSeparator {
   font-family: var(--font-mono);
-  font-size: 1.5rem;
+  font-size: 1rem;
   opacity: 0.2;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.75rem;
 }
 
 @media (min-width: 768px) {
-  .clockSeparator { font-size: 3rem; }
+  .clockSeparator { 
+    font-size: 3rem; 
+    margin-bottom: 1.2rem;
+  }
 }
 
 .statusIndicator {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.75rem;
   background: rgba(0,0,0,0.5);
   border-radius: 20px;
   border: 1px solid #111;
+  max-width: 100%;
 }
 
 .statusDot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .statusText {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-family: var(--font-mono);
   color: #555;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .panicActions {
@@ -255,67 +287,74 @@
   background: var(--neon-red);
   color: #fff;
   border: none;
-  padding: 1rem;
-  font-size: 0.85rem;
+  padding: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 900;
   font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 4px 15px rgba(255, 0, 0, 0.2);
 }
 
+@media (min-width: 768px) {
+  .panicButton {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
 .panicButton:hover {
   background: #ff0000;
   box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
-  transform: scale(1.01);
 }
 
 /* REDIRECTION UI */
 .redirection {
   margin-top: 1.5rem;
-  padding: 1.5rem;
+  padding: 1rem;
   background: #000;
   border: 1px solid var(--neon-red);
   position: relative;
+  width: 100%;
 }
 
 .redirectionHeader {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   color: var(--neon-red);
-  font-size: 0.75rem;
-  margin-bottom: 1rem;
+  font-size: 0.65rem;
+  margin-bottom: 0.75rem;
   font-family: var(--font-mono);
 }
 
 .alertIcon {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 900;
 }
 
 .redirectionText {
   color: #ffcccc;
-  font-size: 0.9rem;
-  line-height: 1.7;
+  font-size: 0.8rem;
+  line-height: 1.6;
   white-space: pre-wrap;
   font-family: var(--font-mono);
 }
 
 .closeBtn {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   background: #1a0000;
   color: var(--neon-red);
   border: 1px solid var(--neon-red);
-  padding: 0.75rem;
+  padding: 0.6rem;
   font-weight: 800;
   width: 100%;
   cursor: pointer;
   font-family: var(--font-mono);
   text-transform: uppercase;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
 }
 
 /* CHAT CARD */
@@ -327,41 +366,43 @@
 }
 
 .chatStatus {
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   color: var(--neon-green);
   font-family: var(--font-mono);
   opacity: 0.6;
+  white-space: nowrap;
 }
 
 .chatMessages {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem;
+  padding: 0.75rem;
   background: #020202;
   border: 1px solid #111;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   font-family: var(--font-mono);
   scrollbar-width: thin;
-  scrollbar-color: #222 #000;
+  min-height: 250px;
 }
 
 .message {
-  max-width: 85%;
-  padding: 0.8rem 1rem;
-  font-size: 0.8rem;
-  line-height: 1.5;
+  max-width: 95%;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
   border-radius: 2px;
   position: relative;
+  word-break: break-word;
 }
 
 .messageLabel {
-  font-size: 0.55rem;
+  font-size: 0.5rem;
   font-weight: bold;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   opacity: 0.4;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .userMessage {
@@ -381,7 +422,7 @@
 .chatInputArea {
   display: flex;
   gap: 0.5rem;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .inputWrapper {
@@ -390,13 +431,14 @@
   align-items: center;
   background: #000;
   border: 1px solid #222;
-  padding: 0 1rem;
+  padding: 0 0.75rem;
+  min-width: 0;
 }
 
 .inputPrompt {
   color: var(--neon-green);
   font-family: var(--font-mono);
-  margin-right: 0.75rem;
+  margin-right: 0.5rem;
   font-weight: 900;
 }
 
@@ -405,9 +447,10 @@
   background: transparent;
   border: none;
   color: #fff;
-  padding: 0.8rem 0;
+  padding: 0.6rem 0;
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  min-width: 0;
 }
 
 .chatInput:focus { outline: none; }
@@ -416,12 +459,13 @@
   background: var(--neon-green);
   color: #000;
   border: none;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   font-weight: 900;
   font-family: var(--font-mono);
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 0.75rem;
 }
 
 /* TELEMETRY & OBJECTIVES */
@@ -435,27 +479,27 @@
 .telemetryForm {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .labelRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .label {
   font-size: 0.6rem;
   color: #555;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   font-family: var(--font-mono);
 }
 
 .intensityValue {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 900;
   color: var(--neon-orange);
 }
@@ -472,10 +516,10 @@
   width: 100%;
   background: #000;
   border: 1px solid #1a1a1a;
-  padding: 0.75rem;
+  padding: 0.6rem;
   color: #fff;
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   transition: border-color 0.2s;
 }
 
@@ -488,13 +532,14 @@
   background: var(--neon-orange);
   color: #000;
   border: none;
-  padding: 0.85rem;
+  padding: 0.75rem;
   font-weight: 900;
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
 }
 
 /* OBJECTIVES LIST */
@@ -515,25 +560,27 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0.85rem 0;
+  padding: 0.75rem 0;
   border-bottom: 1px solid #111;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .reasonText {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #aaa;
   line-height: 1.4;
+  word-break: break-word;
 }
 
 .deleteBtn {
   background: transparent;
   color: #333;
   border: 1px solid #1a1a1a;
-  padding: 0.2rem 0.4rem;
-  font-size: 0.55rem;
+  padding: 0.15rem 0.3rem;
+  font-size: 0.5rem;
   cursor: pointer;
   font-family: var(--font-mono);
+  flex-shrink: 0;
 }
 
 .deleteBtn:hover {
@@ -542,37 +589,39 @@
 }
 
 .addReasonBox {
-  margin-top: 1.25rem;
+  margin-top: 1rem;
 }
 
 /* LOGS SECTION */
 .logs {
-  max-height: 400px;
+  max-height: 350px;
   overflow-y: auto;
-  padding-right: 0.5rem;
+  padding-right: 0.25rem;
   scrollbar-width: thin;
 }
 
 .logEntry {
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   border-bottom: 1px solid #111;
 }
 
 .logHeader {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .logType {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--neon-green);
   font-weight: 700;
 }
 
 .logMeta {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: #333;
   font-family: var(--font-mono);
 }
@@ -581,37 +630,38 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .logIntensity {
   color: var(--neon-orange);
   font-weight: 800;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-family: var(--font-mono);
 }
 
 .logContext {
   color: #666;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-style: italic;
 }
 
 .logNotes {
   width: 100%;
-  margin: 0.5rem 0 0 0;
-  font-size: 0.75rem;
+  margin: 0.4rem 0 0 0;
+  font-size: 0.65rem;
   color: #555;
-  line-height: 1.4;
+  line-height: 1.3;
+  font-style: italic;
 }
 
 .emptyLogs {
-  padding: 2rem;
+  padding: 1.5rem;
   text-align: center;
   color: #222;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 2px;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
 }
 
 /* RESET SECTION */
@@ -621,23 +671,24 @@
 }
 
 .resetWarning {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: #555;
-  line-height: 1.6;
-  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
 }
 
 .resetButton {
   background: transparent;
   color: var(--neon-red);
   border: 1px solid #330000;
-  padding: 0.85rem;
+  padding: 0.75rem;
   font-weight: 900;
   font-family: var(--font-mono);
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
+  width: 100%;
 }
 
 .resetButton:hover {
@@ -653,12 +704,13 @@
 .revalidating::after {
   content: "SYNCING...";
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  font-size: 0.6rem;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.5rem;
   color: var(--neon-green);
   font-family: var(--font-mono);
   animation: pulse 1s infinite;
+  z-index: 200;
 }
 
 @keyframes pulse {
