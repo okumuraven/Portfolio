@@ -543,11 +543,30 @@
   color: #eee;
   font-size: 0.8rem;
   width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neon-red) transparent;
+}
+
+.redirectionText::-webkit-scrollbar {
+  width: 4px;
+}
+
+.redirectionText::-webkit-scrollbar-track {
+  background: rgba(255, 0, 0, 0.05);
+}
+
+.redirectionText::-webkit-scrollbar-thumb {
+  background: var(--neon-red);
+  border-radius: 2px;
 }
 
 @media (min-width: 768px) {
   .redirectionText {
     font-size: 0.9rem;
+    max-height: 450px;
   }
 }
 
