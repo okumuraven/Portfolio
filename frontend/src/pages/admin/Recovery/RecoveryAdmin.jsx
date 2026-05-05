@@ -3,6 +3,7 @@ import { useRecovery } from '../../../features/recovery/useRecovery';
 import styles from './RecoveryAdmin.module.css';
 import TerminalLoader from '../../../components/feedback/TerminalLoader';
 import InlineTacticalLoader from '../../../components/feedback/InlineTacticalLoader';
+import Typewriter from '../../../components/feedback/Typewriter';
 
 const SobrietyClock = ({ lastReset }) => {
   const [elapsed, setElapsed] = useState({
@@ -44,22 +45,31 @@ const SobrietyClock = ({ lastReset }) => {
   const color = getStatusColor();
 
   return (
-    <div className={styles.clockTime} style={{ color, textShadow: `0 0 15px ${color}44` }}>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{elapsed.days}</span>
-        <span className={styles.clockLabel}>Days</span>
+    <div className={styles.clockContainer}>
+      <div className={styles.clockTime} style={{ color, textShadow: `0 0 20px ${color}33` }}>
+        <div className={styles.clockUnit}>
+          <span className={styles.clockValue}>{elapsed.days}</span>
+          <span className={styles.clockLabel}>Days</span>
+        </div>
+        <div className={styles.clockSeparator}>:</div>
+        <div className={styles.clockUnit}>
+          <span className={styles.clockValue}>{String(elapsed.hours).padStart(2, '0')}</span>
+          <span className={styles.clockLabel}>Hrs</span>
+        </div>
+        <div className={styles.clockSeparator}>:</div>
+        <div className={styles.clockUnit}>
+          <span className={styles.clockValue}>{String(elapsed.minutes).padStart(2, '0')}</span>
+          <span className={styles.clockLabel}>Min</span>
+        </div>
+        <div className={styles.clockSeparator}>:</div>
+        <div className={styles.clockUnit}>
+          <span className={styles.clockValue}>{String(elapsed.seconds).padStart(2, '0')}</span>
+          <span className={styles.clockLabel}>Sec</span>
+        </div>
       </div>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{String(elapsed.hours).padStart(2, '0')}</span>
-        <span className={styles.clockLabel}>Hrs</span>
-      </div>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{String(elapsed.minutes).padStart(2, '0')}</span>
-        <span className={styles.clockLabel}>Min</span>
-      </div>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{String(elapsed.seconds).padStart(2, '0')}</span>
-        <span className={styles.clockLabel}>Sec</span>
+      <div className={styles.statusIndicator}>
+        <div className={styles.statusDot} style={{ backgroundColor: color, boxShadow: `0 0 10px ${color}` }} />
+        <span className={styles.statusText}>SYSTEM_STATUS: {elapsed.days < 7 ? 'CRITICAL_VULNERABILITY' : 'NOMINAL_STABILITY'}</span>
       </div>
     </div>
   );
@@ -87,18 +97,18 @@ const RecoveryAdmin = () => {
   const [redirection, setRedirection] = useState(null);
   
   // UX State: Control the initial full-screen terminal loader
-  const [showFullLoader, setShowFullLoader] = useState(true);
+  const [hasInitialized, setHasInitialized] = useState(false);
 
   // Chat state
   const chatEndRef = useRef(null);
   const [chatInput, setChatInput] = useState('');
   const [chatHistory, setChatHistory] = useState([
-    { role: 'ai', content: 'Recovery_Sentinel v1.0 online. Private tactical channel secured. How can I assist with your recovery architecture today?' }
+    { role: 'ai', content: 'Recovery_Sentinel v1.0 online. Private tactical channel secured. How can I assist with your recovery architecture today?', isNew: false }
   ]);
 
   // Handle loader completion
   const handleLoaderComplete = () => {
-    setShowFullLoader(false);
+    setHasInitialized(true);
   };
 
   // Auto-scroll effect
@@ -110,15 +120,15 @@ const RecoveryAdmin = () => {
     e.preventDefault();
     if (!chatInput.trim() || isChatting) return;
 
-    const userMsg = { role: 'user', content: chatInput };
+    const userMsg = { role: 'user', content: chatInput, isNew: false };
     setChatHistory(prev => [...prev, userMsg]);
     setChatInput('');
 
     try {
-      const res = await chat({ message: chatInput, history: chatHistory });
-      setChatHistory(prev => [...prev, { role: 'ai', content: res.data.response }]);
+      const res = await chat({ message: chatInput, history: chatHistory.map(({role, content}) => ({role, content})) });
+      setChatHistory(prev => [...prev, { role: 'ai', content: res.data.response, isNew: true }]);
     } catch (err) {
-      setChatHistory(prev => [...prev, { role: 'ai', content: 'SYSTEM ERROR: Failed to reach AI Agent. Maintain core stability.' }]);
+      setChatHistory(prev => [...prev, { role: 'ai', content: 'SYSTEM ERROR: Failed to reach AI Agent. Maintain core stability.', isNew: true }]);
     }
   };
 
@@ -145,17 +155,27 @@ const RecoveryAdmin = () => {
     }
   };
 
-  // Show full-screen loader if it's the initial load OR if the animation is still playing
-  if (showFullLoader || (isLoading && !status)) {
+  // Improved stability logic:
+  // Only show TerminalLoader if we haven't initialized AND (loading or no status)
+  if (!hasInitialized && (isLoading || !status)) {
     return <TerminalLoader onComplete={handleLoaderComplete} />;
   }
 
   return (
     <div className={`${styles.container} ${isPlaceholderData ? styles.revalidating : ''}`}>
+      <div className={styles.scanline} />
+      
       <header className={styles.header}>
         <div className={styles.titleWrapper}>
-          <h1 className={styles.title}>Recovery_Expert_System</h1>
-          <span className={styles.version}>v1.0.4_STABLE</span>
+          <div className={styles.brand}>
+            <span className={styles.brandIcon}>R</span>
+            <h1 className={styles.title}>Recovery_Expert_System</h1>
+          </div>
+          <div className={styles.metaRow}>
+            <span className={styles.version}>v1.0.4_STABLE</span>
+            <span className={styles.divider}>|</span>
+            <span className={styles.sessionInfo}>SECURE_SESSION: {new Date().toLocaleDateString()}</span>
+          </div>
         </div>
       </header>
 
@@ -164,16 +184,18 @@ const RecoveryAdmin = () => {
         <div className={`${styles.card} ${styles.clockCard}`}>
           <div className={styles.cardHeader}>
             <span className={styles.cardIndicator}></span>
-            <h3>CURRENT_UPTIME_STREAK</h3>
+            <h3>CORE_UPTIME_TELEMETRY</h3>
           </div>
           <SobrietyClock lastReset={status?.streak?.last_reset_at} />
-          <button 
-            className={styles.panicButton} 
-            onClick={handlePanic}
-            disabled={isPanicking}
-          >
-            {isPanicking ? 'EXECUTING REDIRECTION...' : 'OVERRIDE PROTOCOL (PANIC)'}
-          </button>
+          <div className={styles.panicActions}>
+            <button 
+              className={styles.panicButton} 
+              onClick={handlePanic}
+              disabled={isPanicking}
+            >
+              {isPanicking ? 'EXECUTING REDIRECTION...' : 'OVERRIDE PROTOCOL (PANIC)'}
+            </button>
+          </div>
           
           {redirection && (
             <div className={styles.redirection}>
@@ -181,14 +203,18 @@ const RecoveryAdmin = () => {
                 <span className={styles.alertIcon}>!</span>
                 <strong>VIRTUAL_OPERATIVE_AI REDIRECTION</strong>
               </div>
-              {isPanicking ? (
-                <InlineTacticalLoader message="ANALYZING THREAT VECTORS..." />
-              ) : (
-                <>
-                  <p className={styles.redirectionText}>{redirection}</p>
-                  <button onClick={() => setRedirection(null)} className={styles.closeBtn}>ACKNOWLEDGE & CLOSE</button>
-                </>
-              )}
+              <div className={styles.redirectionBody}>
+                {isPanicking ? (
+                  <InlineTacticalLoader message="ANALYZING THREAT VECTORS..." />
+                ) : (
+                  <>
+                    <div className={styles.redirectionText}>
+                      <Typewriter text={redirection} speed={10} />
+                    </div>
+                    <button onClick={() => setRedirection(null)} className={styles.closeBtn}>ACKNOWLEDGE & CLOSE</button>
+                  </>
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -196,28 +222,40 @@ const RecoveryAdmin = () => {
         {/* AI RECOVERY SENTINEL CHAT */}
         <div className={`${styles.card} ${styles.chatCard}`}>
           <div className={styles.cardHeader}>
-            <span className={styles.cardIndicator} style={{backgroundColor: '#00ff00'}}></span>
-            <h3>RECOVERY_SENTINEL_AI (TACTICAL_ADVISOR)</h3>
+            <div className={styles.cardHeaderLeft}>
+              <span className={styles.cardIndicator} style={{backgroundColor: '#00ff00'}}></span>
+              <h3>SENTINEL_AI (TACTICAL_ADVISOR)</h3>
+            </div>
+            <span className={styles.chatStatus}>ENCRYPTED_LINK_ACTIVE</span>
           </div>
           <div className={styles.chatMessages}>
             {chatHistory.map((msg, i) => (
               <div key={i} className={`${styles.message} ${msg.role === 'ai' ? styles.aiMessage : styles.userMessage}`}>
                 <div className={styles.messageLabel}>{msg.role === 'ai' ? 'SENTINEL' : 'OPERATIVE'}</div>
-                {msg.content}
+                <div className={styles.messageContent}>
+                  {msg.role === 'ai' && msg.isNew ? (
+                    <Typewriter text={msg.content} speed={15} />
+                  ) : (
+                    msg.content
+                  )}
+                </div>
               </div>
             ))}
             {isChatting && <InlineTacticalLoader />}
             <div ref={chatEndRef} />
           </div>
           <form className={styles.chatInputArea} onSubmit={handleChat}>
-            <input 
-              type="text" 
-              className={styles.chatInput} 
-              placeholder="Query specialized recovery advisor..." 
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              disabled={isChatting}
-            />
+            <div className={styles.inputWrapper}>
+              <span className={styles.inputPrompt}>&gt;</span>
+              <input 
+                type="text" 
+                className={styles.chatInput} 
+                placeholder="Query specialized recovery advisor..." 
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                disabled={isChatting}
+              />
+            </div>
             <button type="submit" className={styles.chatSendBtn} disabled={isChatting}>
               EXEC
             </button>
@@ -230,18 +268,18 @@ const RecoveryAdmin = () => {
             <span className={styles.cardIndicator} style={{backgroundColor: '#ffaa00'}}></span>
             <h3>TRIGGER_TELEMETRY_LOG</h3>
           </div>
-          <form onSubmit={handleLogUrge}>
+          <form onSubmit={handleLogUrge} className={styles.telemetryForm}>
             <div className={styles.formGroup}>
-              <label className={styles.label}>Urge Intensity (1-10)</label>
-              <div className={styles.rangeWrapper}>
-                <input 
-                  type="range" min="1" max="10" 
-                  className={styles.input} 
-                  value={urgeForm.intensity}
-                  onChange={(e) => setUrgeForm({...urgeForm, intensity: parseInt(e.target.value)})}
-                />
-                <span className={styles.intensityValue}>{urgeForm.intensity}</span>
+              <div className={styles.labelRow}>
+                <label className={styles.label}>Urge Intensity</label>
+                <span className={styles.intensityValue}>LVL_{urgeForm.intensity}</span>
               </div>
+              <input 
+                type="range" min="1" max="10" 
+                className={styles.rangeInput} 
+                value={urgeForm.intensity}
+                onChange={(e) => setUrgeForm({...urgeForm, intensity: parseInt(e.target.value)})}
+              />
             </div>
             <div className={styles.formGroup}>
               <label className={styles.label}>Context / Environment</label>
@@ -254,13 +292,14 @@ const RecoveryAdmin = () => {
             <div className={styles.formGroup}>
               <label className={styles.label}>Behavioral Notes</label>
               <textarea 
-                className={styles.textarea} rows="3"
+                className={styles.textarea} rows="2"
+                placeholder="Briefly describe thoughts or triggers..."
                 value={urgeForm.notes}
                 onChange={(e) => setUrgeForm({...urgeForm, notes: e.target.value})}
               />
             </div>
-            <button className={styles.button} disabled={isLoggingUrge}>
-              {isLoggingUrge ? 'LOGGING...' : 'COMMIT TELEMETRY'}
+            <button className={styles.commitBtn} disabled={isLoggingUrge}>
+              {isLoggingUrge ? 'COMMITTING...' : 'COMMIT_TELEMETRY'}
             </button>
           </form>
         </div>
@@ -269,23 +308,25 @@ const RecoveryAdmin = () => {
         <div className={`${styles.card} ${styles.objectivesCard}`}>
           <div className={styles.cardHeader}>
             <span className={styles.cardIndicator} style={{backgroundColor: '#00aaff'}}></span>
-            <h3>STRATEGIC_OBJECTIVES (REASONS)</h3>
+            <h3>STRATEGIC_OBJECTIVES</h3>
           </div>
-          <ul className={styles.reasonsList}>
-            {status?.reasons?.map(reason => (
-              <li key={reason.id} className={styles.reasonItem}>
-                <span>{reason.content}</span>
-                <button className={styles.deleteBtn} onClick={() => removeReason(reason.id)}>DEL</button>
-              </li>
-            ))}
-          </ul>
-          <div className={styles.formGroup} style={{marginTop: '1rem'}}>
-            <input 
-              type="text" className={styles.input} placeholder="Add new objective..." 
-              value={newReason}
-              onChange={(e) => setNewReason(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (addReason({content: newReason}), setNewReason(''))}
-            />
+          <div className={styles.reasonsContainer}>
+            <ul className={styles.reasonsList}>
+              {status?.reasons?.map(reason => (
+                <li key={reason.id} className={styles.reasonItem}>
+                  <span className={styles.reasonText}>{reason.content}</span>
+                  <button className={styles.deleteBtn} onClick={() => removeReason(reason.id)}>DEL</button>
+                </li>
+              ))}
+            </ul>
+            <div className={styles.addReasonBox}>
+              <input 
+                type="text" className={styles.input} placeholder="Add new objective..." 
+                value={newReason}
+                onChange={(e) => setNewReason(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && (addReason({content: newReason}), setNewReason(''))}
+              />
+            </div>
           </div>
         </div>
 
@@ -299,16 +340,19 @@ const RecoveryAdmin = () => {
             {status?.recent_logs?.map(log => (
               <div key={log.id} className={styles.logEntry}>
                 <div className={styles.logHeader}>
-                  <span className={styles.logType}>{log.type}</span>
-                  <span className={styles.logMeta}>{new Date(log.created_at).toLocaleString()}</span>
+                  <span className={styles.logType}>[{log.type}]</span>
+                  <span className={styles.logMeta}>{new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} // {new Date(log.created_at).toLocaleDateString()}</span>
                 </div>
-                <div className={styles.logContent}>
+                <div className={styles.logBody}>
                   {log.intensity && <span className={styles.logIntensity}>LVL_{log.intensity}</span>}
                   {log.trigger_context && <span className={styles.logContext}>@{log.trigger_context}</span>}
+                  {log.notes && <p className={styles.logNotes}>&quot;{log.notes}&quot;</p>}
                 </div>
-                {log.notes && <div className={styles.logNotes}>{log.notes}</div>}
               </div>
             ))}
+            {(!status?.recent_logs || status.recent_logs.length === 0) && (
+              <div className={styles.emptyLogs}>NO_RECENT_TELEMETRY_AVAILABLE</div>
+            )}
           </div>
         </div>
 
@@ -316,13 +360,13 @@ const RecoveryAdmin = () => {
         <div className={`${styles.card} ${styles.resetCard}`}>
           <div className={styles.cardHeader}>
             <span className={styles.cardIndicator} style={{backgroundColor: '#ff0000'}}></span>
-            <h3>SYSTEM_FAILURE_PROCEDURE</h3>
+            <h3>FAILURE_PROCEDURE</h3>
           </div>
           <p className={styles.resetWarning}>
-            Resetting the streak logs a relapse incident. Use only after a complete failure of the primary systems.
+            WARNING: Resetting the streak logs a RELAPSE incident. Use only after a complete failure of primary systems.
           </p>
           <button className={styles.resetButton} onClick={handleReset} disabled={isResetting}>
-            {isResetting ? 'EXECUTING RESET...' : 'INITIATE SYSTEM RESET'}
+            {isResetting ? 'EXECUTING RESET...' : 'INITIATE_SYSTEM_RESET'}
           </button>
         </div>
       </div>
