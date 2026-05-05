@@ -5,6 +5,70 @@ import TerminalLoader from '../../../components/feedback/TerminalLoader';
 import InlineTacticalLoader from '../../../components/feedback/InlineTacticalLoader';
 import Typewriter from '../../../components/feedback/Typewriter';
 
+/**
+ * Helper: Splits bold markdown **text** into <strong> elements
+ */
+function renderInline(text) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={i} className={styles.boldHighlight}>
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+}
+
+/**
+ * SentinelMessageContent - Renders structured AI responses
+ */
+function SentinelMessageContent({ content, isNew }) {
+  const [showFull, setShowFull] = useState(!isNew);
+
+  if (!showFull) {
+    return (
+      <Typewriter 
+        text={content} 
+        speed={15} 
+        onComplete={() => setShowFull(true)} 
+      />
+    );
+  }
+
+  const lines = content.split('\n');
+  const elements = [];
+
+  lines.forEach((line, idx) => {
+    const trimmed = line.trim();
+
+    // Headings: ### text
+    if (trimmed.startsWith('### ')) {
+      elements.push(<h4 key={idx} className={styles.msgHeading}>{renderInline(trimmed.slice(4))}</h4>);
+      return;
+    }
+
+    // Bullet points: 1. or * or -
+    if (/^(\d+\.|\*|-)\s+/.test(trimmed)) {
+      elements.push(
+        <li key={idx} className={styles.msgBullet}>
+          {renderInline(trimmed.replace(/^(\d+\.|\*|-)\s+/, ''))}
+        </li>
+      );
+      return;
+    }
+
+    // Paragraphs
+    if (trimmed) {
+      elements.push(<p key={idx} className={styles.msgPara}>{renderInline(trimmed)}</p>);
+    }
+  });
+
+  return <>{elements}</>;
+}
+
 const SobrietyClock = ({ lastReset }) => {
   const [elapsed, setElapsed] = useState({
     days: 0,
@@ -233,8 +297,8 @@ const RecoveryAdmin = () => {
               <div key={i} className={`${styles.message} ${msg.role === 'ai' ? styles.aiMessage : styles.userMessage}`}>
                 <div className={styles.messageLabel}>{msg.role === 'ai' ? 'SENTINEL' : 'OPERATIVE'}</div>
                 <div className={styles.messageContent}>
-                  {msg.role === 'ai' && msg.isNew ? (
-                    <Typewriter text={msg.content} speed={15} />
+                  {msg.role === 'ai' ? (
+                    <SentinelMessageContent content={msg.content} isNew={msg.isNew} />
                   ) : (
                     msg.content
                   )}
