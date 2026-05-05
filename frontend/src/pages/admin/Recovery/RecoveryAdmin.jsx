@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRecovery } from '../../../features/recovery/useRecovery';
 import styles from './RecoveryAdmin.module.css';
+import TerminalLoader from '../../../components/feedback/TerminalLoader';
+import InlineTacticalLoader from '../../../components/feedback/InlineTacticalLoader';
 
 const SobrietyClock = ({ lastReset }) => {
   const [elapsed, setElapsed] = useState({
@@ -67,6 +69,7 @@ const RecoveryAdmin = () => {
   const {
     status,
     isLoading,
+    isPlaceholderData,
     logUrge,
     isLoggingUrge,
     resetStreak,
@@ -83,12 +86,20 @@ const RecoveryAdmin = () => {
   const [newReason, setNewReason] = useState('');
   const [redirection, setRedirection] = useState(null);
   
+  // UX State: Control the initial full-screen terminal loader
+  const [showFullLoader, setShowFullLoader] = useState(true);
+
   // Chat state
   const chatEndRef = useRef(null);
   const [chatInput, setChatInput] = useState('');
   const [chatHistory, setChatHistory] = useState([
     { role: 'ai', content: 'Recovery_Sentinel v1.0 online. Private tactical channel secured. How can I assist with your recovery architecture today?' }
   ]);
+
+  // Handle loader completion
+  const handleLoaderComplete = () => {
+    setShowFullLoader(false);
+  };
 
   // Auto-scroll effect
   useEffect(() => {
@@ -134,10 +145,13 @@ const RecoveryAdmin = () => {
     }
   };
 
-  if (isLoading) return <div className={styles.loadingOverlay}>INITIALIZING RECOVERY SYSTEMS...</div>;
+  // Show full-screen loader if it's the initial load OR if the animation is still playing
+  if (showFullLoader || (isLoading && !status)) {
+    return <TerminalLoader onComplete={handleLoaderComplete} />;
+  }
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isPlaceholderData ? styles.revalidating : ''}`}>
       <header className={styles.header}>
         <div className={styles.titleWrapper}>
           <h1 className={styles.title}>Recovery_Expert_System</h1>
@@ -167,8 +181,14 @@ const RecoveryAdmin = () => {
                 <span className={styles.alertIcon}>!</span>
                 <strong>VIRTUAL_OPERATIVE_AI REDIRECTION</strong>
               </div>
-              <p className={styles.redirectionText}>{redirection}</p>
-              <button onClick={() => setRedirection(null)} className={styles.closeBtn}>ACKNOWLEDGE & CLOSE</button>
+              {isPanicking ? (
+                <InlineTacticalLoader message="ANALYZING THREAT VECTORS..." />
+              ) : (
+                <>
+                  <p className={styles.redirectionText}>{redirection}</p>
+                  <button onClick={() => setRedirection(null)} className={styles.closeBtn}>ACKNOWLEDGE & CLOSE</button>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -186,7 +206,7 @@ const RecoveryAdmin = () => {
                 {msg.content}
               </div>
             ))}
-            {isChatting && <div className={styles.typing}>Sentinel is analyzing threat vectors...</div>}
+            {isChatting && <InlineTacticalLoader />}
             <div ref={chatEndRef} />
           </div>
           <form className={styles.chatInputArea} onSubmit={handleChat}>

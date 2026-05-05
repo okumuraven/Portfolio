@@ -4,13 +4,15 @@ import recoveryApi from '../../api/recovery.api';
 export function useRecovery() {
   const queryClient = useQueryClient();
 
-  const { data: status, isLoading, error } = useQuery({
+  const { data: status, isLoading, isPlaceholderData, error } = useQuery({
     queryKey: ['recovery-status'],
     queryFn: async () => {
       const response = await recoveryApi.getStatus();
       return response.data;
     },
-    refetchInterval: 60000, // Refresh every minute
+    refetchInterval: 300000, // Increase to 5 minutes to avoid frequent jarring reloads
+    staleTime: 60000, // Consider data fresh for 1 minute
+    placeholderData: (prev) => prev, // Keep previous data visible while fetching
   });
 
   const logUrgeMutation = useMutation({
