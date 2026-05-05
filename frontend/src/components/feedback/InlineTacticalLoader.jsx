@@ -52,7 +52,7 @@ const InlineTacticalLoader = ({ message }) => {
         </div>
         <div className={styles.textStack}>
           <span className={styles.mainText}>{displayText}</span>
-          <span className={styles.subText}>SECURE_PROTOCOL_ACTIVE // v1.0.4</span>
+          <span className={styles.subText}>SECURE_PROTOCOL_ACTIVE {" // "} v1.0.4</span>
         </div>
       </div>
       <div className={styles.progressBarWrapper}>

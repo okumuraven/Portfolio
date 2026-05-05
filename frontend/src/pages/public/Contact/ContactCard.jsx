@@ -55,27 +55,27 @@ export default function ContactCard(props) {
         <div className={styles.metadata}>
           {base && (
             <div className={styles.metaItem}>
-              <span className={styles.label}>BASE //</span> {base}
+              <span className={styles.label}>BASE {" // "}</span> {base}
             </div>
           )}
           {location && (
             <div className={styles.metaItem}>
-              <span className={styles.label}>LOC //</span> {location}
+              <span className={styles.label}>LOC {" // "}</span> {location}
             </div>
           )}
           {primary_mode && (
             <div className={styles.metaItem}>
-              <span className={styles.label}>PRIMARY_MODE //</span> {primary_mode}
+              <span className={styles.label}>PRIMARY_MODE {" // "}</span> {primary_mode}
             </div>
           )}
           {secondary_mode && (
             <div className={styles.metaItem}>
-              <span className={styles.label}>SECONDARY_MODE //</span> {secondary_mode}
+              <span className={styles.label}>SECONDARY_MODE {" // "}</span> {secondary_mode}
             </div>
           )}
           {core_directive && (
             <div className={styles.metaItem}>
-              <span className={styles.label}>DIRECTIVE //</span>
+              <span className={styles.label}>DIRECTIVE {" // "}</span>
               <span className={styles.coreDirective}>{core_directive}</span>
             </div>
           )}
