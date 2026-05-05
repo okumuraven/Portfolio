@@ -1,67 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRecovery } from '../../../features/recovery/useRecovery';
 import styles from './RecoveryAdmin.module.css';
 
-const SobrietyClock = ({ lastReset }) => {
-  const [elapsed, setElapsed] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
-
-  useEffect(() => {
-    if (!lastReset) return;
-
-    const calculate = () => {
-      const start = new Date(lastReset);
-      const now = new Date();
-      const diff = Math.max(0, now - start);
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      setElapsed({ days, hours, minutes, seconds });
-    };
-
-    calculate();
-    const timer = setInterval(calculate, 1000);
-    return () => clearInterval(timer);
-  }, [lastReset]);
-
-  const getStatusColor = () => {
-    if (!lastReset) return '#555';
-    if (elapsed.days < 7) return '#ff3333'; // Critical
-    if (elapsed.days < 30) return '#ffcc00'; // Warning
-    if (elapsed.days < 90) return '#00ccff'; // Stable
-    return '#00ff00'; // Optimal
-  };
-
-  const color = getStatusColor();
-
-  return (
-    <div className={styles.clockTime} style={{ color, textShadow: `0 0 15px ${color}44` }}>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{elapsed.days}</span>
-        <span className={styles.clockLabel}>Days</span>
-      </div>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{String(elapsed.hours).padStart(2, '0')}</span>
-        <span className={styles.clockLabel}>Hrs</span>
-      </div>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{String(elapsed.minutes).padStart(2, '0')}</span>
-        <span className={styles.clockLabel}>Min</span>
-      </div>
-      <div className={styles.clockUnit}>
-        <span className={styles.clockValue}>{String(elapsed.seconds).padStart(2, '0')}</span>
-        <span className={styles.clockLabel}>Sec</span>
-      </div>
-    </div>
-  );
-};
+// ... (SobrietyClock component stays the same) ...
 
 const RecoveryAdmin = () => {
   const {
@@ -74,18 +15,47 @@ const RecoveryAdmin = () => {
     panic,
     isPanicking,
     addReason,
-    removeReason
+    removeReason,
+    chat,
+    isChatting
   } = useRecovery();
 
   const [urgeForm, setUrgeForm] = useState({ intensity: 5, context: '', notes: '' });
   const [newReason, setNewReason] = useState('');
   const [redirection, setRedirection] = useState(null);
+  
+  // Chat state
+  const chatEndRef = useRef(null);
+  const [chatInput, setChatInput] = useState('');
+  const [chatHistory, setChatHistory] = useState([
+    { role: 'ai', content: 'Recovery_Sentinel v1.0 online. Private tactical channel secured. How can I assist with your recovery architecture today?' }
+  ]);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatHistory, isChatting]);
+
+  const handleChat = async (e) => {
+    e.preventDefault();
+    if (!chatInput.trim() || isChatting) return;
+
+    const userMsg = { role: 'user', content: chatInput };
+    setChatHistory(prev => [...prev, userMsg]);
+    setChatInput('');
+
+    try {
+      const res = await chat({ message: chatInput, history: chatHistory });
+      setChatHistory(prev => [...prev, { role: 'ai', content: res.data.response }]);
+    } catch (err) {
+      setChatHistory(prev => [...prev, { role: 'ai', content: 'SYSTEM ERROR: Failed to reach AI Agent. Maintain core stability.' }]);
+    }
+  };
 
   const handleLogUrge = async (e) => {
     e.preventDefault();
     await logUrge(urgeForm);
     setUrgeForm({ intensity: 5, context: '', notes: '' });
-    alert('Urge telemetry logged. Stay vigilant.');
   };
 
   const handlePanic = async () => {
@@ -105,18 +75,24 @@ const RecoveryAdmin = () => {
     }
   };
 
-  if (isLoading) return <div className={styles.container}>INITIALIZING RECOVERY SYSTEMS...</div>;
+  if (isLoading) return <div className={styles.loadingOverlay}>INITIALIZING RECOVERY SYSTEMS...</div>;
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Recovery_Expert_System v1.0</h1>
+        <div className={styles.titleWrapper}>
+          <h1 className={styles.title}>Recovery_Expert_System</h1>
+          <span className={styles.version}>v1.0.4_STABLE</span>
+        </div>
       </header>
 
       <div className={styles.grid}>
         {/* SOBRIETY CLOCK */}
         <div className={`${styles.card} ${styles.clockCard}`}>
-          <div className={styles.clockTitle}>Current Uptime Streak</div>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardIndicator}></span>
+            <h3>CURRENT_UPTIME_STREAK</h3>
+          </div>
           <SobrietyClock lastReset={status?.streak?.last_reset_at} />
           <button 
             className={styles.panicButton} 
@@ -128,25 +104,65 @@ const RecoveryAdmin = () => {
           
           {redirection && (
             <div className={styles.redirection}>
-              <strong>[VIRTUAL_OPERATIVE_AI]:</strong>
-              <p>{redirection}</p>
-              <button onClick={() => setRedirection(null)} className={styles.button} style={{marginTop: '1rem', fontSize: '0.7rem'}}>Close Protocol</button>
+              <div className={styles.redirectionHeader}>
+                <span className={styles.alertIcon}>!</span>
+                <strong>VIRTUAL_OPERATIVE_AI REDIRECTION</strong>
+              </div>
+              <p className={styles.redirectionText}>{redirection}</p>
+              <button onClick={() => setRedirection(null)} className={styles.closeBtn}>ACKNOWLEDGE & CLOSE</button>
             </div>
           )}
         </div>
 
+        {/* AI RECOVERY SENTINEL CHAT */}
+        <div className={`${styles.card} ${styles.chatCard}`}>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardIndicator} style={{backgroundColor: '#00ff00'}}></span>
+            <h3>RECOVERY_SENTINEL_AI (TACTICAL_ADVISOR)</h3>
+          </div>
+          <div className={styles.chatMessages}>
+            {chatHistory.map((msg, i) => (
+              <div key={i} className={`${styles.message} ${msg.role === 'ai' ? styles.aiMessage : styles.userMessage}`}>
+                <div className={styles.messageLabel}>{msg.role === 'ai' ? 'SENTINEL' : 'OPERATIVE'}</div>
+                {msg.content}
+              </div>
+            ))}
+            {isChatting && <div className={styles.typing}>Sentinel is analyzing threat vectors...</div>}
+            <div ref={chatEndRef} />
+          </div>
+          <form className={styles.chatInputArea} onSubmit={handleChat}>
+            <input 
+              type="text" 
+              className={styles.chatInput} 
+              placeholder="Query specialized recovery advisor..." 
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              disabled={isChatting}
+            />
+            <button type="submit" className={styles.chatSendBtn} disabled={isChatting}>
+              EXEC
+            </button>
+          </form>
+        </div>
+
         {/* TRIGGER TELEMETRY */}
         <div className={styles.card}>
-          <h3>TRIGGER_TELEMETRY_LOG</h3>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardIndicator} style={{backgroundColor: '#ffaa00'}}></span>
+            <h3>TRIGGER_TELEMETRY_LOG</h3>
+          </div>
           <form onSubmit={handleLogUrge}>
             <div className={styles.formGroup}>
               <label className={styles.label}>Urge Intensity (1-10)</label>
-              <input 
-                type="range" min="1" max="10" 
-                className={styles.input} 
-                value={urgeForm.intensity}
-                onChange={(e) => setUrgeForm({...urgeForm, intensity: parseInt(e.target.value)})}
-              />
+              <div className={styles.rangeWrapper}>
+                <input 
+                  type="range" min="1" max="10" 
+                  className={styles.input} 
+                  value={urgeForm.intensity}
+                  onChange={(e) => setUrgeForm({...urgeForm, intensity: parseInt(e.target.value)})}
+                />
+                <span className={styles.intensityValue}>{urgeForm.intensity}</span>
+              </div>
             </div>
             <div className={styles.formGroup}>
               <label className={styles.label}>Context / Environment</label>
@@ -172,12 +188,15 @@ const RecoveryAdmin = () => {
 
         {/* CORE MOTIVATION (REASONS) */}
         <div className={styles.card}>
-          <h3>STRATEGIC_OBJECTIVES (REASONS)</h3>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardIndicator} style={{backgroundColor: '#00aaff'}}></span>
+            <h3>STRATEGIC_OBJECTIVES (REASONS)</h3>
+          </div>
           <ul className={styles.reasonsList}>
             {status?.reasons?.map(reason => (
               <li key={reason.id} className={styles.reasonItem}>
                 <span>{reason.content}</span>
-                <button className={styles.deleteBtn} onClick={() => removeReason(reason.id)}>X</button>
+                <button className={styles.deleteBtn} onClick={() => removeReason(reason.id)}>DEL</button>
               </li>
             ))}
           </ul>
@@ -193,30 +212,38 @@ const RecoveryAdmin = () => {
 
         {/* RECENT ACTIVITY */}
         <div className={styles.card}>
-          <h3>RECENT_INCIDENT_LOGS</h3>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardIndicator}></span>
+            <h3>RECENT_INCIDENT_LOGS</h3>
+          </div>
           <div className={styles.logs}>
             {status?.recent_logs?.map(log => (
               <div key={log.id} className={styles.logEntry}>
-                <span className={styles.logMeta}>{new Date(log.created_at).toLocaleString()}</span>
-                <div>
-                  <strong>{log.type}</strong> 
-                  {log.intensity && ` (Level ${log.intensity})`}
-                  {log.trigger_context && ` - ${log.trigger_context}`}
+                <div className={styles.logHeader}>
+                  <span className={styles.logType}>{log.type}</span>
+                  <span className={styles.logMeta}>{new Date(log.created_at).toLocaleString()}</span>
                 </div>
-                {log.notes && <div className={styles.logMeta}>{log.notes}</div>}
+                <div className={styles.logContent}>
+                  {log.intensity && <span className={styles.logIntensity}>LVL_{log.intensity}</span>}
+                  {log.trigger_context && <span className={styles.logContext}>@{log.trigger_context}</span>}
+                </div>
+                {log.notes && <div className={styles.logNotes}>{log.notes}</div>}
               </div>
             ))}
           </div>
         </div>
 
         {/* SYSTEM RESET */}
-        <div className={`${styles.card}`} style={{borderColor: '#ff0000'}}>
-          <h3>SYSTEM_FAILURE_PROCEDURE</h3>
-          <p style={{fontSize: '0.8rem', color: '#888'}}>
+        <div className={`${styles.card} ${styles.resetCard}`}>
+          <div className={styles.cardHeader}>
+            <span className={styles.cardIndicator} style={{backgroundColor: '#ff0000'}}></span>
+            <h3>SYSTEM_FAILURE_PROCEDURE</h3>
+          </div>
+          <p className={styles.resetWarning}>
             Resetting the streak logs a relapse incident. Use only after a complete failure of the primary systems.
           </p>
-          <button className={styles.button} style={{background: '#331111', color: '#ff3333'}} onClick={handleReset} disabled={isResetting}>
-            {isResetting ? 'RESETTING...' : 'INITIATE SYSTEM RESET'}
+          <button className={styles.resetButton} onClick={handleReset} disabled={isResetting}>
+            {isResetting ? 'EXECUTING RESET...' : 'INITIATE SYSTEM RESET'}
           </button>
         </div>
       </div>

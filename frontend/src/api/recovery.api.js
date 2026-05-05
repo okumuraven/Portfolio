@@ -7,6 +7,7 @@ const recoveryApi = {
   panic: () => http.post('/admin/recovery/panic'),
   addReason: (data) => http.post('/admin/recovery/reasons', data),
   removeReason: (id) => http.delete(`/admin/recovery/reasons/${id}`),
+  chat: (data) => http.post('/admin/recovery/chat', data),
 };
 
 export default recoveryApi;

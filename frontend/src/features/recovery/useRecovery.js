@@ -45,6 +45,10 @@ export function useRecovery() {
     },
   });
 
+  const chatMutation = useMutation({
+    mutationFn: (data) => recoveryApi.chat(data),
+  });
+
   return {
     status,
     isLoading,
@@ -57,5 +61,7 @@ export function useRecovery() {
     isPanicking: panicMutation.isPending,
     addReason: addReasonMutation.mutateAsync,
     removeReason: removeReasonMutation.mutateAsync,
+    chat: chatMutation.mutateAsync,
+    isChatting: chatMutation.isPending,
   };
 }

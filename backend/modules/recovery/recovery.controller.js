@@ -57,6 +57,16 @@ const RecoveryController = {
     } catch (err) {
       next(err);
     }
+  },
+
+  async chat(req, res, next) {
+    try {
+      const { message, history } = req.body;
+      const response = await RecoveryService.chatWithAgent(message, history);
+      res.json({ response });
+    } catch (err) {
+      next(err);
+    }
   }
 };
 
