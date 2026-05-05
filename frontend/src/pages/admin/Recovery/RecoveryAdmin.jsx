@@ -38,11 +38,18 @@ function SentinelMessageContent({ content, isNew }) {
     );
   }
 
-  const lines = content.split('\n');
+  // Pre-process content: If it looks like a giant block but contains numbered instructions, 
+  // try to inject newlines for the parser.
+  const processedContent = content
+    .replace(/(\d+\.)\s+\*\*/g, '\n$1 **') // Split before numbered items
+    .replace(/(\*\*[A-Z\s]+:\*\*)/g, '\n$1'); // Split before bold headers like **SITUATION REPORT:**
+
+  const lines = processedContent.split('\n');
   const elements = [];
 
   lines.forEach((line, idx) => {
     const trimmed = line.trim();
+    if (!trimmed) return;
 
     // Headings: ### text
     if (trimmed.startsWith('### ')) {
@@ -61,12 +68,10 @@ function SentinelMessageContent({ content, isNew }) {
     }
 
     // Paragraphs
-    if (trimmed) {
-      elements.push(<p key={idx} className={styles.msgPara}>{renderInline(trimmed)}</p>);
-    }
+    elements.push(<p key={idx} className={styles.msgPara}>{renderInline(trimmed)}</p>);
   });
 
-  return <>{elements}</>;
+  return <div className={styles.structuredResponse}>{elements}</div>;
 }
 
 const SobrietyClock = ({ lastReset }) => {
@@ -264,8 +269,11 @@ const RecoveryAdmin = () => {
           {redirection && (
             <div className={styles.redirection}>
               <div className={styles.redirectionHeader}>
-                <span className={styles.alertIcon}>!</span>
-                <strong>VIRTUAL_OPERATIVE_AI REDIRECTION</strong>
+                <div className={styles.redirectionTitleRow}>
+                  <span className={styles.alertIcon}>!</span>
+                  <strong>VIRTUAL_OPERATIVE_AI REDIRECTION</strong>
+                </div>
+                <button onClick={() => setRedirection(null)} className={styles.closeBtnIcon}>×</button>
               </div>
               <div className={styles.redirectionBody}>
                 {isPanicking ? (
@@ -273,9 +281,13 @@ const RecoveryAdmin = () => {
                 ) : (
                   <>
                     <div className={styles.redirectionText}>
-                      <Typewriter text={redirection} speed={10} />
+                      <SentinelMessageContent content={redirection} isNew={false} />
                     </div>
-                    <button onClick={() => setRedirection(null)} className={styles.closeBtn}>ACKNOWLEDGE & CLOSE</button>
+                    <div className={styles.redirectionFooter}>
+                      <button onClick={() => setRedirection(null)} className={styles.acknowledgeBtn}>
+                        ACKNOWLEDGE & CLOSE PROTOCOL
+                      </button>
+                    </div>
                   </>
                 )}
               </div>
