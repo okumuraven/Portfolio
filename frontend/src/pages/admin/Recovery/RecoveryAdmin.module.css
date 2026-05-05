@@ -125,6 +125,7 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   min-width: 0;
   transition: all 0.3s ease;
+  overflow: hidden; /* Prevent internal spill-over */
 }
 
 .card::before {
@@ -147,6 +148,7 @@
   padding-bottom: 0.75rem;
   border-bottom: 1px solid #111;
   gap: 1rem;
+  width: 100%;
 }
 
 .cardHeaderLeft {
@@ -154,6 +156,7 @@
   align-items: center;
   gap: 0.75rem;
   min-width: 0;
+  flex: 1;
 }
 
 .cardIndicator {
@@ -172,6 +175,9 @@
   letter-spacing: 1.5px;
   font-weight: 700;
   font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* CLOCK */
@@ -188,6 +194,7 @@
   flex-direction: column;
   align-items: center;
   margin: 1rem 0;
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -312,6 +319,7 @@
   animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 50;
+  width: 100%;
 }
 
 @keyframes slideDown {
@@ -326,6 +334,7 @@
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+  width: 100%;
 }
 
 .redirectionTitleRow {
@@ -370,23 +379,27 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  width: 100%;
 }
 
 .redirectionText {
   color: #eee;
   font-size: 0.9rem;
+  width: 100%;
 }
 
 .structuredResponse {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 }
 
 .redirectionFooter {
   display: flex;
   justify-content: flex-end;
   margin-top: 0.5rem;
+  width: 100%;
 }
 
 .acknowledgeBtn {
@@ -440,6 +453,7 @@
   flex-direction: column;
   gap: 1.25rem;
   font-family: var(--font-mono);
+  width: 100%;
 }
 
 .chatMessages::-webkit-scrollbar { width: 4px; }
@@ -507,6 +521,7 @@
   display: flex;
   gap: 0.5rem;
   margin-top: 1.25rem;
+  width: 100%;
 }
 
 .inputWrapper {
@@ -533,6 +548,7 @@
   padding: 1rem 0;
   font-family: var(--font-mono);
   font-size: 0.9rem;
+  width: 100%;
 }
 
 .chatInput:focus { outline: none; }
@@ -563,12 +579,14 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .labelRow {
@@ -576,6 +594,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.25rem;
+  width: 100%;
 }
 
 .label {
@@ -611,6 +630,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
 }
 
 .reasonsList {
@@ -620,6 +640,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .reasonItem {
@@ -630,6 +651,7 @@
   background: #000;
   border: 1px solid #111;
   font-size: 0.8rem;
+  width: 100%;
 }
 
 .reasonText {
@@ -654,6 +676,7 @@
 .addReasonBox {
   display: flex;
   gap: 0.5rem;
+  width: 100%;
 }
 
 /* RECENT ACTIVITY */
@@ -673,6 +696,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -688,18 +712,21 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .logHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .logBody {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  width: 100%;
 }
 
 .logIntensity {
@@ -737,6 +764,7 @@
   color: #666;
   margin-bottom: 1rem;
   line-height: 1.4;
+  width: 100%;
 }
 
 .resetButton {
@@ -764,7 +792,9 @@
 
 /* FORM ELEMENTS */
 .input, .textarea {
-  width: 100%;
+  display: block; /* Ensure it's not inline */
+  width: 100% !important; /* Force width */
+  max-width: 100%; /* Safety cap */
   background: #000;
   border: 1px solid #1a1a1a;
   padding: 1rem;
@@ -773,6 +803,7 @@
   font-size: 0.95rem;
   transition: all 0.2s;
   border-radius: 2px;
+  margin: 0; /* Clear default margins */
 }
 
 .textarea {
@@ -788,6 +819,7 @@
 
 .rangeInput {
   width: 100%;
+  max-width: 100%;
   accent-color: var(--neon-orange);
   cursor: pointer;
   height: 6px;
@@ -795,6 +827,7 @@
   border-radius: 3px;
   appearance: none;
   outline: none;
+  margin: 0;
 }
 
 .rangeInput::-webkit-slider-runnable-track {
@@ -833,6 +866,7 @@
   cursor: pointer;
   margin-top: 1rem;
   transition: all 0.2s;
+  width: 100%;
 }
 
 .commitBtn:hover:not(:disabled) {
@@ -843,6 +877,40 @@
 .commitBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* LOGS CONTAINER */
+.logs::-webkit-scrollbar { width: 4px; }
+.logs::-webkit-scrollbar-thumb { background: #222; }
+
+.logType {
+  font-size: 0.65rem;
+  color: var(--neon-green);
+  font-weight: 900;
+  font-family: var(--font-mono);
+}
+
+.logMeta {
+  font-size: 0.6rem;
+  color: #444;
+}
+
+/* REVALIDATING */
+.revalidating::after {
+  content: "SYNCING...";
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.6rem;
+  color: var(--neon-green);
+  font-family: var(--font-mono);
+  animation: pulse 1s infinite;
+  z-index: 1000;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
 }
 
 /* LOGS CONTAINER */
