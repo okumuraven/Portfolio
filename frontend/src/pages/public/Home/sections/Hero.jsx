@@ -78,7 +78,7 @@ export default function Hero() {
 
         <div>
           <div className={styles.introTag}>
-            SYSTEM_ONLINE // STATUS: {displayPersonaType(activePersona.type)}
+            SYSTEM_ONLINE {" // "} STATUS: {displayPersonaType(activePersona.type)}
           </div>
           <h1>
             {cleanString(activePersona.title, "NO TITLE")}
@@ -95,7 +95,7 @@ export default function Hero() {
         {/* Summary Block */}
         {activePersona.summary && (
           <div className={styles.dataBlock}>
-            <span className={styles.dataLabel}>SUMMARY //</span>
+            <span className={styles.dataLabel}>SUMMARY {" // "} </span>
             <span>{cleanString(activePersona.summary)}</span>
           </div>
         )}
@@ -103,7 +103,7 @@ export default function Hero() {
         {/* Period Block */}
         {activePersona.period && (
           <div className={styles.dataBlock}>
-            <span className={styles.dataLabel}>ACTIVE_PERIOD //</span>
+            <span className={styles.dataLabel}>ACTIVE_PERIOD {" // "} </span>
             <span>{cleanString(activePersona.period)}</span>
           </div>
         )}
@@ -111,7 +111,7 @@ export default function Hero() {
         {/* Motivation Block (Moved here for grouping) */}
         {activePersona.motivation && (
           <div className={styles.dataBlock}>
-            <span className={styles.dataLabel}>MOTIVATION_DIRECTIVE //</span>
+            <span className={styles.dataLabel}>MOTIVATION_DIRECTIVE {" // "} </span>
             <span>{cleanString(activePersona.motivation)}</span>
           </div>
         )}

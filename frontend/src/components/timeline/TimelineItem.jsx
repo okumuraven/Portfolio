@@ -91,7 +91,7 @@ const TimelineItem = ({ event, compact = false }) => {
         {source_name && (
           <div className={styles.sourceRow}>
             <span className={styles.sourceLabel}>
-              ORIGIN_NODE // <span className={styles.sourceValue}>{source_name}</span>
+              ORIGIN_NODE {" // "} <span className={styles.sourceValue}>{source_name}</span>
             </span>
             
             {source_url && (

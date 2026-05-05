@@ -341,7 +341,7 @@ const RecoveryAdmin = () => {
               <div key={log.id} className={styles.logEntry}>
                 <div className={styles.logHeader}>
                   <span className={styles.logType}>[{log.type}]</span>
-                  <span className={styles.logMeta}>{new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} // {new Date(log.created_at).toLocaleDateString()}</span>
+                  <span className={styles.logMeta}>{new Date(log.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} {" // "} {new Date(log.created_at).toLocaleDateString()}</span>
                 </div>
                 <div className={styles.logBody}>
                   {log.intensity && <span className={styles.logIntensity}>LVL_{log.intensity}</span>}

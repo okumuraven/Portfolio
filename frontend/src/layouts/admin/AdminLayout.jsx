@@ -124,7 +124,7 @@ export default function AdminLayout() {
           <Outlet />
         </main>
         <footer className={styles.footer}>
-          SECURE CONNECTION // ENCRYPTED
+          SECURE CONNECTION {" // "} ENCRYPTED
         </footer>
       </div>
     </div>
