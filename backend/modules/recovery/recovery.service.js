@@ -1,55 +1,23 @@
 const RecoveryModel = require('./recovery.model');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-const RECOVERY_AI_KEY = process.env.RECOVERY_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
-const recoveryAI = new GoogleGenerativeAI(RECOVERY_AI_KEY);
+// Ensure env vars are loaded
+require('../../config/env');
+
+// We'll initialize the AI client inside a helper to ensure keys are ready
+const getAIClient = () => {
+  const key = process.env.RECOVERY_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+  if (!key) {
+    throw new Error("Missing Gemini API Key in environment.");
+  }
+  return new GoogleGenerativeAI(key);
+};
 
 const RecoveryService = {
-  // ... existing methods ...
-
-  async chatWithAgent(userMessage, history = []) {
-    try {
-      const model = recoveryAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        systemInstruction: `
-          You are the "Recovery Sentinel" – a high-level AI expert system specializing in addiction recovery, behavioral psychology, and cognitive behavioral therapy.
-          Your purpose is to provide deep, analytical, and empathetic support to the user (a software engineer) who is managing a long-term recovery journey.
-          
-          Guidelines:
-          1. Use an engineering-adjacent tone (precise, logical, yet deeply human).
-          2. Help with research into behavioral patterns, neurobiology of addiction, and recovery strategies.
-          3. Provide non-judgmental, professional advice.
-          4. If the user is in a high-intensity urge, pivot to "Tactical Redirection" immediately.
-          5. Keep the conversation private and focused on growth, integrity, and system stability.
-          
-          You are NOT the public-facing portfolio bot. You are the user's private tactical advisor.
-        `,
-      });
-
-      const geminiHistory = (history || []).map(msg => ({
-        role: msg.role === 'ai' ? 'model' : 'user',
-        parts: [{ text: msg.content }]
-      }));
-
-      // Ensure history starts with 'user' if it exists
-      if (geminiHistory.length > 0 && geminiHistory[0].role === 'model') {
-        geminiHistory.shift();
-      }
-
-      const chat = model.startChat({ history: geminiHistory });
-      const result = await chat.sendMessage(userMessage);
-      return result.response.text();
-    } catch (error) {
-      console.error("[RecoveryService] AI Chat Error:", error.message);
-      throw new Error("Recovery Sentinel is temporarily offline. Focus on your core protocols.");
-    }
-  },
-
   async getStatus() {
     const config = await RecoveryModel.getConfig();
     const logs = await RecoveryModel.getLogs(10);
     const reasons = await RecoveryModel.getReasons();
-// ... rest of method
 
     const lastReset = config ? new Date(config.last_reset_at) : new Date();
     const now = new Date();
@@ -86,8 +54,9 @@ const RecoveryService = {
 
   async getPanicRedirection() {
     try {
+      const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-flash-latest",
+        model: "gemini-1.5-flash", // Use 1.5-flash as it's more reliable
         systemInstruction: `
           You are a Virtual Operative AI and a professional therapist. 
           The user is experiencing a strong urge to relapse into an addiction.
@@ -102,8 +71,47 @@ const RecoveryService = {
       const result = await model.generateContent("EMERGENCY: I am having a strong urge. Redirect me now.");
       return result.response.text();
     } catch (error) {
-      console.error("[RecoveryService] Gemini Error:", error.message);
+      console.error("[RecoveryService] Panic Redirection Error:", error.message);
       return "Focus on your breath. Count to ten. Remember why you started. You are stronger than this moment.";
+    }
+  },
+
+  async chatWithAgent(userMessage, history = []) {
+    try {
+      const genAI = getAIClient();
+      const model = genAI.getGenerativeModel({
+        model: "gemini-1.5-flash",
+        systemInstruction: `
+          You are the "Recovery Sentinel" – a high-level AI expert system specializing in addiction recovery, behavioral psychology, and cognitive behavioral therapy.
+          Your purpose is to provide deep, analytical, and empathetic support to the user (a software engineer) who is managing a long-term recovery journey.
+          
+          Guidelines:
+          1. Use an engineering-adjacent tone (precise, logical, yet deeply human).
+          2. Help with research into behavioral patterns, neurobiology of addiction, and recovery strategies.
+          3. Provide non-judgmental, professional advice.
+          4. If the user is in a high-intensity urge, pivot to "Tactical Redirection" immediately.
+          5. Keep the conversation private and focused on growth, integrity, and system stability.
+          
+          You are NOT the public-facing portfolio bot. You are the user's private tactical advisor.
+        `,
+      });
+
+      const geminiHistory = (history || []).map(msg => ({
+        role: msg.role === 'ai' ? 'model' : 'user',
+        parts: [{ text: msg.content }]
+      }));
+
+      // Ensure history starts with 'user' if it exists
+      if (geminiHistory.length > 0 && geminiHistory[0].role === 'model') {
+        geminiHistory.shift();
+      }
+
+      const chat = model.startChat({ history: geminiHistory });
+      const result = await chat.sendMessage(userMessage);
+      return result.response.text();
+    } catch (error) {
+      console.error("[RecoveryService] AI Chat Error:", error.message);
+      throw new Error("Recovery Sentinel is temporarily offline. Focus on your core protocols.");
     }
   },
 
