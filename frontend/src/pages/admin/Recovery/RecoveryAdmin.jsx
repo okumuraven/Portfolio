@@ -205,7 +205,7 @@ const RecoveryAdmin = () => {
         </div>
 
         {/* TRIGGER TELEMETRY */}
-        <div className={styles.card}>
+        <div className={`${styles.card} ${styles.telemetryCard}`}>
           <div className={styles.cardHeader}>
             <span className={styles.cardIndicator} style={{backgroundColor: '#ffaa00'}}></span>
             <h3>TRIGGER_TELEMETRY_LOG</h3>
@@ -246,7 +246,7 @@ const RecoveryAdmin = () => {
         </div>
 
         {/* CORE MOTIVATION (REASONS) */}
-        <div className={styles.card}>
+        <div className={`${styles.card} ${styles.objectivesCard}`}>
           <div className={styles.cardHeader}>
             <span className={styles.cardIndicator} style={{backgroundColor: '#00aaff'}}></span>
             <h3>STRATEGIC_OBJECTIVES (REASONS)</h3>
@@ -270,7 +270,7 @@ const RecoveryAdmin = () => {
         </div>
 
         {/* RECENT ACTIVITY */}
-        <div className={styles.card}>
+        <div className={`${styles.card} ${styles.recentLogsCard}`}>
           <div className={styles.cardHeader}>
             <span className={styles.cardIndicator}></span>
             <h3>RECENT_INCIDENT_LOGS</h3>
