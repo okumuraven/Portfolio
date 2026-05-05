@@ -419,6 +419,52 @@
   color: var(--neon-green);
 }
 
+.messageContent {
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.msgHeading {
+  font-size: 0.9rem;
+  margin: 1rem 0 0.5rem 0;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+  padding-bottom: 0.25rem;
+  letter-spacing: 1px;
+}
+
+.msgPara {
+  margin: 0 0 0.75rem 0;
+}
+
+.msgPara:last-child {
+  margin-bottom: 0;
+}
+
+.msgBullet {
+  list-style: none;
+  padding-left: 1.25rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.msgBullet::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--neon-green);
+  font-weight: 900;
+  opacity: 0.7;
+}
+
+.boldHighlight {
+  color: var(--neon-green);
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.4);
+  font-weight: 900;
+}
+
 .chatInputArea {
   display: flex;
   gap: 0.5rem;
