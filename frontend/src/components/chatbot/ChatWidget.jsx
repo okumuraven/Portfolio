@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { sendChatMessage, getChatbotStatus } from '../../api/chatbot.api';
 import styles from './ChatWidget.module.css';
+import InlineTacticalLoader from '../feedback/InlineTacticalLoader';
+import Typewriter from '../feedback/Typewriter';
 
 // Parses the contact link lines from AI responses and renders them as tab buttons.
 // Matches: - [LABEL](URL)
@@ -17,9 +19,19 @@ function renderInline(text) {
   });
 }
 
+function AiMessageContent({ content, isNew }) {
+  const [showFull, setShowFull] = useState(!isNew);
 
+  if (!showFull) {
+    return (
+      <Typewriter 
+        text={content} 
+        speed={10} 
+        onComplete={() => setShowFull(true)} 
+      />
+    );
+  }
 
-function renderAiMessage(content) {
   const lines = content.split('\n');
   const elements = [];
   const contactLinks = [];
@@ -27,26 +39,26 @@ function renderAiMessage(content) {
   lines.forEach((line, idx) => {
     const trimmed = line.trim();
 
-    // Detect contact link lines like: - [💬 WhatsApp](https://wa.me/...)
+    // Detect contact link lines
     const contactMatch = trimmed.match(CONTACT_LINK_RE);
     if (contactMatch) {
       contactLinks.push({ label: contactMatch[1], href: contactMatch[2] });
       return;
     }
 
-    // Headings: ### text
+    // Headings
     if (trimmed.startsWith('### ')) {
       elements.push(<h4 key={idx} className={styles.msgHeading}>{renderInline(trimmed.slice(4))}</h4>);
       return;
     }
 
-    // Bullet points: * text or - text (but not contact links already matched above)
+    // Bullet points
     if (/^[*-]\s+/.test(trimmed)) {
       elements.push(<li key={idx} className={styles.msgBullet}>{renderInline(trimmed.replace(/^[*-]\s+/, ''))}</li>);
       return;
     }
 
-    // Bold-only lines (like **Note:**)
+    // Paragraphs
     if (trimmed) {
       elements.push(<p key={idx} className={styles.msgPara}>{renderInline(trimmed)}</p>);
     }
@@ -85,6 +97,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       role: 'ai',
+      isNew: false,
       content: 'SYSTEM ONLINE. I am the Virtual Operative proxy for Okumu Joseph. State your query regarding operational capacity, stack experience, or deployment costs.'
     }
   ]);
@@ -95,7 +108,7 @@ export default function ChatWidget() {
       .catch(() => setIsActive(false));
   }, []);
 
-  // Auto-scroll to the bottom when new messages arrive
+  // Auto-scroll to the bottom
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -109,18 +122,19 @@ export default function ChatWidget() {
     const userMessage = input.trim();
     setInput('');
 
-    const newHistory = [...messages, { role: 'user', content: userMessage }];
+    const newHistory = [...messages, { role: 'user', content: userMessage, isNew: false }];
     setMessages(newHistory);
     setIsLoading(true);
 
     try {
-      const res = await sendChatMessage(userMessage, messages);
+      const res = await sendChatMessage(userMessage, messages.map(({role, content}) => ({role, content})));
       if (res && res.reply) {
-        setMessages(prev => [...prev, { role: 'ai', content: res.reply }]);
+        setMessages(prev => [...prev, { role: 'ai', content: res.reply, isNew: true }]);
       }
     } catch (err) {
       setMessages(prev => [...prev, {
         role: 'ai',
+        isNew: true,
         content: "ERR_CONNECTION_REFUSED: Uplink to main AI core failed. Please try again or use the Contact secure comms."
       }]);
     } finally {
@@ -128,7 +142,7 @@ export default function ChatWidget() {
     }
   };
 
-  if (!isActive) return null; // Invisible if turned off in Admin panel
+  if (!isActive) return null;
 
   return (
     <div className={styles.widgetContainer}>
@@ -139,11 +153,15 @@ export default function ChatWidget() {
         </button>
       ) : (
         <div className={styles.chatWindow}>
+          <div className={styles.scanline} />
 
           <div className={styles.chatHeader}>
-            <h4 className={styles.headerTitle}>
-              VIRTUAL_OPERATIVE <span>[ONLINE]</span>
-            </h4>
+            <div className={styles.headerLeft}>
+              <div className={styles.headerStatusDot} />
+              <h4 className={styles.headerTitle}>
+                VIRTUAL_OPERATIVE <span>[ONLINE]</span>
+              </h4>
+            </div>
             <button className={styles.closeBtn} onClick={() => setIsOpen(false)} title="Close Terminal">×</button>
           </div>
 
@@ -154,31 +172,41 @@ export default function ChatWidget() {
                   {msg.role === 'ai' ? 'SYS.AGENT //' : 'GUEST_USER //'}
                 </span>
                 <div className={msg.role === 'ai' ? styles.msgAi : styles.msgUser}>
-                  {msg.role === 'ai' ? renderAiMessage(msg.content) : msg.content}
+                  {msg.role === 'ai' ? (
+                    <AiMessageContent content={msg.content} isNew={msg.isNew} />
+                  ) : (
+                    msg.content
+                  )}
                 </div>
               </div>
             ))}
 
             {/* Tactical Loading State */}
-            {isLoading && <div className={styles.processing}>[ PROCESSING_QUERY... ]</div>}
+            {isLoading && (
+              <div className={styles.loaderWrapper}>
+                <InlineTacticalLoader />
+              </div>
+            )}
 
             <div ref={messagesEndRef} />
           </div>
 
           <form onSubmit={handleSend} className={styles.chatFooter}>
-            <span className={styles.inputPrefix}>&gt;_</span>
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Execute command or ask a question..."
-              className={styles.chatInput}
-              autoComplete="off"
-            />
-            <button type="submit" disabled={isLoading} className={styles.sendBtn}>
-              ⮞
+            <div className={styles.inputWrapper}>
+              <span className={styles.inputPrefix}>&gt;_</span>
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Execute command or ask..."
+                className={styles.chatInput}
+                autoComplete="off"
+                disabled={isLoading}
+              />
+            </div>
+            <button type="submit" disabled={isLoading || !input.trim()} className={styles.sendBtn}>
+              EXE
             </button>
           </form>
-
         </div>
       )}
     </div>

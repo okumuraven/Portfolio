@@ -54,6 +54,7 @@ export function useRecovery() {
   return {
     status,
     isLoading,
+    isPlaceholderData,
     error,
     logUrge: logUrgeMutation.mutateAsync,
     isLoggingUrge: logUrgeMutation.isPending,
