@@ -161,7 +161,7 @@ const RecoveryAdmin = () => {
     isChatting
   } = useRecovery();
 
-  const [urgeForm, setUrgeForm] = useState({ intensity: 5, context: '', notes: '' });
+  const [urgeForm, setUrgeForm] = useState({ intensity: 5, trigger_context: '', notes: '' });
   const [newReason, setNewReason] = useState('');
   const [redirection, setRedirection] = useState(null);
   
@@ -203,8 +203,42 @@ const RecoveryAdmin = () => {
 
   const handleLogUrge = async (e) => {
     e.preventDefault();
-    await logUrge(urgeForm);
-    setUrgeForm({ intensity: 5, context: '', notes: '' });
+    if (isLoggingUrge) return;
+
+    try {
+      // Store values before clearing form
+      const intensity = urgeForm.intensity;
+      const context = urgeForm.trigger_context;
+      const notes = urgeForm.notes;
+
+      await logUrge(urgeForm);
+      
+      // Add a system-like message to the chat history to show the action was taken
+      const actionMsg = `[TELEMETRY_LOGGED] Intensity: LVL_${intensity} | Context: ${context || 'N/A'}`;
+      setChatHistory(prev => [...prev, { role: 'user', content: actionMsg, isNew: false }]);
+      
+      // Clear form immediately for UX
+      setUrgeForm({ intensity: 5, trigger_context: '', notes: '' });
+
+      // Trigger AI analysis automatically
+      const analysisPrompt = `SYSTEM_EVENT: User logged an urge. 
+      INTENSITY: ${intensity}/10
+      CONTEXT: ${context || 'Not specified'}
+      NOTES: ${notes || 'None provided'}
+      
+      Provide a brief tactical analysis and one immediate stabilization protocol.`;
+      
+      const res = await chat({ 
+        message: analysisPrompt, 
+        history: chatHistory.map(({role, content}) => ({role, content})) 
+      });
+      
+      setChatHistory(prev => [...prev, { role: 'ai', content: res.data.response, isNew: true }]);
+
+    } catch (err) {
+      console.error("Failed to commit telemetry:", err);
+      setChatHistory(prev => [...prev, { role: 'ai', content: 'CRITICAL: Telemetry sync failure. Focus on primary stabilization.', isNew: true }]);
+    }
   };
 
   const handlePanic = async () => {
@@ -361,8 +395,8 @@ const RecoveryAdmin = () => {
               <label className={styles.label}>Context / Environment</label>
               <input 
                 type="text" className={styles.input} placeholder="e.g. Stress at work, Home alone" 
-                value={urgeForm.context}
-                onChange={(e) => setUrgeForm({...urgeForm, context: e.target.value})}
+                value={urgeForm.trigger_context}
+                onChange={(e) => setUrgeForm({...urgeForm, trigger_context: e.target.value})}
               />
             </div>
             <div className={styles.formGroup}>
@@ -374,7 +408,7 @@ const RecoveryAdmin = () => {
                 onChange={(e) => setUrgeForm({...urgeForm, notes: e.target.value})}
               />
             </div>
-            <button className={styles.commitBtn} disabled={isLoggingUrge}>
+            <button type="submit" className={styles.commitBtn} disabled={isLoggingUrge}>
               {isLoggingUrge ? 'COMMITTING...' : 'COMMIT_TELEMETRY'}
             </button>
           </form>
