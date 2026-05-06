@@ -23,7 +23,9 @@ const MigrationService = {
     };
 
     try {
-      await runner.default(options);
+      // Handle both ESM and CJS export patterns
+      const migrate = runner.default || runner;
+      await migrate(options);
       console.log('[MIGRATION] Schema is up to date.');
     } catch (error) {
       console.error('[MIGRATION] Error during schema sync:', error);
