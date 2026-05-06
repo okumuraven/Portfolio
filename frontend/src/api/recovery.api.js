@@ -10,6 +10,7 @@ const recoveryApi = {
   chat: (data) => http.post('/admin/recovery/chat', data),
   generateBriefing: () => http.post('/admin/recovery/generate-briefing'),
   surgicalReset: () => http.post('/admin/recovery/surgical-reset'),
+  testEmail: () => http.post('/admin/recovery/test-email'),
 };
 
 export default recoveryApi;

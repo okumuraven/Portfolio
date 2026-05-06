@@ -85,6 +85,15 @@ const RecoveryController = {
     } catch (err) {
       next(err);
     }
+  },
+
+  async testEmail(req, res, next) {
+    try {
+      await RecoveryService.testEmail();
+      res.json({ message: 'Test email sent successfully.' });
+    } catch (err) {
+      next(err);
+    }
   }
 };
 

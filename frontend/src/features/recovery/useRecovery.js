@@ -84,5 +84,11 @@ export function useRecovery() {
     isGeneratingBriefing: generateBriefingMutation.isPending,
     surgicalReset: surgicalResetMutation.mutateAsync,
     isSurgicallyResetting: surgicalResetMutation.isPending,
+    testEmail: useMutation({
+      mutationFn: () => recoveryApi.testEmail(),
+    }).mutateAsync,
+    isTestingEmail: useMutation({
+      mutationFn: () => recoveryApi.testEmail(),
+    }).isPending,
   };
 }

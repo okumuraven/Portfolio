@@ -16,5 +16,6 @@ router.delete('/reasons/:id', RecoveryController.removeReason);
 router.post('/chat', RecoveryController.chat);
 router.post('/generate-briefing', RecoveryController.generateBriefing);
 router.post('/surgical-reset', RecoveryController.surgicalReset);
+router.post('/test-email', RecoveryController.testEmail);
 
 module.exports = router;

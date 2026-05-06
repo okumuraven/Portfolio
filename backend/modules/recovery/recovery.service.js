@@ -244,6 +244,17 @@ const RecoveryService = {
 
   async surgicalReset() {
     return RecoveryModel.surgicalReset();
+  },
+
+  async testEmail() {
+    const MailerService = require('../../services/mailer.service');
+    const targetEmail = process.env.RECOVERY_TARGET_EMAIL || 'okumuraven@gmail.com';
+    const content = `[SYSTEM_TEST] Email delivery subsystem operational. 
+    TIMESTAMP: ${new Date().toISOString()}
+    OPERATIVE: OKUMURAVEN
+    STABILITY: NOMINAL`;
+    
+    return MailerService.sendBriefing(targetEmail, content);
   }
 };
 

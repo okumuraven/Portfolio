@@ -162,7 +162,9 @@ const RecoveryAdmin = () => {
     generateBriefing,
     isGeneratingBriefing,
     surgicalReset,
-    isSurgicallyResetting
+    isSurgicallyResetting,
+    testEmail,
+    isTestingEmail
   } = useRecovery();
 
   const [urgeForm, setUrgeForm] = useState({ intensity: 5, trigger_context: '', notes: '' });
@@ -177,9 +179,20 @@ const RecoveryAdmin = () => {
           await surgicalReset();
           setChatHistory([{ role: 'ai', content: 'SYSTEM_WIPE_COMPLETE: All recovery telemetry and configuration has been reset. System is now at Day 0.', isNew: true }]);
         } catch (err) {
-          alert('Failed to perform system reset.');
+          const errMsg = err.response?.data?.error || err.message || "Unknown Error";
+          alert(`Failed to perform system reset.\n\nERROR_DETAILS: ${errMsg}`);
         }
       }
+    }
+  };
+
+  const handleTestEmail = async () => {
+    try {
+      await testEmail();
+      alert('Test request sent. Check your inbox and Render logs.');
+    } catch (err) {
+      const errMsg = err.response?.data?.error || err.message || "Unknown Error";
+      alert(`Email test failed.\n\nERROR_DETAILS: ${errMsg}`);
     }
   };
   
@@ -562,6 +575,9 @@ const RecoveryAdmin = () => {
           <div className={styles.resetActions}>
             <button className={styles.resetButton} onClick={handleReset} disabled={isResetting}>
               {isResetting ? 'EXECUTING RESET...' : 'INITIATE_SYSTEM_RESET'}
+            </button>
+            <button className={styles.testEmailBtn} onClick={handleTestEmail} disabled={isTestingEmail}>
+              {isTestingEmail ? 'SENDING_TEST...' : 'TEST_EMAIL_SYSTEM'}
             </button>
             <button className={styles.masterResetBtn} onClick={handleMasterReset} disabled={isSurgicallyResetting}>
               {isSurgicallyResetting ? 'PURGING_DATA...' : 'MASTER_SYSTEM_WIPE'}
