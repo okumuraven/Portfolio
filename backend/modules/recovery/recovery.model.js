@@ -45,6 +45,15 @@ const RecoveryModel = {
 
   async getLatestBriefing() {
     return db.oneOrNone('SELECT * FROM recovery_briefings ORDER BY created_at DESC LIMIT 1');
+  },
+
+  async surgicalReset() {
+    return db.tx(async t => {
+      await t.none('TRUNCATE recovery_logs RESTART IDENTITY CASCADE');
+      await t.none('TRUNCATE recovery_briefings RESTART IDENTITY CASCADE');
+      await t.none('TRUNCATE recovery_reasons RESTART IDENTITY CASCADE');
+      await t.none('UPDATE recovery_config SET last_reset_at = NOW(), updated_at = NOW()');
+    });
   }
 };
 

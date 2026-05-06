@@ -240,6 +240,10 @@ const RecoveryService = {
       console.error("[RecoveryService] Briefing Generation Error:", error);
       throw error;
     }
+  },
+
+  async surgicalReset() {
+    return RecoveryModel.surgicalReset();
   }
 };
 

@@ -76,6 +76,15 @@ const RecoveryController = {
     } catch (err) {
       next(err);
     }
+  },
+
+  async surgicalReset(req, res, next) {
+    try {
+      await RecoveryService.surgicalReset();
+      res.status(204).end();
+    } catch (err) {
+      next(err);
+    }
   }
 };
 

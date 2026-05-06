@@ -58,6 +58,13 @@ export function useRecovery() {
     },
   });
 
+  const surgicalResetMutation = useMutation({
+    mutationFn: () => recoveryApi.surgicalReset(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recovery-status'] });
+    },
+  });
+
   return {
     status,
     isLoading,
@@ -75,5 +82,7 @@ export function useRecovery() {
     isChatting: chatMutation.isPending,
     generateBriefing: generateBriefingMutation.mutateAsync,
     isGeneratingBriefing: generateBriefingMutation.isPending,
+    surgicalReset: surgicalResetMutation.mutateAsync,
+    isSurgicallyResetting: surgicalResetMutation.isPending,
   };
 }

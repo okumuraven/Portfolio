@@ -160,12 +160,28 @@ const RecoveryAdmin = () => {
     chat,
     isChatting,
     generateBriefing,
-    isGeneratingBriefing
+    isGeneratingBriefing,
+    surgicalReset,
+    isSurgicallyResetting
   } = useRecovery();
 
   const [urgeForm, setUrgeForm] = useState({ intensity: 5, trigger_context: '', notes: '' });
   const [newReason, setNewReason] = useState('');
   const [redirection, setRedirection] = useState(null);
+  
+  // Master Reset Handler
+  const handleMasterReset = async () => {
+    if (window.confirm('CRITICAL_AUTHORIZATION_REQUIRED: Are you sure you want to perform a full system wipe of recovery data? This will delete all logs, reasons, and briefings.')) {
+      if (window.confirm('FINAL_CONFIRMATION: This action is irreversible. All test data will be purged.')) {
+        try {
+          await surgicalReset();
+          setChatHistory([{ role: 'ai', content: 'SYSTEM_WIPE_COMPLETE: All recovery telemetry and configuration has been reset. System is now at Day 0.', isNew: true }]);
+        } catch (err) {
+          alert('Failed to perform system reset.');
+        }
+      }
+    }
+  };
   
   // UX State: Control the initial full-screen terminal loader
   const [hasInitialized, setHasInitialized] = useState(false);
@@ -543,9 +559,14 @@ const RecoveryAdmin = () => {
           <p className={styles.resetWarning}>
             WARNING: Resetting the streak logs a RELAPSE incident. Use only after a complete failure of primary systems.
           </p>
-          <button className={styles.resetButton} onClick={handleReset} disabled={isResetting}>
-            {isResetting ? 'EXECUTING RESET...' : 'INITIATE_SYSTEM_RESET'}
-          </button>
+          <div className={styles.resetActions}>
+            <button className={styles.resetButton} onClick={handleReset} disabled={isResetting}>
+              {isResetting ? 'EXECUTING RESET...' : 'INITIATE_SYSTEM_RESET'}
+            </button>
+            <button className={styles.masterResetBtn} onClick={handleMasterReset} disabled={isSurgicallyResetting}>
+              {isSurgicallyResetting ? 'PURGING_DATA...' : 'MASTER_SYSTEM_WIPE'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
