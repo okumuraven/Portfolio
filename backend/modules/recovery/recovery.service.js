@@ -95,7 +95,7 @@ const RecoveryService = {
     }
   },
 
-  async chatWithAgent(userMessage, history = []) {
+  async chatWithAgent(userMessage, history = [], attempt = 1) {
     try {
       // Fetch user context (streak and reasons) to personalize the AI
       // We wrap this in a sub-try-catch so that if the DB is down, the AI still functions
@@ -173,6 +173,13 @@ const RecoveryService = {
       const result = await chat.sendMessage(userMessage);
       return result.response.text();
     } catch (error) {
+      // Professional Retry Logic for 503 errors
+      if (error.message.includes('503') && attempt < 3) {
+        console.warn(`[RecoveryService] AI 503 Error. Retrying (Attempt ${attempt + 1})...`);
+        await new Promise(res => setTimeout(res, 2000)); // Wait 2 seconds
+        return RecoveryService.chatWithAgent(userMessage, history, attempt + 1);
+      }
+
       console.error("[RecoveryService] AI Chat Error:", error.message);
       // Re-throw to be caught by controller
       throw error;
