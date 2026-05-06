@@ -199,7 +199,13 @@ const RecoveryAdmin = () => {
       const res = await chat({ message: chatInput, history: chatHistory.map(({role, content}) => ({role, content})) });
       setChatHistory(prev => [...prev, { role: 'ai', content: res.data.response, isNew: true }]);
     } catch (err) {
-      setChatHistory(prev => [...prev, { role: 'ai', content: 'SYSTEM ERROR: Failed to reach AI Agent. Maintain core stability.', isNew: true }]);
+      console.error("AI Chat failed:", err);
+      const errMsg = err.response?.data?.error || err.message || "Unknown Error";
+      setChatHistory(prev => [...prev, { 
+        role: 'ai', 
+        content: `SYSTEM ERROR: Failed to reach AI Agent.\n\nERROR_DETAILS: ${errMsg}\n\nMaintain core stability.`, 
+        isNew: true 
+      }]);
     }
   };
 
