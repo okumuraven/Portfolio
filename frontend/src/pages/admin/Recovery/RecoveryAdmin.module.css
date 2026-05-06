@@ -1333,6 +1333,24 @@
   transition: all 0.2s;
 }
 
+.testEmailBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--neon-blue);
+  color: var(--neon-blue);
+  padding: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.testEmailBtn:hover:not(:disabled) {
+  background: rgba(0, 170, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 170, 255, 0.2);
+}
+
 .masterResetBtn:hover:not(:disabled) {
   border-color: #fff;
   color: #fff;
