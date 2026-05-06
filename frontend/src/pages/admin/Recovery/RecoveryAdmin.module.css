@@ -1313,6 +1313,37 @@
   cursor: not-allowed;
 }
 
+.resetActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.masterResetBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #333;
+  color: #333;
+  padding: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.masterResetBtn:hover:not(:disabled) {
+  border-color: #fff;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.masterResetBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* FORM ELEMENTS */
 .input, .textarea {
   display: block; /* Ensure it's not inline */
