@@ -79,10 +79,18 @@ const RecoveryService = {
   async chatWithAgent(userMessage, history = []) {
     try {
       // Fetch user context (streak and reasons) to personalize the AI
-      // Use explicit service reference to avoid 'this' context issues
-      const status = await RecoveryService.getStatus();
-      const reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
-      const streakDays = status.streak.days;
+      // We wrap this in a sub-try-catch so that if the DB is down, the AI still functions
+      let streakDays = 0;
+      let reasonsList = "";
+      
+      try {
+        const status = await RecoveryService.getStatus();
+        reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
+        streakDays = status.streak.days;
+      } catch (dbErr) {
+        console.error("[RecoveryService] AI Context Fetch Failed (DB issue):", dbErr.message);
+        reasonsList = "Context currently unavailable due to system sync issues.";
+      }
 
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
