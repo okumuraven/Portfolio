@@ -1,43 +1,38 @@
-const runner = require('node-pg-migrate');
+const { execSync } = require('child_process');
 const path = require('path');
 require('dotenv').config();
 
 const MigrationService = {
   async runMigrations() {
-    console.log('[MIGRATION] Starting automatic schema sync...');
+    console.log('[MIGRATION] Initializing Brute-Force Schema Sync...');
     
-    // Safety trim for common env var copy-paste issues
     const databaseUrl = process.env.DATABASE_URL ? process.env.DATABASE_URL.trim() : null;
 
     if (!databaseUrl) {
-      console.warn('[MIGRATION] SKIPPED: DATABASE_URL is missing.');
+      console.warn('[MIGRATION] CRITICAL_WARNING: DATABASE_URL is missing. Skipping migrations.');
       return;
     }
 
-    const options = {
-      databaseUrl,
-      dir: path.join(__dirname, '../migrations'),
-      direction: 'up',
-      migrationsTable: 'pgmigrations',
-      verbose: true
-    };
-
     try {
-      let migrate;
-      if (typeof runner === 'function') {
-        migrate = runner;
-      } else if (runner && typeof runner.default === 'function') {
-        migrate = runner.default;
-      } else {
-        throw new Error('Could not find a valid migration runner in node-pg-migrate package.');
-      }
+      // We use the CLI runner via execSync because it is the most reliable way 
+      // to ensure environment variables and pg-driver versions match perfectly.
+      const migrationCmd = `npx node-pg-migrate up --database-url "${databaseUrl}" -m migrations`;
       
-      await migrate(options);
-      console.log('[MIGRATION] Schema is up to date.');
+      console.log('[MIGRATION] Executing CLI migration runner...');
+      const output = execSync(migrationCmd, { 
+        cwd: path.join(__dirname, '..'), // Run from /backend directory
+        encoding: 'utf8' 
+      });
+      
+      console.log('[MIGRATION] Success Output:\n', output);
+      console.log('[MIGRATION] Database schema is now synchronized.');
     } catch (error) {
-      console.error('[MIGRATION] Error during schema sync:', error);
-      // We don't necessarily want to crash the server if migrations fail, 
-      // but the app might be in an inconsistent state.
+      console.error('[MIGRATION] FATAL_ERROR: Migration CLI failed.');
+      if (error.stdout) console.log('[MIGRATION] CLI_STDOUT:', error.stdout);
+      if (error.stderr) console.error('[MIGRATION] CLI_STDERR:', error.stderr);
+      
+      // Re-throw to be caught by bootstrap in server.js
+      throw error;
     }
   }
 };
