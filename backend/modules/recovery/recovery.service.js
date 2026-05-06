@@ -13,39 +13,58 @@ const getAIClient = () => {
 
 const RecoveryService = {
   async getStatus() {
-    const config = await RecoveryModel.getConfig();
-    const logs = await RecoveryModel.getLogs(10);
-    const reasons = await RecoveryModel.getReasons();
-    const latestBriefing = await RecoveryModel.getLatestBriefing();
+    try {
+      const config = await RecoveryModel.getConfig();
+      const logs = await RecoveryModel.getLogs(10);
+      const reasons = await RecoveryModel.getReasons();
+      const latestBriefing = await RecoveryModel.getLatestBriefing();
 
-    const lastReset = config ? new Date(config.last_reset_at) : new Date();
-    const now = new Date();
-    const diffMs = now - lastReset;
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    
-    return {
-      streak: {
-        last_reset_at: lastReset,
-        days: diffDays,
-        ms: diffMs
-      },
-      recent_logs: logs,
-      reasons: reasons,
-      latest_briefing: latestBriefing
-    };
+      const lastReset = config ? new Date(config.last_reset_at) : new Date();
+      const now = new Date();
+      const diffMs = now - lastReset;
+      const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      
+      return {
+        streak: {
+          last_reset_at: lastReset,
+          days: diffDays,
+          ms: diffMs
+        },
+        recent_logs: logs || [],
+        reasons: reasons || [],
+        latest_briefing: latestBriefing,
+        db_status: 'ONLINE'
+      };
+    } catch (error) {
+      console.error("[RecoveryService] DB Status Fetch Failed:", error.message);
+      // FAIL-SAFE: Return defaults so the UI doesn't crash
+      return {
+        streak: { last_reset_at: new Date(), days: 0, ms: 0 },
+        recent_logs: [],
+        reasons: [],
+        latest_briefing: null,
+        db_status: 'OFFLINE',
+        db_error: error.message
+      };
+    }
   },
 
   async logUrge(intensity, context, notes) {
-    return RecoveryModel.logEvent({
-      type: 'URGE',
-      intensity,
-      trigger_context: context,
-      notes
-    });
+    try {
+      return await RecoveryModel.logEvent({
+        type: 'URGE',
+        intensity,
+        trigger_context: context,
+        notes
+      });
+    } catch (error) {
+      console.error("[RecoveryService] logUrge Failed:", error.message);
+      throw new Error(`DATABASE_SYNC_FAILED: ${error.message}`);
+    }
   },
 
   async resetStreak(notes) {
-    await RecoveryModel.logEvent({
+    return RecoveryModel.logEvent({
       type: 'RESET',
       notes
     });
@@ -82,13 +101,19 @@ const RecoveryService = {
       // We wrap this in a sub-try-catch so that if the DB is down, the AI still functions
       let streakDays = 0;
       let reasonsList = "";
+      let dbInfo = "DB_OPERATIONAL";
       
       try {
         const status = await RecoveryService.getStatus();
-        reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
-        streakDays = status.streak.days;
+        if (status.db_status === 'OFFLINE') {
+          dbInfo = `DB_CONNECTION_FAILURE: ${status.db_error}`;
+          reasonsList = "Context currently unavailable due to system sync issues.";
+        } else {
+          reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
+          streakDays = status.streak.days;
+        }
       } catch (dbErr) {
-        console.error("[RecoveryService] AI Context Fetch Failed (DB issue):", dbErr.message);
+        dbInfo = `DB_SERVICE_EXCEPTION: ${dbErr.message}`;
         reasonsList = "Context currently unavailable due to system sync issues.";
       }
 
@@ -98,6 +123,9 @@ const RecoveryService = {
         systemInstruction: `
           You are the "Recovery Sentinel" – a high-level AI expert system specializing in addiction recovery, behavioral psychology, and cognitive behavioral therapy.
           Your purpose is to provide deep, analytical, and structured support to the user (a software engineer) who is managing a long-term recovery journey.
+          
+          SYSTEM_DIAGNOSTICS:
+          - DATABASE_INTERFACE: ${dbInfo}
           
           CURRENT_OPERATIVE_STATE:
           - STREAK_STABILITY: ${streakDays} days

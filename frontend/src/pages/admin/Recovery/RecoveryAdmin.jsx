@@ -299,6 +299,21 @@ const RecoveryAdmin = () => {
             <span className={styles.sessionInfo}>SECURE_SESSION: {new Date().toLocaleDateString()}</span>
           </div>
         </div>
+        
+        {/* DIAGNOSTIC PANEL */}
+        <div className={styles.diagnosticPanel}>
+          <div className={styles.diagnosticItem}>
+            <span className={styles.diagLabel}>DB_INTERFACE:</span>
+            <span className={status?.db_status === 'ONLINE' ? styles.statusOnline : styles.statusOffline}>
+              {status?.db_status || 'UNKNOWN'}
+            </span>
+          </div>
+          {status?.db_status === 'OFFLINE' && (
+            <div className={styles.diagnosticError}>
+              ERROR_LOG: {status.db_error}
+            </div>
+          )}
+        </div>
       </header>
 
       <div className={styles.grid}>
