@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node-pg-migrate up -m migrations && node server.js",
     "dev": "nodemon server.js",
     "migrate": "node-pg-migrate up -m migrations",
     "migrate-create": "npx node-pg-migrate create -m migrations",

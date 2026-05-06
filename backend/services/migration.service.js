@@ -23,8 +23,15 @@ const MigrationService = {
     };
 
     try {
-      // Handle both ESM and CJS export patterns
-      const migrate = runner.default || runner;
+      let migrate;
+      if (typeof runner === 'function') {
+        migrate = runner;
+      } else if (runner && typeof runner.default === 'function') {
+        migrate = runner.default;
+      } else {
+        throw new Error('Could not find a valid migration runner in node-pg-migrate package.');
+      }
+      
       await migrate(options);
       console.log('[MIGRATION] Schema is up to date.');
     } catch (error) {
