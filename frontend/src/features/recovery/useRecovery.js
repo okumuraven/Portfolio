@@ -51,6 +51,13 @@ export function useRecovery() {
     mutationFn: (data) => recoveryApi.chat(data),
   });
 
+  const generateBriefingMutation = useMutation({
+    mutationFn: () => recoveryApi.generateBriefing(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recovery-status'] });
+    },
+  });
+
   return {
     status,
     isLoading,
@@ -66,5 +73,7 @@ export function useRecovery() {
     removeReason: removeReasonMutation.mutateAsync,
     chat: chatMutation.mutateAsync,
     isChatting: chatMutation.isPending,
+    generateBriefing: generateBriefingMutation.mutateAsync,
+    isGeneratingBriefing: generateBriefingMutation.isPending,
   };
 }

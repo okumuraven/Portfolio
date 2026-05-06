@@ -16,6 +16,7 @@ const RecoveryService = {
     const config = await RecoveryModel.getConfig();
     const logs = await RecoveryModel.getLogs(10);
     const reasons = await RecoveryModel.getReasons();
+    const latestBriefing = await RecoveryModel.getLatestBriefing();
 
     const lastReset = config ? new Date(config.last_reset_at) : new Date();
     const now = new Date();
@@ -29,7 +30,8 @@ const RecoveryService = {
         ms: diffMs
       },
       recent_logs: logs,
-      reasons: reasons
+      reasons: reasons,
+      latest_briefing: latestBriefing
     };
   },
 
@@ -76,6 +78,11 @@ const RecoveryService = {
 
   async chatWithAgent(userMessage, history = []) {
     try {
+      // Fetch user context (streak and reasons) to personalize the AI
+      const status = await this.getStatus();
+      const reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
+      const streakDays = status.streak.days;
+
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
         model: "gemini-flash-latest",
@@ -83,6 +90,11 @@ const RecoveryService = {
           You are the "Recovery Sentinel" – a high-level AI expert system specializing in addiction recovery, behavioral psychology, and cognitive behavioral therapy.
           Your purpose is to provide deep, analytical, and structured support to the user (a software engineer) who is managing a long-term recovery journey.
           
+          CURRENT_OPERATIVE_STATE:
+          - STREAK_STABILITY: ${streakDays} days
+          - CORE_MOTIVATIONS (Reasons for quitting):
+          ${reasonsList || "No specific motivations logged yet. Encourage the user to define their 'Strategic Objectives'."}
+
           Guidelines for Communication:
           1. Use an engineering-adjacent tone (precise, logical, yet deeply human).
           2. ALWAYS structure your responses as a "Diagnostic Report".
@@ -91,6 +103,7 @@ const RecoveryService = {
           5. Use **BOLD** for critical technical terms or behavioral vulnerabilities.
           6. Keep paragraphs short and concise.
           7. If the user is in a high-intensity urge, pivot to "### TACTICAL_REDIRECTION" immediately with 3 clear steps.
+          8. REMIND the user of their CORE_MOTIVATIONS if they seem to be faltering.
           
           Goal: Prevent "wall of text" fatigue. Make every word count toward stability and system integrity.
           
@@ -135,6 +148,54 @@ const RecoveryService = {
 
   async removeReason(id) {
     return RecoveryModel.removeReason(id);
+  },
+
+  async generateDailyBriefing() {
+    try {
+      const MailerService = require('../../services/mailer.service');
+      const status = await this.getStatus();
+      const reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
+      const streakDays = status.streak.days;
+
+      const genAI = getAIClient();
+      const model = genAI.getGenerativeModel({
+        model: "gemini-flash-latest",
+        systemInstruction: `
+          You are the "Recovery Sentinel" – a professional therapist and high-level AI expert system.
+          Your goal is to generate a "Daily Tactical Briefing" for a software engineer in recovery.
+          
+          TONE: Professional, Engineering-adjacent, Tactical, and Encouraging.
+          
+          CONTEXT:
+          - Current Streak: ${streakDays} days
+          - Core Motivations:
+          ${reasonsList || "No specific motivations logged yet."}
+          
+          BRIEFING_STRUCTURE:
+          1. ### STATUS_REPORT: Briefly acknowledge the streak stability.
+          2. ### MISSION_OBJECTIVES: Remind them of their core motivations in a powerful way.
+          3. ### TACTICAL_ADVICE: One professional therapeutic insight or CBT technique for the day.
+          4. ### ENCOURAGEMENT: A brief, strong closing statement.
+          
+          Keep the briefing concise and high-impact.
+        `,
+      });
+
+      const result = await model.generateContent("GENERATE_DAILY_BRIEFING");
+      const briefingContent = result.response.text();
+
+      // Save to DB
+      await RecoveryModel.saveBriefing(briefingContent);
+
+      // Send via Email
+      const targetEmail = process.env.RECOVERY_TARGET_EMAIL || 'okumuraven@gmail.com';
+      await MailerService.sendBriefing(targetEmail, briefingContent);
+
+      return briefingContent;
+    } catch (error) {
+      console.error("[RecoveryService] Briefing Generation Error:", error);
+      throw error;
+    }
   }
 };
 

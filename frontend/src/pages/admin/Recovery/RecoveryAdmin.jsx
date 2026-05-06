@@ -158,7 +158,9 @@ const RecoveryAdmin = () => {
     addReason,
     removeReason,
     chat,
-    isChatting
+    isChatting,
+    generateBriefing,
+    isGeneratingBriefing
   } = useRecovery();
 
   const [urgeForm, setUrgeForm] = useState({ intensity: 5, trigger_context: '', notes: '' });
@@ -205,39 +207,45 @@ const RecoveryAdmin = () => {
     e.preventDefault();
     if (isLoggingUrge) return;
 
-    try {
-      // Store values before clearing form
-      const intensity = urgeForm.intensity;
-      const context = urgeForm.trigger_context;
-      const notes = urgeForm.notes;
+    // Capture state values before clearing form
+    const intensity = urgeForm.intensity;
+    const context = urgeForm.trigger_context;
+    const notes = urgeForm.notes;
 
-      await logUrge(urgeForm);
+    try {
+      // Step 1: Commit the telemetry to DB
+      await logUrge({ intensity, trigger_context: context, notes });
       
-      // Add a system-like message to the chat history to show the action was taken
+      // Step 2: Add visual confirmation to chat
       const actionMsg = `[TELEMETRY_LOGGED] Intensity: LVL_${intensity} | Context: ${context || 'N/A'}`;
       setChatHistory(prev => [...prev, { role: 'user', content: actionMsg, isNew: false }]);
       
       // Clear form immediately for UX
       setUrgeForm({ intensity: 5, trigger_context: '', notes: '' });
 
-      // Trigger AI analysis automatically
+      // Step 3: Trigger AI Analysis
       const analysisPrompt = `SYSTEM_EVENT: User logged an urge. 
       INTENSITY: ${intensity}/10
       CONTEXT: ${context || 'Not specified'}
       NOTES: ${notes || 'None provided'}
       
-      Provide a brief tactical analysis and one immediate stabilization protocol.`;
+      Provide a brief tactical analysis and one immediate stabilization protocol based on the behavioral notes provided.`;
       
-      const res = await chat({ 
-        message: analysisPrompt, 
-        history: chatHistory.map(({role, content}) => ({role, content})) 
-      });
-      
-      setChatHistory(prev => [...prev, { role: 'ai', content: res.data.response, isNew: true }]);
+      try {
+        const res = await chat({ 
+          message: analysisPrompt, 
+          history: chatHistory.map(({role, content}) => ({role, content})) 
+        });
+        setChatHistory(prev => [...prev, { role: 'ai', content: res.data.response, isNew: true }]);
+      } catch (aiErr) {
+        console.error("AI Analysis failed:", aiErr);
+        setChatHistory(prev => [...prev, { role: 'ai', content: 'SYSTEM WARNING: AI analysis offline, but telemetry was committed. Stay focused on your reasons for quitting.', isNew: true }]);
+      }
 
     } catch (err) {
-      console.error("Failed to commit telemetry:", err);
-      setChatHistory(prev => [...prev, { role: 'ai', content: 'CRITICAL: Telemetry sync failure. Focus on primary stabilization.', isNew: true }]);
+      console.error("Telemetry commit failed:", err);
+      // More specific error message
+      setChatHistory(prev => [...prev, { role: 'ai', content: 'CRITICAL: Database sync failure. Telemetry was NOT saved. Check network connection and maintain primary stability.', isNew: true }]);
     }
   };
 
@@ -327,6 +335,40 @@ const RecoveryAdmin = () => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* DAILY TACTICAL BRIEFING */}
+        <div className={`${styles.card} ${styles.briefingCard}`}>
+          <div className={styles.cardHeader}>
+            <div className={styles.cardHeaderLeft}>
+              <span className={styles.cardIndicator} style={{backgroundColor: '#00ff00'}}></span>
+              <h3>DAILY_TACTICAL_BRIEFING</h3>
+            </div>
+            <div className={styles.briefingActions}>
+              {status?.latest_briefing && (
+                <span className={styles.briefingDate}>
+                  {new Date(status.latest_briefing.sent_at).toLocaleDateString()}
+                </span>
+              )}
+              <button 
+                className={styles.syncBtn} 
+                onClick={() => generateBriefing()}
+                disabled={isGeneratingBriefing}
+              >
+                {isGeneratingBriefing ? 'SYNCING...' : 'MANUAL_SYNC'}
+              </button>
+            </div>
+          </div>
+          <div className={styles.briefingContent}>
+            {status?.latest_briefing ? (
+              <SentinelMessageContent content={status.latest_briefing.content} isNew={false} />
+            ) : (
+              <div className={styles.noBriefing}>
+                <p>INITIALIZING DAILY BRIEFING PROTOCOL...</p>
+                <p className={styles.subText}>System will generate first briefing at 08:00 HRS.</p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* AI RECOVERY SENTINEL CHAT */}
