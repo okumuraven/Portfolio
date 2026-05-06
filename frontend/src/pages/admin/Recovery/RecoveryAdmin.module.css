@@ -114,6 +114,52 @@
   flex-wrap: wrap;
 }
 
+/* DIAGNOSTIC PANEL */
+.diagnosticPanel {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 0, 0, 0.05);
+  border: 1px solid #111;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.diagnosticItem {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.diagLabel {
+  color: #555;
+}
+
+.statusOnline {
+  color: var(--neon-green);
+  font-weight: 900;
+}
+
+.statusOffline {
+  color: var(--neon-red);
+  font-weight: 900;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.diagnosticError {
+  color: var(--neon-red);
+  font-size: 0.55rem;
+  opacity: 0.8;
+  word-break: break-all;
+}
+
 @media (min-width: 768px) {
   .metaRow {
     font-size: 0.65rem;
