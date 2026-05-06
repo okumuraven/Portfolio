@@ -37,11 +37,13 @@ module.exports = function errorMiddleware(err, req, res, next) {
     });
   }
 
-  // Production: Hide error stack/details
-  const response =
-    status >= 500 && process.env.NODE_ENV === "production"
-      ? { error: "Server Error. Please try again later.", code }
-      : { error: message, code, ...(err.errors ? { errors: err.errors } : {}), stack: err.stack };
+  // Production: Show error details for debugging (Temporary)
+  const response = { 
+    error: message, 
+    code, 
+    ...(err.errors ? { errors: err.errors } : {}), 
+    stack: err.stack 
+  };
 
   res.status(status).json(response);
 };
