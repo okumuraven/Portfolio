@@ -75,7 +75,7 @@ const RecoveryService = {
     try {
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-flash-latest",
         systemInstruction: `
           You are a Virtual Operative AI and a professional therapist. 
           The user is experiencing a strong urge to relapse into an addiction.
@@ -119,7 +119,7 @@ const RecoveryService = {
 
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-flash-latest",
         systemInstruction: `
           You are the "Recovery Sentinel" – a high-level AI expert system specializing in addiction recovery, behavioral psychology, and cognitive behavioral therapy.
           Your purpose is to provide deep, analytical, and structured support to the user (a software engineer) who is managing a long-term recovery journey.
@@ -190,19 +190,19 @@ const RecoveryService = {
   async generateDailyBriefing() {
     try {
       const MailerService = require('../../services/mailer.service');
-      const status = await this.getStatus();
+      const status = await RecoveryService.getStatus();
       const reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
       const streakDays = status.streak.days;
 
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-flash-latest",
         systemInstruction: `
           You are the "Recovery Sentinel" – a professional therapist and high-level AI expert system.
           Your goal is to generate a "Daily Tactical Briefing" for a software engineer in recovery.
-          
+
           TONE: Professional, Engineering-adjacent, Tactical, and Encouraging.
-          
+  ...
           CONTEXT:
           - Current Streak: ${streakDays} days
           - Core Motivations:
