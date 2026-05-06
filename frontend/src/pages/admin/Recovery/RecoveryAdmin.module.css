@@ -242,6 +242,69 @@
   .clockCard { grid-column: span 12; }
 }
 
+/* BRIEFING CARD */
+.briefingCard {
+  border-left: 3px solid var(--neon-green);
+}
+
+@media (min-width: 1024px) {
+  .briefingCard {
+    grid-column: span 12;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.briefingDate {
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  color: #444;
+}
+
+.briefingActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.syncBtn {
+  background: transparent;
+  border: 1px solid #222;
+  color: #555;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  padding: 2px 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.syncBtn:hover:not(:disabled) {
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+}
+
+.syncBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.briefingContent {
+  width: 100%;
+}
+
+.noBriefing {
+  text-align: center;
+  padding: 2rem;
+  color: #333;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.subText {
+  font-size: 0.6rem;
+  margin-top: 0.5rem;
+  opacity: 0.5;
+}
+
 .clockContainer {
   display: flex;
   flex-direction: column;

@@ -67,6 +67,15 @@ const RecoveryController = {
     } catch (err) {
       next(err);
     }
+  },
+
+  async generateBriefing(req, res, next) {
+    try {
+      const briefing = await RecoveryService.generateDailyBriefing();
+      res.json({ briefing });
+    } catch (err) {
+      next(err);
+    }
   }
 };
 

@@ -8,6 +8,7 @@ const recoveryApi = {
   addReason: (data) => http.post('/admin/recovery/reasons', data),
   removeReason: (id) => http.delete(`/admin/recovery/reasons/${id}`),
   chat: (data) => http.post('/admin/recovery/chat', data),
+  generateBriefing: () => http.post('/admin/recovery/generate-briefing'),
 };
 
 export default recoveryApi;

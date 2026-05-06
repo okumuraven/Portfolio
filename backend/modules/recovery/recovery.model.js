@@ -37,6 +37,14 @@ const RecoveryModel = {
 
   async removeReason(id) {
     return db.none('DELETE FROM recovery_reasons WHERE id = $1', [id]);
+  },
+
+  async saveBriefing(content, type = 'DAILY_TWEET') {
+    return db.one('INSERT INTO recovery_briefings (content, type) VALUES ($1, $2) RETURNING *', [content, type]);
+  },
+
+  async getLatestBriefing() {
+    return db.oneOrNone('SELECT * FROM recovery_briefings ORDER BY created_at DESC LIMIT 1');
   }
 };
 

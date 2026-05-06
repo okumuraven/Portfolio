@@ -14,5 +14,6 @@ router.post('/panic', RecoveryController.panic);
 router.post('/reasons', RecoveryController.addReason);
 router.delete('/reasons/:id', RecoveryController.removeReason);
 router.post('/chat', RecoveryController.chat);
+router.post('/generate-briefing', RecoveryController.generateBriefing);
 
 module.exports = router;
