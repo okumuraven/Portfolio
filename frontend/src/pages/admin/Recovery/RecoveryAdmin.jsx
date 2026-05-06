@@ -244,8 +244,13 @@ const RecoveryAdmin = () => {
 
     } catch (err) {
       console.error("Telemetry commit failed:", err);
-      // More specific error message
-      setChatHistory(prev => [...prev, { role: 'ai', content: 'CRITICAL: Database sync failure. Telemetry was NOT saved. Check network connection and maintain primary stability.', isNew: true }]);
+      // More specific error message including server response if available
+      const errMsg = err.response?.data?.error || err.message || "Unknown Error";
+      setChatHistory(prev => [...prev, { 
+        role: 'ai', 
+        content: `CRITICAL: Database sync failure. Telemetry was NOT saved.\n\nERROR_DETAILS: ${errMsg}\n\nCheck network connection and maintain primary stability.`, 
+        isNew: true 
+      }]);
     }
   };
 
