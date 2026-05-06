@@ -56,7 +56,7 @@ const RecoveryService = {
     try {
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-flash-latest",
+        model: "gemini-1.5-flash",
         systemInstruction: `
           You are a Virtual Operative AI and a professional therapist. 
           The user is experiencing a strong urge to relapse into an addiction.
@@ -71,7 +71,7 @@ const RecoveryService = {
       const result = await model.generateContent("EMERGENCY: I am having a strong urge. Redirect me now.");
       return result.response.text();
     } catch (error) {
-      console.error("[RecoveryService] Panic Redirection Error:", error.message);
+      console.error("[RecoveryService] Panic Redirection Error:", error);
       return "Focus on your breath. Count to ten. Remember why you started. You are stronger than this moment.";
     }
   },
@@ -79,13 +79,14 @@ const RecoveryService = {
   async chatWithAgent(userMessage, history = []) {
     try {
       // Fetch user context (streak and reasons) to personalize the AI
-      const status = await this.getStatus();
+      // Use explicit service reference to avoid 'this' context issues
+      const status = await RecoveryService.getStatus();
       const reasonsList = status.reasons.map(r => `- ${r.content}`).join('\n');
       const streakDays = status.streak.days;
 
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-flash-latest",
+        model: "gemini-1.5-flash",
         systemInstruction: `
           You are the "Recovery Sentinel" – a high-level AI expert system specializing in addiction recovery, behavioral psychology, and cognitive behavioral therapy.
           Your purpose is to provide deep, analytical, and structured support to the user (a software engineer) who is managing a long-term recovery journey.
@@ -159,7 +160,7 @@ const RecoveryService = {
 
       const genAI = getAIClient();
       const model = genAI.getGenerativeModel({
-        model: "gemini-flash-latest",
+        model: "gemini-1.5-flash",
         systemInstruction: `
           You are the "Recovery Sentinel" – a professional therapist and high-level AI expert system.
           Your goal is to generate a "Daily Tactical Briefing" for a software engineer in recovery.
