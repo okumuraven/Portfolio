@@ -1,9 +1,16 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../../database');
-const { authenticator } = require('otplib');
+const otplib = require('otplib');
 const qrcode = require('qrcode');
 require('dotenv').config();
+
+// Access authenticator safely
+const authenticator = otplib.authenticator;
+
+if (!authenticator) {
+  console.error('[2FA_CRITICAL] otplib.authenticator is undefined. Check library version/imports.');
+}
 
 /**
  * Login service: validate user and issue JWT or 2FA challenge
