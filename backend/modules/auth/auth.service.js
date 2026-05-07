@@ -42,7 +42,7 @@ exports.login = async (email, plainPassword) => {
   }
 
   // 4. Create JWT (No 2FA or not enabled)
-  const token = this.generateToken(user);
+  const token = exports.generateToken(user);
 
   return {
     token,
@@ -77,7 +77,7 @@ exports.login2FA = async (userId, token) => {
     return null;
   }
 
-  const accessToken = this.generateToken(user);
+  const accessToken = exports.generateToken(user);
 
   return {
     token: accessToken,

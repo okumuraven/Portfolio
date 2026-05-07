@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import * as authAPI from '../../api/auth.api';
 import styles from './Security.module.css';
