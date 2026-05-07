@@ -72,7 +72,12 @@ exports.login2FA = async (req, res) => {
  */
 exports.setup2FA = async (req, res) => {
   try {
-    const { secret, qrCodeDataURL } = await authService.setup2FA(req.user.userId);
+    console.log("[2FA_SETUP] Initializing for user:", req.user);
+    const userId = req.user.userId || req.user.id;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID missing from token payload." });
+    }
+    const { secret, qrCodeDataURL } = await authService.setup2FA(userId);
     res.json({ secret, qrCodeDataURL });
   } catch (err) {
     console.error("2FA Setup error:", err);
@@ -96,14 +101,15 @@ exports.verifyAndEnable2FA = async (req, res) => {
   const { secret, token } = req.body;
 
   try {
-    const success = await authService.verifyAndEnable2FA(req.user.userId, secret, token);
+    const userId = req.user.userId || req.user.id;
+    const success = await authService.verifyAndEnable2FA(userId, secret, token);
     if (!success) {
       return res.status(400).json({ error: "Invalid verification code." });
     }
     res.json({ message: "2FA enabled successfully." });
   } catch (err) {
     console.error("2FA Verify error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: `Backend Error: ${err.message}` });
   }
 };
 
@@ -113,11 +119,12 @@ exports.verifyAndEnable2FA = async (req, res) => {
  */
 exports.disable2FA = async (req, res) => {
   try {
-    await authService.disable2FA(req.user.userId);
+    const userId = req.user.userId || req.user.id;
+    await authService.disable2FA(userId);
     res.json({ message: "2FA disabled successfully." });
   } catch (err) {
     console.error("2FA Disable error:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: `Backend Error: ${err.message}` });
   }
 };
 
@@ -128,7 +135,8 @@ exports.me = async (req, res) => {
   if (!req.user)
     return res.status(401).json({ error: "Unauthorized" });
   try {
-    const user = await authService.getUserById(req.user.userId);
+    const userId = req.user.userId || req.user.id;
+    const user = await authService.getUserById(userId);
     res.json({ user });
   } catch (err) {
     res.status(500).json({ error: "Server error getting user data" });
