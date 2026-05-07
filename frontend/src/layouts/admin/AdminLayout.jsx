@@ -86,6 +86,9 @@ export default function AdminLayout() {
           <NavLink to="/admin/recovery" className={getLinkClass} onClick={closeSidebar}>
             / Recovery_System
           </NavLink>
+          <NavLink to="/admin/security" className={getLinkClass} onClick={closeSidebar}>
+            / Security_Settings
+          </NavLink>
         </nav>
         <div className={styles.backLinkWrapper}>
           <Link to="/" className={styles.backLink}>

@@ -143,6 +143,33 @@
   cursor: not-allowed;
 }
 
+.backBtn {
+  width: 100%;
+  background: transparent;
+  color: #888;
+  border: 1px solid #333;
+  padding: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.backBtn:hover:not(:disabled) {
+  border-color: #666;
+  color: #fff;
+}
+
+.helpText {
+  color: #555;
+  font-size: 0.7rem;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
 /* --- ERROR --- */
 .errorMsg {
   margin-top: 1.5rem;

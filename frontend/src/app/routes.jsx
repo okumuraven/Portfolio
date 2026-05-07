@@ -11,6 +11,7 @@ import ProjectsAdminPage from "../pages/admin/Projects/ProjectsAdminPage";
 import TimelinePage from "../pages/public/Timeline/TimelinePage";
 import TimelineAdmin from "../pages/admin/TimelineAdmin";
 import RecoveryAdmin from "../pages/admin/Recovery/RecoveryAdmin";
+import Security from "../pages/admin/Security";
 
 // NEW: Contact pages
 import Contact from "../pages/public/Contact/Contact";
@@ -52,6 +53,7 @@ export default function AppRoutes() {
         <Route path="projects" element={<ProjectsAdminPage />} />
         <Route path="timeline" element={<TimelineAdmin />} />
         <Route path="recovery" element={<RecoveryAdmin />} />
+        <Route path="security" element={<Security />} />
         {/* NEW: Contact/Profile Admin Management */}
         <Route path="contact" element={<ContactAdmin />} />
         {/* Chatbot Admin Config */}
