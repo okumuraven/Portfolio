@@ -52,7 +52,7 @@ exports.login2FA = async (userId, token) => {
 
   if (!user || !user.two_factor_enabled || !user.two_factor_secret) return null;
 
-  const isValid = otplib.verify({
+  const isValid = await otplib.verify({
     token,
     secret: user.two_factor_secret,
     ...totpConfig
@@ -90,7 +90,12 @@ exports.setup2FA = async (userId) => {
   if (!user) throw new Error('User not found');
 
   const secret = otplib.generateSecret(20); // 20 bytes for strong secret
-  const otpauth = otplib.generateURI(user.email, 'PortfolioAdmin', secret, totpConfig);
+  
+  // MANUALLY generate the URI to avoid the internal 'split' error in otplib.generateURI
+  const label = encodeURIComponent(`Portfolio:${user.email}`);
+  const issuer = encodeURIComponent('PortfolioAdmin');
+  const otpauth = `otpauth://totp/${label}?secret=${secret}&issuer=${issuer}&algorithm=SHA1&digits=6&period=30`;
+  
   const qrCodeDataURL = await qrcode.toDataURL(otpauth);
 
   return { secret, qrCodeDataURL };
@@ -100,7 +105,7 @@ exports.setup2FA = async (userId) => {
  * Verify and enable 2FA
  */
 exports.verifyAndEnable2FA = async (userId, secret, token) => {
-  const isValid = otplib.verify({ token, secret, ...totpConfig });
+  const isValid = await otplib.verify({ token, secret, ...totpConfig });
   if (!isValid) return false;
 
   await db.none('UPDATE users SET two_factor_secret = $1, two_factor_enabled = true WHERE id = $2', [secret, userId]);
