@@ -59,10 +59,14 @@ exports.login2FA = async (userId, token) => {
   if (cleanToken.length === 6 && /^\d+$/.test(cleanToken)) {
     const decryptedSecret = authEncryption.decrypt(user.two_factor_secret);
     if (decryptedSecret) {
-      // Use totp.check for more reliable direct verification in this environment
-      const isValid = otplib.totp.check(cleanToken, decryptedSecret);
+      // Use verifySync(...).valid for the most robust check in this environment
+      const result = otplib.verifySync({
+        token: cleanToken,
+        secret: decryptedSecret,
+        ...totpConfig
+      });
       
-      if (isValid) return this.issueSession(user);
+      if (result && result.valid) return this.issueSession(user);
     }
   }
 
@@ -132,8 +136,13 @@ exports.setup2FA = async (userId) => {
  * Returns recovery codes for the user to save.
  */
 exports.verifyAndEnable2FA = async (userId, secret, token) => {
-  const isValid = otplib.totp.check(token, secret);
-  if (!isValid) return null;
+  const result = otplib.verifySync({
+    token,
+    secret,
+    ...totpConfig
+  });
+
+  if (!result || !result.valid) return null;
 
   // 1. Encrypt the secret for storage
   const encryptedSecret = authEncryption.encrypt(secret);
