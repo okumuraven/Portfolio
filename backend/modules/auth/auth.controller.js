@@ -102,11 +102,16 @@ exports.verifyAndEnable2FA = async (req, res) => {
 
   try {
     const userId = req.user.userId || req.user.id;
-    const success = await authService.verifyAndEnable2FA(userId, secret, token);
-    if (!success) {
+    const recoveryCodes = await authService.verifyAndEnable2FA(userId, secret, token);
+    
+    if (!recoveryCodes) {
       return res.status(400).json({ error: "Invalid verification code." });
     }
-    res.json({ message: "2FA enabled successfully." });
+    
+    res.json({ 
+      message: "2FA enabled successfully.",
+      recoveryCodes 
+    });
   } catch (err) {
     console.error("2FA Verify error:", err);
     res.status(500).json({ error: `Backend Error: ${err.message}` });
