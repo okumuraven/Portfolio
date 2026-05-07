@@ -7,6 +7,7 @@ export default function Security() {
   const { user, fetchUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [setupData, setSetupData] = useState(null);
+  const [recoveryCodes, setRecoveryCodes] = useState(null);
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -32,11 +33,14 @@ export default function Security() {
     setLoading(true);
     setError('');
     try {
-      await authAPI.verifyAndEnable2FA(setupData.secret, token);
+      const res = await authAPI.verifyAndEnable2FA(setupData.secret, token);
+      if (res.recoveryCodes) {
+        setRecoveryCodes(res.recoveryCodes);
+      }
       setMessage('Two-Factor Authentication enabled successfully!');
       setSetupData(null);
       setToken('');
-      fetchUser(); // Refresh user state to show 2FA as enabled
+      fetchUser(); // Refresh user state
     } catch (err) {
       setError(err?.response?.data?.error || 'Verification failed. Please try again.');
     } finally {
@@ -57,6 +61,13 @@ export default function Security() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const copyCodes = () => {
+    if (!recoveryCodes) return;
+    const text = recoveryCodes.join('\n');
+    navigator.clipboard.writeText(text);
+    alert('Recovery codes copied to clipboard!');
   };
 
   return (
@@ -124,6 +135,24 @@ export default function Security() {
             <p className={styles.successText}>✓ 2FA is currently protecting your account.</p>
             <button className={styles.disableBtn} onClick={handleDisable} disabled={loading}>
               DISABLE 2FA
+            </button>
+          </div>
+        )}
+
+        {recoveryCodes && (
+          <div className={styles.recoveryBox}>
+            <h3 className={styles.recoveryTitle}>Action Required: Save Recovery Codes</h3>
+            <p className={styles.recoveryDesc}>
+              If you lose access to your authenticator app, these codes can be used to log in. 
+              <strong> They will only be shown once.</strong> Store them in a secure place.
+            </p>
+            <div className={styles.codesGrid}>
+              {recoveryCodes.map((code, i) => (
+                <div key={i} className={styles.codeItem}>{code}</div>
+              ))}
+            </div>
+            <button className={styles.copyBtn} onClick={copyCodes}>
+              COPY TO CLIPBOARD
             </button>
           </div>
         )}
