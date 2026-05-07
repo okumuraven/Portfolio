@@ -76,7 +76,7 @@ exports.setup2FA = async (req, res) => {
     res.json({ secret, qrCodeDataURL });
   } catch (err) {
     console.error("2FA Setup error:", err);
-    res.status(500).json({ error: "Failed to initialize 2FA setup." });
+    res.status(500).json({ error: `Backend Error: ${err.message}` });
   }
 };
 

@@ -1,11 +1,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Pool } = require('pg');
+const db = require('../../database');
 const { authenticator } = require('otplib');
 const qrcode = require('qrcode');
 require('dotenv').config();
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 /**
  * Login service: validate user and issue JWT or 2FA challenge
@@ -15,9 +13,7 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
  */
 exports.login = async (email, plainPassword) => {
   // 1. User lookup
-  const query = 'SELECT id, email, hashed_password, role, is_active, created_at, two_factor_enabled, two_factor_secret FROM users WHERE email = $1';
-  const { rows } = await pool.query(query, [email]);
-  const user = rows[0];
+  const user = await db.oneOrNone('SELECT id, email, hashed_password, role, is_active, created_at, two_factor_enabled, two_factor_secret FROM users WHERE email = $1', [email]);
 
   if (!user || user.is_active === false) {
     return null;
@@ -60,9 +56,7 @@ exports.login = async (email, plainPassword) => {
  * Verify 2FA token and issue JWT
  */
 exports.login2FA = async (userId, token) => {
-  const query = 'SELECT id, email, role, is_active, created_at, two_factor_enabled, two_factor_secret FROM users WHERE id = $1';
-  const { rows } = await pool.query(query, [userId]);
-  const user = rows[0];
+  const user = await db.oneOrNone('SELECT id, email, role, is_active, created_at, two_factor_enabled, two_factor_secret FROM users WHERE id = $1', [userId]);
 
   if (!user || !user.two_factor_enabled || !user.two_factor_secret) {
     return null;
@@ -108,9 +102,7 @@ exports.generateToken = (user) => {
  * Setup 2FA: Generate secret and QR code
  */
 exports.setup2FA = async (userId) => {
-  const query = 'SELECT email FROM users WHERE id = $1';
-  const { rows } = await pool.query(query, [userId]);
-  const user = rows[0];
+  const user = await db.oneOrNone('SELECT email FROM users WHERE id = $1', [userId]);
 
   if (!user) throw new Error('User not found');
 
@@ -129,8 +121,7 @@ exports.verifyAndEnable2FA = async (userId, secret, token) => {
   const isValid = authenticator.verify({ token, secret });
   if (!isValid) return false;
 
-  const query = 'UPDATE users SET two_factor_secret = $1, two_factor_enabled = true WHERE id = $2';
-  await pool.query(query, [secret, userId]);
+  await db.none('UPDATE users SET two_factor_secret = $1, two_factor_enabled = true WHERE id = $2', [secret, userId]);
   return true;
 };
 
@@ -138,8 +129,7 @@ exports.verifyAndEnable2FA = async (userId, secret, token) => {
  * Disable 2FA
  */
 exports.disable2FA = async (userId) => {
-  const query = 'UPDATE users SET two_factor_secret = null, two_factor_enabled = false WHERE id = $1';
-  await pool.query(query, [userId]);
+  await db.none('UPDATE users SET two_factor_secret = null, two_factor_enabled = false WHERE id = $1', [userId]);
   return true;
 };
 
@@ -147,7 +137,5 @@ exports.disable2FA = async (userId) => {
  * Get user by ID
  */
 exports.getUserById = async (userId) => {
-  const query = 'SELECT id, email, role, is_active, created_at, two_factor_enabled FROM users WHERE id = $1';
-  const { rows } = await pool.query(query, [userId]);
-  return rows[0] || null;
+  return db.oneOrNone('SELECT id, email, role, is_active, created_at, two_factor_enabled FROM users WHERE id = $1', [userId]);
 };
