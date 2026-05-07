@@ -18,7 +18,10 @@ export default function Security() {
       const data = await authAPI.setup2FA();
       setSetupData(data);
     } catch (err) {
-      setError(err?.response?.data?.error || 'Failed to initialize 2FA setup.');
+      console.error('2FA_SETUP_FAILURE:', err);
+      const backendErr = err?.response?.data?.error;
+      const status = err?.response?.status;
+      setError(backendErr ? `[${status}] ${backendErr}` : `Network Error or Backend Unreachable. Status: ${status || 'Unknown'}`);
     } finally {
       setLoading(false);
     }
