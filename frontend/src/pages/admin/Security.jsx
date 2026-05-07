@@ -18,7 +18,7 @@ export default function Security() {
       const data = await authAPI.setup2FA();
       setSetupData(data);
     } catch (err) {
-      setError('Failed to initialize 2FA setup.');
+      setError(err?.response?.data?.error || 'Failed to initialize 2FA setup.');
     } finally {
       setLoading(false);
     }
