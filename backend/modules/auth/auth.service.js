@@ -5,48 +5,33 @@ const otplib = require('otplib');
 const qrcode = require('qrcode');
 require('dotenv').config();
 
-// Access authenticator safely
-const authenticator = otplib.authenticator;
-
-if (!authenticator) {
-  console.error('[2FA_CRITICAL] otplib.authenticator is undefined. Check library version/imports.');
-}
+// Standard TOTP configuration for Google Authenticator compatibility
+const totpConfig = {
+  step: 30,
+  digits: 6,
+  algorithm: 'sha1',
+  encoding: 'base32'
+};
 
 /**
  * Login service: validate user and issue JWT or 2FA challenge
- * @param {string} email
- * @param {string} plainPassword
- * @returns {Promise<{token?: string, user: object, twoFactorRequired?: boolean} | null>}
  */
 exports.login = async (email, plainPassword) => {
-  // 1. User lookup
   const user = await db.oneOrNone('SELECT id, email, hashed_password, role, is_active, created_at, two_factor_enabled, two_factor_secret FROM users WHERE email = $1', [email]);
 
-  if (!user || user.is_active === false) {
-    return null;
-  }
+  if (!user || user.is_active === false) return null;
 
-  // 2. Verify password hash
   const valid = await bcrypt.compare(plainPassword, user.hashed_password);
-  if (!valid) {
-    return null;
-  }
+  if (!valid) return null;
 
-  // 3. Check if 2FA is enabled
   if (user.two_factor_enabled) {
     return {
       twoFactorRequired: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
+      user: { id: user.id, email: user.email, role: user.role },
     };
   }
 
-  // 4. Create JWT (No 2FA or not enabled)
   const token = exports.generateToken(user);
-
   return {
     token,
     user: {
@@ -65,21 +50,17 @@ exports.login = async (email, plainPassword) => {
 exports.login2FA = async (userId, token) => {
   const user = await db.oneOrNone('SELECT id, email, role, is_active, created_at, two_factor_enabled, two_factor_secret FROM users WHERE id = $1', [userId]);
 
-  if (!user || !user.two_factor_enabled || !user.two_factor_secret) {
-    return null;
-  }
+  if (!user || !user.two_factor_enabled || !user.two_factor_secret) return null;
 
-  const isValid = authenticator.verify({
+  const isValid = otplib.verify({
     token,
     secret: user.two_factor_secret,
+    ...totpConfig
   });
 
-  if (!isValid) {
-    return null;
-  }
+  if (!isValid) return null;
 
   const accessToken = exports.generateToken(user);
-
   return {
     token: accessToken,
     user: {
@@ -96,11 +77,7 @@ exports.login2FA = async (userId, token) => {
  * Generate a JWT token
  */
 exports.generateToken = (user) => {
-  const jwtPayload = {
-    userId: user.id,
-    email: user.email,
-    role: user.role,
-  };
+  const jwtPayload = { userId: user.id, email: user.email, role: user.role };
   const secret = process.env.JWT_SECRET || "devtopsecret";
   return jwt.sign(jwtPayload, secret, { expiresIn: '2h' });
 };
@@ -110,14 +87,12 @@ exports.generateToken = (user) => {
  */
 exports.setup2FA = async (userId) => {
   const user = await db.oneOrNone('SELECT email FROM users WHERE id = $1', [userId]);
-
   if (!user) throw new Error('User not found');
 
-  const secret = authenticator.generateSecret();
-  const otpauth = authenticator.keyuri(user.email, 'PortfolioAdmin', secret);
+  const secret = otplib.generateSecret(20); // 20 bytes for strong secret
+  const otpauth = otplib.generateURI(user.email, 'PortfolioAdmin', secret, totpConfig);
   const qrCodeDataURL = await qrcode.toDataURL(otpauth);
 
-  // We don't save it yet; we only save after verification
   return { secret, qrCodeDataURL };
 };
 
@@ -125,7 +100,7 @@ exports.setup2FA = async (userId) => {
  * Verify and enable 2FA
  */
 exports.verifyAndEnable2FA = async (userId, secret, token) => {
-  const isValid = authenticator.verify({ token, secret });
+  const isValid = otplib.verify({ token, secret, ...totpConfig });
   if (!isValid) return false;
 
   await db.none('UPDATE users SET two_factor_secret = $1, two_factor_enabled = true WHERE id = $2', [secret, userId]);
