@@ -1,0 +1,215 @@
+/* Security.module.css */
+
+.container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+.header {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #222;
+  padding-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.section {
+  background: rgba(15, 15, 15, 0.5);
+  border: 1px solid #222;
+  border-radius: 4px;
+  padding: 2rem;
+  position: relative;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.badge {
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 20px;
+  font-family: 'Courier New', monospace;
+}
+
+.active {
+  background: rgba(0, 255, 100, 0.1);
+  color: #00ff64;
+  border: 1px solid rgba(0, 255, 100, 0.3);
+}
+
+.inactive {
+  background: rgba(255, 255, 255, 0.05);
+  color: #666;
+  border: 1px solid #333;
+}
+
+.description {
+  color: #aaa;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
+
+.actionBtn {
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: #ff5500;
+  color: #fff;
+}
+
+.setupBox {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #333;
+}
+
+.setupTitle {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: #ff5500;
+}
+
+.steps {
+  color: #888;
+  margin-bottom: 2rem;
+  padding-left: 1.2rem;
+}
+
+.steps li {
+  margin-bottom: 10px;
+}
+
+.secret {
+  background: #000;
+  color: #ff5500;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  margin-left: 5px;
+}
+
+.qrContainer {
+  background: #fff;
+  padding: 1rem;
+  width: fit-content;
+  margin-bottom: 2rem;
+  border-radius: 4px;
+}
+
+.qrCode {
+  display: block;
+}
+
+.verifyForm {
+  max-width: 300px;
+}
+
+.tokenInput {
+  width: 100%;
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 12px;
+  font-size: 1.5rem;
+  letter-spacing: 0.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  outline: none;
+}
+
+.tokenInput:focus {
+  border-color: #ff5500;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.verifyBtn {
+  background: #ff5500;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background: transparent;
+  color: #666;
+  border: 1px solid #333;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.enabledBox {
+  background: rgba(0, 255, 100, 0.05);
+  border: 1px solid rgba(0, 255, 100, 0.1);
+  padding: 1.5rem;
+  border-radius: 4px;
+}
+
+.successText {
+  color: #00ff64;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.disableBtn {
+  background: transparent;
+  color: #ff4444;
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.disableBtn:hover {
+  background: rgba(255, 68, 68, 0.1);
+  border-color: #ff4444;
+}
+
+.errorMsg {
+  margin-top: 1.5rem;
+  color: #ff4444;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.successMsg {
+  margin-top: 1.5rem;
+  color: #00ff64;
+  font-weight: 500;
+}

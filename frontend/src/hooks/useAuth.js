@@ -19,6 +19,16 @@ export function AuthProvider({ children }) {
     return data;
   }, []);
 
+  // 2FA Login method
+  const login2FA = useCallback(async (userId, token) => {
+    const data = await authAPI.login2FA(userId, token);
+    if (data.accessToken) {
+      localStorage.setItem('accessToken', data.accessToken);
+      setUser(data.user);
+    }
+    return data;
+  }, []);
+
   // Fetch user on app startup (if JWT exists)
   const fetchUser = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
@@ -52,7 +62,7 @@ export function AuthProvider({ children }) {
   }, [fetchUser]);
 
   // Share everything app-wide
-  const value = { user, loading, login, fetchUser, logout };
+  const value = { user, loading, login, login2FA, fetchUser, logout };
 
   return (
     <AuthContext.Provider value={value}>
