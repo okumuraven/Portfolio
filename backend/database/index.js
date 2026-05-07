@@ -1,21 +1,32 @@
 const pgp = require('pg-promise')();
 const config = require('../config/env');
 
-if (!config.DATABASE_URL) {
-  console.error('[DATABASE] CRITICAL_ERROR: DATABASE_URL is undefined.');
-} else {
-  // Log partially masked URL for safety
-  const maskedUrl = config.DATABASE_URL.replace(/:([^@]+)@/, ':****@');
-  console.log(`[DATABASE] Initializing connection to: ${maskedUrl.split('@')[1]}`);
+// Robust logging for database connection
+try {
+  if (!config.DATABASE_URL) {
+    console.warn('[DATABASE] WARNING: DATABASE_URL is not defined in environment.');
+  } else {
+    // Safely mask and log connection info
+    const urlParts = config.DATABASE_URL.split('@');
+    if (urlParts.length > 1) {
+      const hostPart = urlParts[1].split('/')[0];
+      console.log(`[DATABASE] Target Host: ${hostPart}`);
+    } else {
+      console.log('[DATABASE] Initializing with non-standard connection string.');
+    }
+  }
+} catch (logErr) {
+  console.warn('[DATABASE] Could not log connection details safely.');
 }
 
-const db = pgp(config.DATABASE_URL);
+// Create the database instance
+const db = pgp(config.DATABASE_URL || '');
 
-// Test connection
+// Test connection asynchronously
 db.connect()
   .then(obj => {
     console.log('[DATABASE] Connection successful.');
-    obj.done(); // success, release the connection;
+    obj.done();
   })
   .catch(error => {
     console.error('[DATABASE] Connection failure:', error.message || error);
