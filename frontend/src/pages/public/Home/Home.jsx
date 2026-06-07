@@ -3,7 +3,6 @@ import styles from "./Home.module.css";
 // Import your section components (create them if you haven't yet)
 import Hero from "./sections/Hero";
 import PersonaOperations from "./sections/PersonaOperations";
-import HighlightStats from "./sections/HighlightStats";
 import TimelinePreview from "./sections/TimelinePreview";
 import ContactCTA from "./sections/ContactCTA";
 
