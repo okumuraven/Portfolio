@@ -1,154 +1,113 @@
-// src/pages/public/Home/sections/Hero.jsx
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Hero.module.css";
 import { usePersonas } from "../../../../features/personas/usePersonas";
 
-/**
- * Helper: Formats the persona "Type" string for display
- */
-function displayPersonaType(type) {
-  switch ((type || "").toLowerCase()) {
-    case "current": return "CURRENT FOCUS";
-    case "past": return "PREVIOUS ROLE";
-    case "goal": return "ASPIRATION";
-    default: return type ? type.toUpperCase() : "—";
-  }
-}
-
-/**
- * Helper: Cleans up text
- */
-function cleanString(str, fallback = "—") {
-  if (!str) return fallback;
-  return String(str)
-    .replace(/typical causes:.*authorization problems.*endpoint\)/i, "")
-    .trim() || fallback;
-}
-
 export default function Hero() {
-  const {
-    personas,
-    activePersona,
-    activePersonaId,
-    setActivePersonaId,
-    isLoading,
-    isError,
-    error
-  } = usePersonas();
+  const { personas, activePersonaId, setActivePersonaId } = usePersonas();
+  
+  // Static Core Identity (Guarantees Instant Load & Perfect UX)
+  const coreProfile = {
+    name: "OKUMU JOSEPH",
+    handle: "OKUMU RAVEN",
+    title: "FULL-STACK ARCHITECT & SECURITY RESEARCHER",
+    summary: "Building secure, high-performance digital infrastructure.",
+    description: "Specializing in cutting-edge frontend interfaces, highly concurrent backend systems, and offensive security. I engineer solutions that scale and withstand modern cyber threats.",
+    accentColor: "#00e5ff", // Neon Cyan
+  };
 
-  // State to track if the custom icon link is broken
-  const [iconBroken, setIconBroken] = useState(false);
+  // If we have loaded data and a selected persona, use it. Otherwise, fallback to static.
+  const activePersona = personas?.find(p => String(p.id) === String(activePersonaId)) || null;
 
-  if (isLoading) return <section className={styles.hero}><div className={styles.loader}>INITIALIZING SYSTEM...</div></section>;
-  if (isError) return <section className={styles.hero}><div className={styles.error}>ERR: {error?.message}</div></section>;
-  if (!activePersona) return <section className={styles.hero}><div className={styles.error}>NO PERSONA DATA FOUND</div></section>;
-
-  const accentColor = activePersona.accent_color || "#00ff88";
-
-  // Icon Rendering Logic
-  function renderIcon(icon) {
-    if (!icon || iconBroken) return null; // Hide if missing or broken
-    
-    if (/^https?:\/\//.test(icon)) {
-      return (
-        <span className={styles.heroIconWrap}>
-          <img 
-            src={icon} 
-            alt="Persona Icon" 
-            className={styles.heroIconImg} 
-            onError={() => setIconBroken(true)} // Hide on 404
-          />
-        </span>
-      );
-    }
-    // Assume it's a font-awesome / library class
-    return (
-      <span className={styles.heroIconWrap}>
-        <i className={`${icon} ${styles.heroIcon}`}></i>
-      </span>
-    );
-  }
+  const displayData = {
+    title: activePersona?.title || coreProfile.title,
+    summary: activePersona?.summary || coreProfile.summary,
+    description: activePersona?.description || coreProfile.description,
+    accentColor: activePersona?.accent_color || coreProfile.accentColor,
+    type: activePersona?.type || "LEAD ARCHITECT",
+  };
 
   return (
-    <section className={styles.hero} style={{ "--accent-color": accentColor }}>
+    <section className={styles.hero} style={{ "--accent-color": displayData.accentColor }}>
       
-      {/* 1. TITLE & ICON ROW */}
-      <div className={styles.heroTitleRow}>
-        {renderIcon(activePersona.icon)}
+      {/* BACKGROUND EFFECTS */}
+      <div className={styles.scanline}></div>
+      <div className={styles.glowOrb}></div>
 
-        <div>
-          <div className={styles.introTag}>
-            SYSTEM_ONLINE {" // "} STATUS: {displayPersonaType(activePersona.type)}
-          </div>
-          <h1>
-            {cleanString(activePersona.title, "NO TITLE")}
-            <span className={styles.highlight}>
-              {displayPersonaType(activePersona.type)}
-            </span>
-          </h1>
-        </div>
-      </div>
-
-      {/* 2. DATA LOGS CONTAINER */}
-      <div className={styles.roleContainer}>
+      <div className={styles.heroContent}>
         
-        {/* Summary Block */}
-        {activePersona.summary && (
-          <div className={styles.dataBlock}>
-            <span className={styles.dataLabel}>SUMMARY {" // "} </span>
-            <span>{cleanString(activePersona.summary)}</span>
+        {/* LEFT COLUMN: IDENTITY & TITLE */}
+        <div className={styles.identityCol}>
+          <div className={styles.systemStatus}>
+            <span className={styles.ping}></span>
+            <span className={styles.statusText}>SYSTEM_ONLINE // {displayData.type.toUpperCase()}</span>
           </div>
-        )}
 
-        {/* Period Block */}
-        {activePersona.period && (
-          <div className={styles.dataBlock}>
-            <span className={styles.dataLabel}>ACTIVE_PERIOD {" // "} </span>
-            <span>{cleanString(activePersona.period)}</span>
+          <h1 className={styles.mainTitle}>
+            <span className={styles.nameBlock}>{coreProfile.name}</span>
+            <span className={styles.handleBlock}>({coreProfile.handle})</span>
+          </h1>
+
+          <h2 className={styles.roleHighlight}>
+            &gt; {displayData.title.toUpperCase()}
+          </h2>
+
+          <p className={styles.heroDescription}>
+            {displayData.description}
+          </p>
+
+          <div className={styles.actionRow}>
+            <a href="/projects" className={styles.primaryBtn}>[ VIEW_OPERATIONS ]</a>
+            <a href="/contact" className={styles.secondaryBtn}>INITIATE_CONTACT</a>
           </div>
-        )}
 
-        {/* Motivation Block (Moved here for grouping) */}
-        {activePersona.motivation && (
-          <div className={styles.dataBlock}>
-            <span className={styles.dataLabel}>MOTIVATION_DIRECTIVE {" // "} </span>
-            <span>{cleanString(activePersona.motivation)}</span>
+          {/* PERSONA OVERRIDE (Only shows if DB loaded and has multiple) */}
+          {personas && personas.length > 1 && (
+             <div className={styles.overrideModule}>
+               <span className={styles.overrideLabel}>SYS_OVERRIDE:</span>
+               <select
+                 value={activePersonaId || activePersona?.id || ""}
+                 onChange={(e) => setActivePersonaId(e.target.value)}
+                 className={styles.overrideSelect}
+               >
+                 <option value="" disabled>SELECT_PROFILE</option>
+                 {personas.map((role) => (
+                   <option key={role.id} value={role.id}>
+                     {role.title.toUpperCase()}
+                   </option>
+                 ))}
+               </select>
+             </div>
+          )}
+        </div>
+
+        {/* RIGHT COLUMN: TACTICAL TERMINAL */}
+        <div className={styles.terminalCol}>
+          <div className={styles.terminalWindow}>
+            <div className={styles.terminalHeader}>
+              <div className={styles.termDots}>
+                <span></span><span></span><span></span>
+              </div>
+              <div className={styles.termTitle}>core_competencies.sh</div>
+            </div>
+            <div className={styles.terminalBody}>
+              <div className={styles.termLine}>
+                <span className={styles.prompt}>~/okumuraven/skills$</span> ./analyze --target
+              </div>
+              <div className={styles.termOutput}>
+                <span className={styles.tag}>[FRONTEND]</span> React 19, Next.js, Tailwind v4, Framer Motion<br/><br/>
+                <span className={styles.tag}>[BACKEND]</span> Node.js, Fastify, Express, Elixir, Phoenix<br/><br/>
+                <span className={styles.tag}>[DATABASE]</span> PostgreSQL, Prisma ORM, Neon.tech, Redis<br/><br/>
+                <span className={styles.tag}>[SECURITY]</span> SIEM, Kali Linux, Telemetry, OWASP Top 10<br/><br/>
+                <span className={styles.tag}>[DEVOPS]</span> Docker, Fly.io, Tailscale, Linux, n8n
+              </div>
+              <div className={styles.termLine}>
+                <span className={styles.prompt}>~/okumuraven/skills$</span> <span className={styles.cursor}>_</span>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
 
-        {/* Full Description (The large text block) */}
-        <p className={styles.subtitle}>
-          {cleanString(activePersona.description, "Building resilient digital architecture and securing the modern web.")}
-        </p>
-
-        {/* Persona Switcher */}
-        {personas.length > 1 && (
-          <div className={styles.switcher}>
-            <span className={styles.switcherLabel}>OVERRIDE_MODE:</span>
-            <select
-              value={activePersonaId || activePersona.id}
-              onChange={(e) => {
-                setIconBroken(false); // Reset icon error state on switch
-                setActivePersonaId(e.target.value);
-              }}
-              className={styles.switcherSelect}
-            >
-              {personas.map((role) => (
-                <option key={role.id} value={role.id}>
-                  {role.title.toUpperCase()}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
       </div>
-
-      {/* 3. CTA DECOR (Desktop Only) */}
-      <div className={styles.decorLine}>
-        {cleanString(activePersona.cta, "SCROLL_TO_INITIALIZE")}{" "}
-        <span style={{ fontWeight: "bold" }}>&rarr;</span>
-      </div>
-
     </section>
   );
 }
