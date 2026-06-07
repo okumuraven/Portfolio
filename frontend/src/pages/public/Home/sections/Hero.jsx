@@ -1,6 +1,110 @@
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Hero.module.css";
 import { usePersonas } from "../../../../features/personas/usePersonas";
+import { useSkills } from "../../../../features/skills/useSkills";
+import { groupSkillsByCategory } from "../../../../features/skills/skillUtils";
+
+/**
+ * Animated Terminal Component that fetches real skill data
+ */
+function TacticalTerminal() {
+  const { data: rawSkills = [], isLoading } = useSkills();
+  const [visibleLines, setVisibleLines] = useState(0);
+  const [isDone, setIsDone] = useState(false);
+
+  // Process skills into tactical categories
+  const terminalData = useMemo(() => {
+    if (!rawSkills.length) return [];
+    const grouped = groupSkillsByCategory(rawSkills);
+    
+    const mapping = [
+      { search: "front", label: "FRONTEND" },
+      { search: "back", label: "BACKEND" },
+      { search: "data", label: "DATABASE" },
+      { search: "sec", label: "SECURITY" },
+      { search: "dev", label: "DEVOPS" }
+    ];
+
+    return mapping.map(m => {
+      // Find matches using partial string matching
+      const categoryKey = Object.keys(grouped).find(k => 
+        k.toLowerCase().includes(m.search.toLowerCase())
+      );
+      const list = categoryKey ? grouped[categoryKey].slice(0, 4).map(s => s.name).join(", ") : "Pending verification...";
+      return { label: m.label, value: list };
+    });
+  }, [rawSkills]);
+
+  // Terminal Line Animation
+  useEffect(() => {
+    if (isLoading) return;
+    
+    const totalLines = terminalData.length + 3; // Commands + Scanning + Categories
+    if (visibleLines < totalLines) {
+      const timer = setTimeout(() => {
+        setVisibleLines(prev => prev + 1);
+      }, visibleLines === 0 ? 500 : visibleLines === 1 ? 1000 : 400);
+      return () => clearTimeout(timer);
+    } else {
+      setIsDone(true);
+    }
+  }, [visibleLines, isLoading, terminalData.length]);
+
+  return (
+    <div className={styles.terminalWindow}>
+      <div className={styles.terminalHeader}>
+        <div className={styles.termDots}>
+          <span></span><span></span><span></span>
+        </div>
+        <div className={styles.termTitle}>core_competencies.sh</div>
+      </div>
+      <div className={styles.terminalBody}>
+        {/* Command 1 */}
+        {visibleLines >= 1 && (
+          <div className={styles.termLine}>
+            <span className={styles.prompt}>~/okumuraven/skills$</span> ./analyze --target
+          </div>
+        )}
+
+        {/* Loading/Scanning Line */}
+        {visibleLines >= 2 && (
+          <div className={styles.termLine} style={{ color: '#888' }}>
+            {visibleLines === 2 ? (
+              <span className={styles.loadingText}>[SCANNING_SYSTEM_RESOURCES...]</span>
+            ) : (
+              <span style={{ color: 'var(--accent-color)' }}>[SYSTEM_SCAN_COMPLETE] // 100% SUCCESS</span>
+            )}
+          </div>
+        )}
+
+        {/* Skill Lines */}
+        <div className={styles.termOutput}>
+          {terminalData.map((item, idx) => (
+            visibleLines >= (idx + 3) && (
+              <div key={idx} className={styles.skillOutputLine} style={{ marginBottom: '8px' }}>
+                <span className={styles.tag}>[{item.label}]</span> {item.value}
+              </div>
+            )
+          ))}
+        </div>
+
+        {/* Final Prompt */}
+        {isDone && (
+          <div className={styles.termLine}>
+            <span className={styles.prompt}>~/okumuraven/skills$</span> <span className={styles.cursor}>_</span>
+          </div>
+        )}
+        
+        {/* Pre-load cursor if nothing shown yet */}
+        {!isDone && visibleLines === 0 && (
+          <div className={styles.termLine}>
+             <span className={styles.prompt}>~/okumuraven/skills$</span> <span className={styles.cursor}>_</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function Hero() {
   const { personas, activePersonaId, setActivePersonaId } = usePersonas();
@@ -84,29 +188,7 @@ export default function Hero() {
 
         {/* RIGHT COLUMN: TACTICAL TERMINAL */}
         <div className={styles.terminalCol}>
-          <div className={styles.terminalWindow}>
-            <div className={styles.terminalHeader}>
-              <div className={styles.termDots}>
-                <span></span><span></span><span></span>
-              </div>
-              <div className={styles.termTitle}>core_competencies.sh</div>
-            </div>
-            <div className={styles.terminalBody}>
-              <div className={styles.termLine}>
-                <span className={styles.prompt}>~/okumuraven/skills$</span> ./analyze --target
-              </div>
-              <div className={styles.termOutput}>
-                <span className={styles.tag}>[FRONTEND]</span> React 19, Next.js, Tailwind v4, Framer Motion<br/><br/>
-                <span className={styles.tag}>[BACKEND]</span> Node.js, Fastify, Express, Elixir, Phoenix<br/><br/>
-                <span className={styles.tag}>[DATABASE]</span> PostgreSQL, Prisma ORM, Neon.tech, Redis<br/><br/>
-                <span className={styles.tag}>[SECURITY]</span> SIEM, Kali Linux, Telemetry, OWASP Top 10<br/><br/>
-                <span className={styles.tag}>[DEVOPS]</span> Docker, Fly.io, Tailscale, Linux, n8n
-              </div>
-              <div className={styles.termLine}>
-                <span className={styles.prompt}>~/okumuraven/skills$</span> <span className={styles.cursor}>_</span>
-              </div>
-            </div>
-          </div>
+          <TacticalTerminal />
         </div>
 
       </div>
