@@ -21,11 +21,11 @@ export default function Home() {
       {/* ==== OPERATIONS BRIEFING (Persona Cards) ==== */}
       <PersonaOperations />
 
-      {/* ==== RECENT ACHIEVEMENTS/TIMELINE ==== */}
-      <TimelinePreview />
-
       {/* ==== SECURE COMMUNICATIONS HUB ==== */}
       <SecureComms />
+
+      {/* ==== RECENT ACHIEVEMENTS/TIMELINE ==== */}
+      <TimelinePreview />
     </main>
   );
 }
