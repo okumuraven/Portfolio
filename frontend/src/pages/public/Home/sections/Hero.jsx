@@ -12,7 +12,8 @@ export default function Hero() {
     title: "FULL-STACK ARCHITECT & SECURITY RESEARCHER",
     summary: "Building secure, high-performance digital infrastructure.",
     description: "Specializing in cutting-edge frontend interfaces, highly concurrent backend systems, and offensive security. I engineer solutions that scale and withstand modern cyber threats.",
-    accentColor: "#00e5ff", // Neon Cyan
+    accentColor: "#ffd700", // Gold (Matches Skill Matrix)
+    systemColor: "#ff5500", // Orange (Matches Admin)
   };
 
   // If we have loaded data and a selected persona, use it. Otherwise, fallback to static.
@@ -23,11 +24,12 @@ export default function Hero() {
     summary: activePersona?.summary || coreProfile.summary,
     description: activePersona?.description || coreProfile.description,
     accentColor: activePersona?.accent_color || coreProfile.accentColor,
+    systemColor: coreProfile.systemColor,
     type: activePersona?.type || "LEAD ARCHITECT",
   };
 
   return (
-    <section className={styles.hero} style={{ "--accent-color": displayData.accentColor }}>
+    <section className={styles.hero} style={{ "--accent-color": displayData.accentColor, "--system-color": displayData.systemColor }}>
       
       {/* BACKGROUND EFFECTS */}
       <div className={styles.scanline}></div>
