@@ -4,7 +4,7 @@ import styles from "./Home.module.css";
 import Hero from "./sections/Hero";
 import PersonaOperations from "./sections/PersonaOperations";
 import TimelinePreview from "./sections/TimelinePreview";
-import ContactCTA from "./sections/ContactCTA";
+import SecureComms from "./sections/SecureComms";
 
 /**
  * Home (Landing) Page
@@ -24,8 +24,8 @@ export default function Home() {
       {/* ==== RECENT ACHIEVEMENTS/TIMELINE ==== */}
       <TimelinePreview />
 
-      {/* ==== CONTACT/CALL-TO-ACTION ==== */}
-      <ContactCTA />
+      {/* ==== SECURE COMMUNICATIONS HUB ==== */}
+      <SecureComms />
     </main>
   );
 }
