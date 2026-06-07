@@ -187,17 +187,123 @@
 }
 
 .inlineLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #666;
   text-decoration: none;
-  transition: color 0.3s;
-  margin-top: 5px;
-  display: block;
+  padding: 8px 12px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  width: fit-content;
+}
+
+/* The Tactical "Scanning" Bar */
+.inlineLink::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: none;
+  animation: scanning 4s linear infinite;
+}
+
+@keyframes scanning {
+  0% { left: -100%; }
+  100% { left: 200%; }
 }
 
 .inlineLink:hover {
   color: var(--card-accent);
+  border-color: var(--card-accent);
+  background: rgba(var(--card-accent-rgb), 0.05);
+  transform: translateX(8px);
+  box-shadow: -5px 0 15px rgba(var(--card-accent-rgb), 0.2);
+  letter-spacing: 1px;
+}
+
+/* Glitch Effect on Hover */
+.inlineLink:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  color: var(--card-accent);
+  animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+  z-index: 2;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.inlineLink i {
+  font-size: 0.7rem;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.inlineLink:hover i {
+  opacity: 1;
+  transform: rotate(90deg);
+  color: var(--card-accent);
+}
+
+/* Pulse animation for attention */
+.pulseDot {
+  width: 4px;
+  height: 4px;
+  background-color: #666;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.inlineLink:hover .pulseDot {
+  background-color: var(--card-accent);
+  box-shadow: 0 0 8px var(--card-accent);
+}
+
+.pulseDot::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: 0;
+  animation: pulseLoop 2s infinite;
+}
+
+@keyframes pulseLoop {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
 }
 
 /* Card Footer */
