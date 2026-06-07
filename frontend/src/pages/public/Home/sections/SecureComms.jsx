@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./SecureComms.module.css";
-import { useContactProfile } from "../../../../features/contact/useContactProfile";
 
 function CommCard({ icon, label, value, link, color }) {
   return (
@@ -12,7 +11,7 @@ function CommCard({ icon, label, value, link, color }) {
         <div className={styles.tag}>SECURE_UPLINK</div>
       </div>
       <div className={styles.cardBody}>
-        <span className={styles.label}>{label} //</span>
+        <span className={styles.label}>{label} {" //"}</span>
         <span className={styles.value}>{value}</span>
       </div>
       <div className={styles.cardFooter}>
@@ -24,8 +23,6 @@ function CommCard({ icon, label, value, link, color }) {
 }
 
 export default function SecureComms() {
-  const { data: profile = [] } = useContactProfile();
-
   // Static/Fallback channels (Verified Professional Comms)
   const defaultComms = [
     {
