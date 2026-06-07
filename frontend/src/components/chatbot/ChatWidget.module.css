@@ -204,7 +204,8 @@
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
+  flex-shrink: 0; /* PROTECTS CLOSE BUTTON FROM OVERFLOW */
 }
 
 .statusBadge {
@@ -219,19 +220,26 @@
 }
 
 .closeBtn {
-  background: transparent;
-  border: none;
-  color: #444;
-  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #333;
+  color: #888;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px; /* Matches tactical blocks */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
-  padding: 0;
+  transition: all 0.3s;
+  font-size: 1.1rem;
   line-height: 1;
 }
 
 .closeBtn:hover {
-  color: #ff3333;
-  transform: rotate(90deg);
+  background: #ff3333;
+  color: #fff;
+  border-color: #ff3333;
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
 }
 
 /* MESSAGE AREA */
