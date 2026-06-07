@@ -1,21 +1,13 @@
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import projectsAPI from "../../api/projects.api";
 
 /**
  * useProjects — Manage projects collection (fetch, create, update, delete, filtering)
- * All project forms/tables/grids can use this hook for DRY and auto-refresh.
- *
- * Usage:
- *   const {
- *     projects, loading, error,
- *     refetch, createProject, updateProject, deleteProject
- *   } = useProjects();
  */
 
-// KEYS for React Query cache (make this unique per dataset/query)
 const PROJECTS_KEY = "projects";
 
-export default function useProjects(filters = {}) {
+export function useProjects(filters = {}) {
   const queryClient = useQueryClient();
 
   // Fetch list of projects (with optional filter query)
@@ -24,23 +16,26 @@ export default function useProjects(filters = {}) {
     error,
     isLoading: loading,
     refetch,
-  } = useQuery([PROJECTS_KEY, filters], () => projectsAPI.getProjects(filters), {
-    keepPreviousData: true,
-    staleTime: 60000, // 1 min caching; tune as needed
+  } = useQuery({
+    queryKey: [PROJECTS_KEY, filters],
+    queryFn: () => projectsAPI.getProjects(filters),
+    staleTime: 60000,
   });
 
   // Mutations (Create, Update, Delete)
-  const create = useMutation(projectsAPI.createProject, {
-    onSuccess: () => queryClient.invalidateQueries(PROJECTS_KEY),
+  const create = useMutation({
+    mutationFn: projectsAPI.createProject,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PROJECTS_KEY] }),
   });
 
-  const update = useMutation(
-    ({ id, formData }) => projectsAPI.updateProject(id, formData),
-    { onSuccess: () => queryClient.invalidateQueries(PROJECTS_KEY) }
-  );
+  const update = useMutation({
+    mutationFn: ({ id, formData }) => projectsAPI.updateProject(id, formData),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PROJECTS_KEY] }),
+  });
 
-  const del = useMutation(projectsAPI.deleteProject, {
-    onSuccess: () => queryClient.invalidateQueries(PROJECTS_KEY),
+  const del = useMutation({
+    mutationFn: projectsAPI.deleteProject,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [PROJECTS_KEY] }),
   });
 
   // Individual project fetcher
@@ -50,16 +45,19 @@ export default function useProjects(filters = {}) {
     projects: projects || [],
     loading,
     error,
-    refetch,                                   // force reload
-    createProject: create.mutateAsync,         // Pass FormData as parameter
-    createLoading: create.isLoading,
+    refetch,
+    createProject: create.mutateAsync,
+    createLoading: create.isPending,
     createError: create.error,
-    updateProject: update.mutateAsync,         // Pass { id, formData }
-    updateLoading: update.isLoading,
+    updateProject: update.mutateAsync,
+    updateLoading: update.isPending,
     updateError: update.error,
-    deleteProject: del.mutateAsync,            // Pass projectId
-    deleteLoading: del.isLoading,
+    deleteProject: del.mutateAsync,
+    deleteLoading: del.isPending,
     deleteError: del.error,
     getProjectById: getById,
   };
 }
+
+// Keep default export for compatibility if needed, but named is better
+export default useProjects;
