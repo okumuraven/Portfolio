@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Home.module.css";
 // Import your section components (create them if you haven't yet)
 import Hero from "./sections/Hero";
+import PersonaOperations from "./sections/PersonaOperations";
 import HighlightStats from "./sections/HighlightStats";
 import TimelinePreview from "./sections/TimelinePreview";
 import ContactCTA from "./sections/ContactCTA";
@@ -17,6 +18,9 @@ export default function Home() {
     <main className={styles.root}>
       {/* ==== HERO SECTION ==== */}
       <Hero />
+
+      {/* ==== OPERATIONS BRIEFING (Persona Cards) ==== */}
+      <PersonaOperations />
 
       {/* ==== HIGHLIGHTS/STATS ==== */}
       <HighlightStats />

@@ -8,6 +8,10 @@
   min-height: 100vh;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden; /* Prevents horizontal scroll from animations */
+
+  /* THEME GLOBALS */
+  --accent-color: #ffd700; /* Gold */
+  --system-color: #ff5500; /* Orange */
 }
 
 /* =========================================
