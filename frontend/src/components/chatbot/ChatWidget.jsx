@@ -147,10 +147,18 @@ export default function ChatWidget() {
   return (
     <div className={styles.widgetContainer}>
       {!isOpen ? (
-        <button className={styles.bubbleBtn} onClick={() => setIsOpen(true)}>
-          <span className={styles.ping}></span>
-          [ SYS.COMMS ]
-        </button>
+        <div className={styles.triggerWrapper}>
+          <div className={styles.helpPrompt}>
+            <span>NEED ARCHITECTURAL GUIDANCE?</span>
+          </div>
+          <button className={styles.bubbleBtn} onClick={() => setIsOpen(true)}>
+            <div className={styles.iconCircle}>
+              <i className="fas fa-robot"></i>
+            </div>
+            <span className={styles.bubbleLabel}>AI_ASSISTANT</span>
+            <span className={styles.ping}></span>
+          </button>
+        </div>
       ) : (
         <div className={styles.chatWindow}>
           <div className={styles.scanline} />
