@@ -333,6 +333,17 @@
   50% { opacity: 0.3; }
 }
 
+.promptPath {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.promptPath:hover {
+  color: #fff;
+  text-shadow: 0 0 8px var(--system-color);
+}
+
 .termLink {
   color: var(--accent-color);
   text-decoration: none;

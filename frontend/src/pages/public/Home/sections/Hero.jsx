@@ -91,7 +91,9 @@ function TacticalTerminal() {
         {/* Final Prompt & Creative Link */}
         {isDone && (
           <div className={styles.termLine}>
-            <span className={styles.prompt}>~/okumuraven/skills$</span> 
+            <span className={styles.prompt}>
+              <a href="https://github.com/okumuraven" target="_blank" rel="noopener noreferrer" className={styles.promptPath}>~/github/okumuraven$</a>
+            </span> 
             <a href="/skill-matrix" className={styles.termLink}>
               cd ./SKILL_MATRIX <span className={styles.cursor}>_</span>
             </a>
