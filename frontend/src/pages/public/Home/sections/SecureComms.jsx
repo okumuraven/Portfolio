@@ -1,14 +1,14 @@
 import React from "react";
 import styles from "./SecureComms.module.css";
 
-function CommCard({ icon, label, value, link, color }) {
+function CommCard({ icon, label, value, link, color, meta }) {
   return (
     <a href={link} target="_blank" rel="noopener noreferrer" className={styles.card} style={{ "--accent": color }}>
       <div className={styles.cardHeader}>
         <div className={styles.iconBox}>
           <i className={icon}></i>
         </div>
-        <div className={styles.tag}>SECURE_UPLINK</div>
+        <div className={styles.metaBadge}>{meta}</div>
       </div>
       <div className={styles.cardBody}>
         <span className={styles.label}>{label} {" //"}</span>
@@ -31,7 +31,8 @@ export default function SecureComms() {
       label: "ENCRYPTED_EMAIL",
       value: "okumuraven@gmail.com",
       link: "mailto:okumuraven@gmail.com",
-      color: "#ff5500" // Orange
+      color: "#ff5500", // Orange
+      meta: "AES-256_SECURE"
     },
     {
       id: "whatsapp",
@@ -39,7 +40,8 @@ export default function SecureComms() {
       label: "DIRECT_WHATSAPP",
       value: "+254 794 534 817",
       link: "https://wa.me/254794534817",
-      color: "#00ff88" // Cyber Green
+      color: "#00ff88", // Cyber Green
+      meta: "END-TO-END_UPLINK"
     },
     {
       id: "voice",
@@ -47,7 +49,8 @@ export default function SecureComms() {
       label: "SECURE_VOICE",
       value: "OKUMU RAVEN [HQ]",
       link: "tel:+254794534817",
-      color: "#00e5ff" // Cyan
+      color: "#00e5ff", // Cyan
+      meta: "LOCAL_RELAY_ENABLE"
     }
   ];
 
