@@ -12,8 +12,9 @@
   overflow: hidden;
   box-sizing: border-box;
 
-  /* Theme variables - Fallback if inline style fails */
-  --accent-color: #00e5ff; 
+  /* Theme variables - Fallbacks */
+  --accent-color: #ffd700; /* Gold (Skill Matrix) */
+  --system-color: #ff5500; /* Orange (Admin) */
   --text-primary: #ffffff;
   --text-muted: #888888;
   --bg-surface: #0a0a0a;
@@ -86,11 +87,11 @@
   gap: 12px;
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.85rem;
-  color: var(--accent-color);
+  color: var(--system-color);
   letter-spacing: 0.1em;
   padding: 8px 16px;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 85, 0, 0.2);
   width: fit-content;
   border-radius: 2px;
 }
@@ -98,9 +99,9 @@
 .ping {
   width: 8px;
   height: 8px;
-  background-color: var(--accent-color);
+  background-color: var(--system-color);
   border-radius: 50%;
-  box-shadow: 0 0 10px var(--accent-color);
+  box-shadow: 0 0 10px var(--system-color);
   animation: pulse 2s infinite;
 }
 
@@ -141,6 +142,7 @@
   -webkit-text-stroke: 1px var(--accent-color);
   margin: 10px 0 0 0;
   letter-spacing: 0.05em;
+  text-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
 }
 
 .heroDescription {
@@ -150,7 +152,7 @@
   line-height: 1.6;
   max-width: 90%;
   margin-top: 10px;
-  border-left: 2px solid #333;
+  border-left: 2px solid var(--system-color);
   padding-left: 20px;
 }
 
@@ -173,17 +175,18 @@
   position: relative;
   overflow: hidden;
   text-align: center;
+  border-radius: 2px;
 }
 
 .primaryBtn {
   color: #000;
   background: var(--accent-color);
   border: 1px solid var(--accent-color);
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
 }
 
 .primaryBtn:hover {
-  box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
   transform: translateY(-2px);
 }
 
@@ -196,7 +199,7 @@
 .secondaryBtn:hover {
   border-color: var(--accent-color);
   color: var(--accent-color);
-  background: rgba(0, 229, 255, 0.05);
+  background: rgba(255, 215, 0, 0.05);
 }
 
 /* Override Module */
@@ -294,7 +297,7 @@
 }
 
 .prompt {
-  color: var(--accent-color);
+  color: var(--system-color);
   font-weight: bold;
   margin-right: 10px;
 }
@@ -307,7 +310,7 @@
 }
 
 .tag {
-  color: #00ff88; /* Cyber green */
+  color: #00ff88; /* Cyber green - Keeping this for tech highlights as seen in Skill Matrix certs */
   font-weight: bold;
 }
 
@@ -347,7 +350,7 @@
   }
 
   .nameBlock {
-    font-size: 3rem; /* Fixed safe size */
+    font-size: 3rem; 
   }
 
   .actionRow {
