@@ -32,7 +32,11 @@ function StaticProfessionalCard({ data }) {
               <span key={idx} className={styles.skillTag}>{s}</span>
             ))}
           </div>
-          <a href="/skill-matrix" className={styles.inlineLink}>[ CD_SKILL_MATRIX ]</a>
+          <a href="/skill-matrix" className={styles.inlineLink} data-text="[ ACCESS_SKILL_MATRIX ]">
+            <span className={styles.pulseDot}></span>
+            <i className="fas fa-terminal"></i>
+            [ ACCESS_SKILL_MATRIX ]
+          </a>
         </div>
 
         {/* KEY CAPABILITIES */}
@@ -45,7 +49,11 @@ function StaticProfessionalCard({ data }) {
               </li>
             ))}
           </ul>
-          <a href="/projects" className={styles.inlineLink}>[ CD_PROJECT_FEED ]</a>
+          <a href="/projects" className={styles.inlineLink} data-text="[ VIEW_OPERATIONAL_FEED ]">
+            <span className={styles.pulseDot}></span>
+            <i className="fas fa-database"></i>
+            [ VIEW_OPERATIONAL_FEED ]
+          </a>
         </div>
       </div>
 
