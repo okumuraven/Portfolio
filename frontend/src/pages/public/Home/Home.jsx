@@ -22,9 +22,6 @@ export default function Home() {
       {/* ==== OPERATIONS BRIEFING (Persona Cards) ==== */}
       <PersonaOperations />
 
-      {/* ==== HIGHLIGHTS/STATS ==== */}
-      <HighlightStats />
-
       {/* ==== RECENT ACHIEVEMENTS/TIMELINE ==== */}
       <TimelinePreview />
 
