@@ -1,0 +1,191 @@
+/* frontend/src/pages/public/Home/sections/SecureComms.module.css */
+
+.section {
+  padding: 100px 5vw;
+  background-color: #050505;
+  border-top: 1px solid #111;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.headerArea {
+  margin-bottom: 60px;
+}
+
+.statusLine {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: var(--system-color, #ff5500);
+  margin-bottom: 15px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: var(--system-color, #ff5500);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--system-color, #ff5500);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: #888;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  margin-bottom: 60px;
+}
+
+/* Card */
+.card {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  border-left: 4px solid var(--accent, #ffd700);
+  padding: 30px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  background: #111;
+  transform: scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconBox {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.tag {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #444;
+  letter-spacing: 0.1em;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.value {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.card:hover .action {
+  color: #fff;
+}
+
+.glow {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  background: var(--accent);
+  filter: blur(40px);
+  opacity: 0.05;
+  transition: opacity 0.3s;
+}
+
+.card:hover .glow {
+  opacity: 0.2;
+}
+
+/* Bottom Bar */
+.bottomBar {
+  border-top: 1px dashed #222;
+  padding-top: 20px;
+}
+
+.log {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #333;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 24px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .value {
+    font-size: 1rem;
+  }
+}
