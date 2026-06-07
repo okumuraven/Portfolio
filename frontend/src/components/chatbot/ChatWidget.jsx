@@ -165,20 +165,32 @@ export default function ChatWidget() {
 
           <div className={styles.chatHeader}>
             <div className={styles.headerLeft}>
-              <div className={styles.headerStatusDot} />
-              <h4 className={styles.headerTitle}>
-                VIRTUAL_OPERATIVE <span>[ONLINE]</span>
-              </h4>
+              <div className={styles.headerPulse} />
+              <div className={styles.headerMeta}>
+                <h4 className={styles.headerTitle}>OPERATIONAL_AI_UPLINK</h4>
+                <span className={styles.headerSub}>ENCRYPTION: AES-256_ACTIVE</span>
+              </div>
             </div>
-            <button className={styles.closeBtn} onClick={() => setIsOpen(false)} title="Close Terminal">×</button>
+            <div className={styles.headerActions}>
+              <span className={styles.statusBadge}>ONLINE</span>
+              <button className={styles.closeBtn} onClick={() => setIsOpen(false)} title="Terminate Session">×</button>
+            </div>
           </div>
 
           <div className={styles.chatBody}>
+            <div className={styles.systemLog}>
+              [SYSTEM] Connection established...<br/>
+              [SYSTEM] Virtual Operative proxy initialized.
+            </div>
+
             {messages.map((msg, idx) => (
               <div key={idx} className={`${styles.msgWrapper} ${msg.role === 'ai' ? styles.ai : styles.user}`}>
-                <span className={styles.msgLabel}>
-                  {msg.role === 'ai' ? 'SYS.AGENT //' : 'GUEST_USER //'}
-                </span>
+                <div className={styles.msgMetadata}>
+                  <span className={styles.msgLabel}>
+                    {msg.role === 'ai' ? 'SYS.AGENT' : 'GUEST_USER'}
+                  </span>
+                  <span className={styles.msgTimestamp}>[{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}]</span>
+                </div>
                 <div className={msg.role === 'ai' ? styles.msgAi : styles.msgUser}>
                   {msg.role === 'ai' ? (
                     <AiMessageContent content={msg.content} isNew={msg.isNew} />
