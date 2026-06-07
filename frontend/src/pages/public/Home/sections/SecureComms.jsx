@@ -44,6 +44,15 @@ export default function SecureComms() {
       meta: "END-TO-END_UPLINK"
     },
     {
+      id: "github",
+      icon: "fab fa-github",
+      label: "CODEBASE_STATION",
+      value: "github.com/okumuraven",
+      link: "https://github.com/okumuraven",
+      color: "#ffffff", // White/Silver
+      meta: "REPOSITORY_NODE_OPEN"
+    },
+    {
       id: "voice",
       icon: "fas fa-phone-alt",
       label: "SECURE_VOICE",
