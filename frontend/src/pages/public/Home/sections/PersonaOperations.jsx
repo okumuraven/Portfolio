@@ -11,7 +11,11 @@ function StaticProfessionalCard({ data }) {
     <div className={styles.card} style={{ "--card-accent": accentColor }}>
       <div className={styles.cardHeader}>
         <div className={styles.iconBox}>
-          <i className={`${data.icon} ${styles.icon}`}></i>
+          {data.icon.startsWith("http") ? (
+             <img src={data.icon} alt="" className={styles.iconImg} />
+          ) : (
+             <i className={`${data.icon} ${styles.icon}`}></i>
+          )}
         </div>
         <div className={styles.titleArea}>
           <span className={styles.statusTag}>OPERATIONAL_UNIT // {data.code}</span>
@@ -73,7 +77,7 @@ export default function PersonaOperations() {
     {
       code: "01",
       title: "Full-Stack Architect",
-      icon: "fas fa-layer-group",
+      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
       accentColor: "#ffd700", // Gold
       description: "Architecting high-performance web engines. Modernizing legacy Node.js backends into highly concurrent, scalable environments using Elixir and Phoenix.",
       specializations: ["React 19", "Next.js", "Node.js", "Fastify", "PostgreSQL"],
@@ -86,7 +90,7 @@ export default function PersonaOperations() {
     {
       code: "02",
       title: "Security Researcher",
-      icon: "fas fa-user-shield",
+      icon: "https://www.kali.org/images/kali-logo.svg",
       accentColor: "#ff5500", // Orange
       description: "Approaching infrastructure with an offensive security mindset. Specialized in penetration testing, password auditing, and resilient EDR logic design.",
       specializations: ["Kali Linux", "Burp Suite", "SOC Level 1", "OWASP Top 10"],
@@ -99,7 +103,7 @@ export default function PersonaOperations() {
     {
       code: "03",
       title: "Cloud & Systems Architect",
-      icon: "fas fa-server",
+      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
       accentColor: "#00e5ff", // Cyan
       description: "Commanding Linux environments and deployment pipelines. Automating complex workflows with n8n and architecting secure edge infrastructure.",
       specializations: ["Docker", "Linux (Ubuntu)", "Tailscale", "Redis", "BullMQ"],
@@ -112,7 +116,7 @@ export default function PersonaOperations() {
     {
       code: "04",
       title: "Statistical Computist",
-      icon: "fas fa-microchip",
+      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
       accentColor: "#00ff88", // Cyber Green
       description: "Applying rigorous logic and probability to complex data models. Engineering data-heavy applications that require high-frequency processing.",
       specializations: ["Data Modeling", "Predictive Analytics", "System Optimization"],
