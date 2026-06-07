@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 25px;
   right: 25px;
-  z-index: 1000;
+  z-index: 9999; /* HIGHER THAN NAVBAR (2000) */
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   display: flex;
   flex-direction: column;
@@ -157,6 +157,8 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #222;
+  position: relative;
+  z-index: 10;
 }
 
 .headerLeft {
@@ -468,6 +470,7 @@
 
 @media (max-width: 500px) {
   .widgetContainer {
+    top: 0; /* ANCHOR TO TOP */
     bottom: 0;
     right: 0;
     left: 0;
@@ -486,6 +489,7 @@
     border-radius: 0;
     margin-bottom: 0;
     border: none;
+    z-index: 9999;
   }
 
   .chatHeader {
