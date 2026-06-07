@@ -470,7 +470,6 @@
 
 @media (max-width: 500px) {
   .widgetContainer {
-    top: 0; /* ANCHOR TO TOP */
     bottom: 0;
     right: 0;
     left: 0;
