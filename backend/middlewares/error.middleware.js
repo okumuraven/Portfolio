@@ -37,12 +37,11 @@ module.exports = function errorMiddleware(err, req, res, next) {
     });
   }
 
-  // Production: Show error details for debugging (Temporary)
-  const response = { 
-    error: message, 
-    code, 
-    ...(err.errors ? { errors: err.errors } : {}), 
-    stack: err.stack 
+  const response = {
+    error: message,
+    code,
+    ...(err.errors ? { errors: err.errors } : {}),
+    ...(process.env.NODE_ENV !== "production" ? { stack: err.stack } : {}),
   };
 
   res.status(status).json(response);

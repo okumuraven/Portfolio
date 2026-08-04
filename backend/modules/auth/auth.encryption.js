@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { TWO_FACTOR_ENCRYPTION_KEY } = require('../../config/env');
 
 /**
  * Advanced Encryption Utility (AES-256-GCM)
@@ -9,11 +10,8 @@ const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12;
 const AUTH_TAG_LENGTH = 16;
 
-// Fallback to a derivated key if 2FA_ENCRYPTION_KEY is missing
-// In production, the user MUST set 2FA_ENCRYPTION_KEY (32 bytes hex)
 const getSecretKey = () => {
-  const key = process.env.TWO_FACTOR_ENCRYPTION_KEY || process.env.JWT_SECRET || 'fallback-very-secret-key-32-chars-!!';
-  return crypto.createHash('sha256').update(key).digest();
+  return crypto.createHash('sha256').update(TWO_FACTOR_ENCRYPTION_KEY).digest();
 };
 
 /**

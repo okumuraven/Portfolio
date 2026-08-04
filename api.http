@@ -3,8 +3,8 @@ POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "okumuraven@gmail.com",
-  "password": "***REDACTED***"
+  "email": "your-admin-email@example.com",
+  "password": "your-password"
 }
 
 ###
@@ -12,7 +12,7 @@ GET http://localhost:5000/api/timeline
 
 ### Get current user
 GET http://localhost:5000/api/auth/me
-Authorization: Bearer ***REDACTED-JWT***
+Authorization: Bearer {{accessToken}}
 
 ###
 GET http://localhost:5000/api/timeline

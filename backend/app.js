@@ -5,6 +5,11 @@ const path = require('path');
 
 const app = express();
 
+// Trust the first proxy hop (Render/Vercel-style reverse proxy) so req.ip reflects
+// the real client IP from X-Forwarded-For instead of the proxy's own address —
+// otherwise express-rate-limit buckets every user behind the proxy together.
+app.set('trust proxy', 1);
+
 // ---- Security Headers ----
 app.use(helmet());
 
@@ -19,20 +24,23 @@ const allowedOrigins = [
 ];
 
 // ---- Dynamic Origin Checking ----
+// Wildcards are scoped as tightly as possible: only this project's known Vercel
+// deployment prefix is trusted (not *any* vercel.app app), and dev-only patterns
+// (devtunnels, private LAN) are disabled outright once NODE_ENV=production.
+const isProduction = process.env.NODE_ENV === 'production';
+
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log("CORS request from:", origin);
     if (!origin) return callback(null, true);
-    if (
+    const isAllowed =
       allowedOrigins.includes(origin) ||
-      /^https:\/\/.*\.devtunnels\.ms$/.test(origin) ||
-      /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin) ||
       /^https:\/\/(www\.)?okumuraven\.me$/.test(origin) ||
-      /^http:\/\/(192\.168|10\.|172\.(1[6-9]|2[0-9]|3[0-1]))\./.test(origin) // Allow local LAN testing
-    ) {
-      return callback(null, true);
-    }
-    console.log("CORS BLOCKED:", origin);
+      /^https:\/\/portfolio(-[a-z0-9-]+)?-okumuravens-projects\.vercel\.app$/.test(origin) ||
+      (!isProduction && /^https:\/\/.*\.devtunnels\.ms$/.test(origin)) ||
+      (!isProduction && /^http:\/\/(192\.168|10\.|172\.(1[6-9]|2[0-9]|3[0-1]))\./.test(origin));
+
+    if (isAllowed) return callback(null, true);
+    console.warn("CORS BLOCKED:", origin);
     callback(new Error('Not allowed by CORS'));
   },
   credentials: true,

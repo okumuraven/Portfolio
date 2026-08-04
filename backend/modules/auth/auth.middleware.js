@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../../config/env');
 
 /**
  * Authentication middleware for Express.
@@ -24,7 +25,7 @@ function requireAuth(requiredRoles = []) {
 
     const token = parts[1];
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'devtopsecret');
+      const decoded = jwt.verify(token, JWT_SECRET);
       req.user = decoded; // e.g. { id, email, role, ... }
 
       // Optional: Role enforcement

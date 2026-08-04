@@ -4,7 +4,7 @@ const db = require('../../database');
 const otplib = require('otplib');
 const qrcode = require('qrcode');
 const authEncryption = require('./auth.encryption');
-require('dotenv').config();
+const { JWT_SECRET } = require('../../config/env');
 
 // Standard TOTP configuration for Google Authenticator compatibility
 const totpConfig = {
@@ -109,8 +109,7 @@ exports.issueSession = (user) => {
  */
 exports.generateToken = (user) => {
   const jwtPayload = { userId: user.id, email: user.email, role: user.role };
-  const secret = process.env.JWT_SECRET || "devtopsecret";
-  return jwt.sign(jwtPayload, secret, { expiresIn: '2h' });
+  return jwt.sign(jwtPayload, JWT_SECRET, { expiresIn: '2h' });
 };
 
 /**

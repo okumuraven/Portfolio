@@ -14,9 +14,9 @@ const router = express.Router();
 // Get all active personas (for public site: landing/about/etc)
 router.get('/public', setCacheControl(), PersonasController.listPublic);
 
-// -------- SEMI-PUBLIC ROUTES --------
-// List all personas (for admin dropdowns/forms; publicly accessible for GET)
-router.get('/', setCacheControl(), PersonasController.listAdmin);   // <--- NO requireAdmin()
+// -------- ADMIN ROUTES --------
+// List all personas, including inactive/draft ones (for admin dropdowns/forms)
+router.get('/', requireAdmin(), PersonasController.listAdmin);
 
 // -------- ADMIN ROUTES (require authentication/authorization) --------
 
