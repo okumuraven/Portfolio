@@ -1,0 +1,64 @@
+.section {
+  padding: 20px 5vw 90px;
+}
+
+.log {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--dossier-paper);
+  padding: 40px 40px 30px;
+  transform: rotate(-0.5deg);
+}
+
+.logTitle {
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--dossier-ink);
+}
+
+.perforation {
+  border-top: 2px dashed #6b5b3f;
+  margin: 20px 0 26px;
+}
+
+.entry {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.entryDot {
+  flex-shrink: 0;
+  margin-top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--dossier-ink);
+  background: var(--dossier-paper);
+}
+
+.entryTitle {
+  font-size: 15px;
+  color: var(--dossier-ink);
+}
+
+.entryDate {
+  color: var(--dossier-ink-soft);
+  font-weight: normal;
+}
+
+.entryDetail {
+  margin-top: 6px;
+  color: #4a3620;
+  font-size: 14px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.barcode {
+  height: 26px;
+  width: 150px;
+  margin: 10px auto 0;
+  background: repeating-linear-gradient(90deg, var(--dossier-ink) 0 3px, transparent 3px 7px);
+}

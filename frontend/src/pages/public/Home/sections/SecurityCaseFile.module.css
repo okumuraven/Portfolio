@@ -1,0 +1,296 @@
+.section {
+  padding: 20px 5vw 90px;
+}
+
+.board {
+  position: relative;
+  max-width: 1320px;
+  min-height: 820px;
+  margin: 0 auto;
+  border: 1px solid #2a1c15;
+  border-radius: 6px;
+  padding: 30px;
+}
+
+.boardLabel {
+  position: absolute;
+  left: 26px;
+  top: -18px;
+  background: #e9e4da;
+  padding: 10px 20px;
+  transform: rotate(-2deg);
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: var(--dossier-accent);
+  font-weight: 700;
+  z-index: 6;
+}
+
+.strings {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.string {
+  stroke: var(--dossier-accent);
+  stroke-width: 2;
+  fill: none;
+  opacity: 0.85;
+}
+
+.pinDot {
+  fill: var(--dossier-accent);
+}
+
+.mugshot {
+  position: absolute;
+  left: 110px;
+  top: 110px;
+  width: 190px;
+  background: #eee9de;
+  padding: 12px 12px 28px;
+  transform: rotate(-3deg);
+  z-index: 3;
+}
+
+.mugshotPhoto {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #0c0c0c;
+  position: relative;
+  overflow: hidden;
+}
+
+.silhouette {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  width: 62%;
+  transform: translate(-50%, -50%);
+}
+
+.mugshotCaption {
+  text-align: center;
+  font-size: 11px;
+  color: var(--dossier-ink);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+.clearance {
+  position: absolute;
+  left: 370px;
+  top: 200px;
+  width: 220px;
+  background: #dbe4d8;
+  padding: 16px;
+  transform: rotate(2deg);
+  z-index: 3;
+}
+
+.clearanceHeader {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #243021;
+}
+
+.clearanceTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1b241a;
+  margin-top: 6px;
+}
+
+.seal {
+  border: 2px solid #4a5c44;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0 4px;
+  transform: rotate(-8deg);
+  font-size: 9px;
+  color: #4a5c44;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.clearanceFooter {
+  font-size: 11px;
+  font-style: italic;
+  color: #3a4636;
+}
+
+.locationCard {
+  position: absolute;
+  left: 650px;
+  top: 125px;
+  width: 260px;
+  background: var(--dossier-paper-light);
+  padding: 16px 20px;
+  transform: rotate(-2deg);
+  font-size: 12px;
+  z-index: 3;
+}
+
+.circled {
+  border: 2.5px solid var(--dossier-accent);
+  border-radius: 50%;
+  padding: 6px 12px;
+  display: inline-block;
+  transform: rotate(2deg);
+  margin-top: 4px;
+}
+
+.certificate {
+  position: absolute;
+  left: 960px;
+  top: 80px;
+  width: 300px;
+  background: var(--dossier-paper);
+  padding: 22px 24px;
+  transform: rotate(1.5deg);
+  z-index: 3;
+}
+
+.paperclip {
+  position: absolute;
+  left: -12px;
+  top: -16px;
+  width: 20px;
+  height: 36px;
+  transform: rotate(-8deg);
+  z-index: 4;
+}
+
+.certLabel {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--dossier-ink);
+}
+
+.certHighlightWrap {
+  margin-top: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.certCircle {
+  position: absolute;
+  left: -10px;
+  top: -6px;
+  width: calc(100% + 20px);
+  height: calc(100% + 12px);
+  border: 2.5px solid var(--dossier-accent);
+  border-radius: 50%;
+  transform: rotate(-2deg);
+}
+
+.certHighlight {
+  font-size: 22px;
+  color: var(--dossier-ink);
+  position: relative;
+}
+
+.certFooter {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--dossier-ink-soft);
+  margin-top: 14px;
+}
+
+.stickyRow {
+  position: absolute;
+  left: 110px;
+  top: 400px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  width: 900px;
+  z-index: 4;
+}
+
+.sticky {
+  background: var(--dossier-sticky);
+  padding: 14px;
+  font-size: 18px;
+  color: var(--dossier-ink);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.4);
+}
+
+.sticky:nth-child(odd) { transform: rotate(-3deg); }
+.sticky:nth-child(even) { transform: rotate(3deg); }
+
+.bottomTag {
+  position: absolute;
+  left: 940px;
+  top: 555px;
+  width: 280px;
+  background: #e9e4da;
+  padding: 16px 20px;
+  transform: rotate(-1.5deg);
+  z-index: 3;
+}
+
+.bottomTagTitle {
+  font-size: 19px;
+  color: var(--dossier-ink);
+}
+
+.bottomTagStatus {
+  font-size: 11px;
+  color: var(--dossier-accent);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   MOBILE — stacked, no strings
+   ========================================= */
+@media (max-width: 1000px) {
+  .board {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-height: 0;
+    padding: 40px 20px 30px;
+  }
+
+  .strings {
+    display: none;
+  }
+
+  .boardLabel,
+  .mugshot,
+  .clearance,
+  .locationCard,
+  .certificate,
+  .stickyRow,
+  .bottomTag {
+    position: static;
+    width: 100%;
+    max-width: 340px;
+    transform: none;
+  }
+
+  .boardLabel {
+    align-self: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .stickyRow {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .sticky {
+    transform: none !important;
+  }
+}

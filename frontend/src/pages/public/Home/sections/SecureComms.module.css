@@ -1,222 +1,127 @@
-/* frontend/src/pages/public/Home/sections/SecureComms.module.css */
-
 .section {
-  padding: 100px 5vw;
-  background-color: #050505;
-  border-top: 1px solid #111;
-  overflow: hidden;
+  padding: 20px 5vw 100px;
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1320px;
   margin: 0 auto;
+  text-align: center;
 }
 
-/* Header */
-.headerArea {
-  margin-bottom: 60px;
-}
-
-.statusLine {
-  display: flex;
+.headerTag {
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.8rem;
-  color: var(--system-color, #ff5500);
-  margin-bottom: 15px;
+  background: #e9e4da;
+  padding: 8px 16px;
+  transform: rotate(-1.5deg);
+  margin-bottom: 22px;
 }
 
 .dot {
-  width: 6px;
-  height: 6px;
-  background: var(--system-color, #ff5500);
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  box-shadow: 0 0 10px var(--system-color, #ff5500);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(1.5); }
-  100% { opacity: 1; transform: scale(1); }
+  background: var(--dossier-accent);
+  box-shadow: 0 0 8px var(--dossier-accent);
 }
 
 .title {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  font-weight: 900;
+  margin: 0;
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
   color: #fff;
-  letter-spacing: -0.02em;
-  margin: 0 0 15px 0;
-  text-transform: uppercase;
 }
 
 .subtitle {
-  font-family: 'Inter', sans-serif;
+  max-width: 560px;
+  margin: 14px auto 44px;
+  color: #b8ab90;
   font-size: 1rem;
-  color: #888;
-  max-width: 600px;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
-/* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px;
-  margin-bottom: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  text-align: left;
 }
 
-/* Card */
-.card {
-  background: #0a0a0a;
-  border: 1px solid #222;
-  border-left: 4px solid var(--accent, #ffd700);
-  padding: 30px;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+.stub {
   position: relative;
-  overflow: hidden;
+  display: block;
+  background: var(--dossier-paper-light);
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
 }
 
-.card:hover {
-  background: #111;
-  transform: scale(1.02);
-  border-color: var(--accent);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+.stub:nth-child(odd) { transform: rotate(-1.2deg); }
+.stub:nth-child(even) { transform: rotate(1.2deg); }
+
+.stub:hover {
+  transform: translateY(-4px) rotate(0deg);
 }
 
-.cardHeader {
+.perforation {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(#c9c5ba 0 6px, transparent 6px 12px);
+}
+
+.stubHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
 .iconBox {
-  font-size: 1.5rem;
-  color: var(--accent);
+  width: 22px;
+  height: 22px;
+  color: var(--stub-accent);
 }
 
-.metaBadge {
-  font-family: 'Courier New', monospace;
-  font-size: 0.65rem;
-  color: #444;
-  letter-spacing: 0.1em;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 2px;
-}
-
-.card:hover .metaBadge {
-  color: var(--accent);
-  border-color: var(--accent);
-  text-shadow: 0 0 5px var(--accent);
-}
-
-/* Tactical Scanning Line */
-.card::after {
-  content: "";
-  position: absolute;
-  top: -100%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.3;
-  animation: scanDown 3s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes scanDown {
-  0% { top: -10%; opacity: 0; }
-  10% { opacity: 0.5; }
-  90% { opacity: 0.5; }
-  100% { top: 110%; opacity: 0; }
-}
-
-.cardBody {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.meta {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--dossier-ink-soft);
 }
 
 .label {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: var(--accent);
-  letter-spacing: 0.05em;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--stub-accent);
 }
 
 .value {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #fff;
-}
-
-.cardFooter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  font-size: 15px;
+  color: var(--dossier-ink);
+  margin: 8px 0 14px;
+  word-break: break-word;
 }
 
 .action {
-  font-family: 'Courier New', monospace;
-  font-size: 0.8rem;
-  color: #666;
-  font-weight: bold;
-  transition: color 0.3s;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--dossier-ink-soft);
+  border-top: 1px dashed #c9c5ba;
+  padding-top: 10px;
 }
 
-.card:hover .action {
-  color: #fff;
+.signature {
+  margin-top: 56px;
+  font-size: 32px;
+  color: #e9e4da;
 }
 
-.glow {
-  position: absolute;
-  bottom: -20px;
-  right: -20px;
-  width: 100px;
-  height: 100px;
-  background: var(--accent);
-  filter: blur(40px);
-  opacity: 0.05;
-  transition: opacity 0.3s;
-}
-
-.card:hover .glow {
-  opacity: 0.2;
-}
-
-/* Bottom Bar */
-.bottomBar {
-  border-top: 1px dashed #222;
-  padding-top: 20px;
-}
-
-.log {
-  font-family: 'Courier New', monospace;
-  font-size: 0.7rem;
-  color: #333;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .section {
-    padding: 60px 24px;
-  }
-  
-  .grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .value {
-    font-size: 1rem;
-  }
+.copyright {
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #8a7a5c;
 }

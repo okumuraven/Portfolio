@@ -1,0 +1,153 @@
+.section {
+  padding: 20px 5vw 90px;
+}
+
+.inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* --- Receipt --- */
+.receipt {
+  width: 100%;
+  max-width: 460px;
+  background: var(--dossier-paper);
+  padding: 32px 28px;
+  transform: rotate(-1deg);
+  position: relative;
+}
+
+.washi {
+  position: absolute;
+  left: 24px;
+  top: -12px;
+  width: 64px;
+  height: 18px;
+  background: repeating-linear-gradient(45deg, var(--dossier-accent) 0 6px, var(--dossier-paper-light) 6px 12px);
+  opacity: 0.75;
+  transform: rotate(-25deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.receiptTitle {
+  font-size: 17px;
+  letter-spacing: 2px;
+  color: var(--dossier-ink);
+  text-align: center;
+}
+
+.receiptSub {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--dossier-ink-soft);
+  text-align: center;
+  margin-top: 2px;
+}
+
+.divider {
+  border-top: 2px dashed var(--dossier-ink-soft);
+  margin: 16px 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13.5px;
+  color: var(--dossier-ink);
+  padding: 7px 0;
+}
+
+.circledRowWrap {
+  position: relative;
+  padding: 4px 0;
+}
+
+.circleMark {
+  position: absolute;
+  left: -8px;
+  top: 0;
+  width: calc(100% + 16px);
+  height: 30px;
+  border: 2.5px solid var(--dossier-accent);
+  border-radius: 50%;
+  transform: rotate(-1.5deg);
+}
+
+.barcode {
+  height: 30px;
+  width: 160px;
+  background: repeating-linear-gradient(90deg, var(--dossier-ink) 0 3px, transparent 3px 7px);
+  margin-top: 4px;
+}
+
+.caseId {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--dossier-ink-soft);
+  margin-top: 8px;
+}
+
+/* --- Stack chips --- */
+.stackGrid {
+  flex: 1;
+  min-width: 300px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-content: start;
+}
+
+.chip {
+  background: linear-gradient(165deg, var(--dossier-metal-hi), var(--dossier-metal-lo));
+  border-radius: 10px;
+  padding: 18px;
+  border-top: 2px solid #6a7078;
+}
+
+.chip:nth-child(3n+1) { transform: rotate(-1deg); }
+.chip:nth-child(3n+2) { transform: rotate(1deg); }
+.chip:nth-child(3n+3) { transform: rotate(-0.6deg); }
+
+.chipPins {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.chipPins span {
+  width: 14px;
+  height: 5px;
+  background: #0a0c0e;
+  border-radius: 1px;
+}
+
+.chipIcon {
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.chipName {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #e7eaee;
+  margin-top: 10px;
+}
+
+.chipCaption {
+  font-size: 11px;
+  color: #9aa1a8;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .stackGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 480px) {
+  .stackGrid { grid-template-columns: 1fr; }
+}

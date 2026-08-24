@@ -1,150 +1,159 @@
 import React from "react";
 import styles from "./PersonaOperations.module.css";
 
+const ICONS = {
+  code: (
+    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2.4">
+      <path d="M13 12 L6 20 L13 28" />
+      <path d="M27 12 L34 20 L27 28" />
+      <path d="M23 8 L17 32" />
+    </svg>
+  ),
+  globe: (
+    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2.4">
+      <circle cx="20" cy="20" r="14" />
+      <ellipse cx="20" cy="20" rx="6" ry="14" />
+      <path d="M6 20 L34 20 M8 13 L32 13 M8 27 L32 27" />
+    </svg>
+  ),
+  shield: (
+    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2.4">
+      <path d="M20 5 L33 11 L33 21 Q33 32 20 36 Q7 32 7 21 L7 11 Z" />
+      <path d="M14 20 L19 25 L27 15" />
+    </svg>
+  ),
+  phone: (
+    <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="2.4">
+      <rect x="11" y="4" width="18" height="32" rx="3" />
+      <line x1="17" y1="10" x2="23" y2="10" />
+      <circle cx="20" cy="31" r="1.6" fill="currentColor" stroke="none" />
+    </svg>
+  ),
+};
+
 /**
- * StaticProfessionalCard - High-fidelity tactical briefing for core roles
+ * EvidenceBadge — a taped, pinned dossier card for one professional hat.
  */
-function StaticProfessionalCard({ data }) {
-  const accentColor = data.accentColor || "var(--accent-color)";
-  
+function EvidenceBadge({ data }) {
   return (
-    <div className={styles.card} style={{ "--card-accent": accentColor }}>
+    <div className={styles.card} style={{ "--card-accent": data.accentColor }}>
+      <div className={styles.tape} />
+      <div className={styles.pin} />
+
       <div className={styles.cardHeader}>
-        <div className={styles.iconBox}>
-          {data.icon.startsWith("http") ? (
-             <img src={data.icon} alt="" className={styles.iconImg} />
-          ) : (
-             <i className={`${data.icon} ${styles.icon}`}></i>
-          )}
-        </div>
-        <div className={styles.titleArea}>
-          <span className={styles.statusTag}>OPERATIONAL_UNIT // {data.code}</span>
-          <h3 className={styles.cardTitle}>{data.title.toUpperCase()}</h3>
+        <div className={styles.iconBox}>{ICONS[data.icon]}</div>
+        <div>
+          <span className={`${styles.statusTag} ink`}>OPERATIONAL_UNIT // {data.code}</span>
+          <h3 className={`${styles.cardTitle} ink`}>{data.title.toUpperCase()}</h3>
         </div>
       </div>
 
-      <div className={styles.body}>
-        <p className={styles.summary}>
-          {data.description}
-        </p>
+      <p className={`${styles.summary} bodyCopy`}>{data.description}</p>
 
-        {/* CORE SPECIALIZATIONS */}
-        <div className={styles.subSection}>
-          <h4 className={styles.subTitle}>CORE_SPECIALIZATIONS //</h4>
-          <div className={styles.tagGrid}>
-            {data.specializations.map((s, idx) => (
-              <span key={idx} className={styles.skillTag}>{s}</span>
-            ))}
-          </div>
-          <a href="/skill-matrix" className={styles.inlineLink} data-text="[ ACCESS_SKILL_MATRIX ]">
-            <span className={styles.pulseDot}></span>
-            <i className="fas fa-terminal"></i>
-            [ ACCESS_SKILL_MATRIX ]
-          </a>
+      <div className={styles.subSection}>
+        <h4 className={`${styles.subTitle} ink`}>CORE_SPECIALIZATIONS //</h4>
+        <div className={styles.tagGrid}>
+          {data.specializations.map((s, idx) => (
+            <span key={idx} className={`${styles.skillTag} ink`}>{s}</span>
+          ))}
         </div>
+        <a href="/skill-matrix" className={`${styles.inlineLink} ink`}>[ ACCESS_SKILL_MATRIX ]</a>
+      </div>
 
-        {/* KEY CAPABILITIES */}
-        <div className={styles.subSection}>
-          <h4 className={styles.subTitle}>OPERATIONAL_CAPABILITIES //</h4>
-          <ul className={styles.projectList}>
-            {data.capabilities.map((c, idx) => (
-              <li key={idx} className={styles.projectItem}>
-                 <span className={styles.projPrefix}>&gt;</span> {c}
-              </li>
-            ))}
-          </ul>
-          <a href="/projects" className={styles.inlineLink} data-text="[ VIEW_OPERATIONAL_FEED ]">
-            <span className={styles.pulseDot}></span>
-            <i className="fas fa-database"></i>
-            [ VIEW_OPERATIONAL_FEED ]
-          </a>
-        </div>
+      <div className={styles.subSection}>
+        <h4 className={`${styles.subTitle} ink`}>OPERATIONAL_CAPABILITIES //</h4>
+        <ul className={styles.capabilityList}>
+          {data.capabilities.map((c, idx) => (
+            <li key={idx} className={`${styles.capabilityItem} bodyCopy`}>
+              <span className={styles.capPrefix}>&gt;</span> {c}
+            </li>
+          ))}
+        </ul>
+        <a href="/projects" className={`${styles.inlineLink} ink`}>[ VIEW_OPERATIONAL_FEED ]</a>
       </div>
 
       <div className={styles.footer}>
-        <span className={styles.availability}>
-           DEPLOYMENT_STATE: <span className={styles.availValue}>READY</span>
+        <span className={`${styles.availability} ink`}>
+          DEPLOYMENT_STATE: <span className={styles.availValue}>READY</span>
         </span>
-        <div className={styles.decoration} />
       </div>
     </div>
   );
 }
 
 export default function PersonaOperations() {
-  // Static Core Professional Units (Guarantees Instant Load & Perfect UX)
+  // Static Core Professional Units — the four hats, worn daily.
   const professionalUnits = [
     {
       code: "01",
-      title: "Full-Stack Architect",
-      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-      accentColor: "#ffd700", // Gold
-      description: "Architecting high-performance web engines. Modernizing legacy Node.js backends into highly concurrent, scalable environments using Elixir and Phoenix.",
-      specializations: ["React 19", "Next.js", "Node.js", "Fastify", "PostgreSQL"],
+      title: "Software Engineer",
+      icon: "code",
+      accentColor: "#efd968",
+      description:
+        "Architecting high-performance systems end-to-end — concurrent Node.js/Fastify services wired to resilient data layers that don't fall over under load.",
+      specializations: ["Node.js", "Fastify", "PostgreSQL", "System Design"],
       capabilities: [
         "Distributed System Architecture",
-        "Anonymous Messaging Protocols",
-        "API Performance Optimization"
-      ]
+        "API Performance Optimization",
+        "Database Schema Design",
+      ],
     },
     {
       code: "02",
-      title: "Security Researcher",
-      icon: "https://www.kali.org/images/kali-logo.svg",
-      accentColor: "#ff5500", // Orange
-      description: "Approaching infrastructure with an offensive security mindset. Specialized in penetration testing, password auditing, and resilient EDR logic design.",
-      specializations: ["Kali Linux", "Burp Suite", "SOC Level 1", "OWASP Top 10"],
+      title: "Web Developer",
+      icon: "globe",
+      accentColor: "#7fb5ff",
+      description:
+        "Building interfaces that feel instant and hold up under real traffic — React and Next.js front-ends wired to production APIs, not just prototypes.",
+      specializations: ["React 19", "Next.js", "Zustand", "WebSockets"],
       capabilities: [
-        "Network Telemetry Analysis",
-        "Endpoint Hardening & Auditing",
-        "Cryptographic Implementation"
-      ]
+        "Real-Time UI Architecture",
+        "Anonymous Messaging Protocols",
+        "Responsive Interface Engineering",
+      ],
     },
     {
       code: "03",
-      title: "Cloud & Systems Architect",
-      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
-      accentColor: "#00e5ff", // Cyan
-      description: "Commanding Linux environments and deployment pipelines. Automating complex workflows with n8n and architecting secure edge infrastructure.",
-      specializations: ["Docker", "Linux (Ubuntu)", "Tailscale", "Redis", "BullMQ"],
+      title: "Cyber Security",
+      icon: "shield",
+      accentColor: "#c23b2c",
+      description:
+        "Approaching every build with an offensive security mindset — penetration testing, auditing, and hardening systems against real-world threat models.",
+      specializations: ["Kali Linux", "Burp Suite", "OWASP Top 10", "SOC Level 1"],
       capabilities: [
-        "Infrastructure as Code",
-        "CI/CD Pipeline Automation",
-        "Secure VPN Tunneling"
-      ]
+        "Network Telemetry Analysis",
+        "Endpoint Hardening & Auditing",
+        "Cryptographic Implementation",
+      ],
     },
     {
       code: "04",
-      title: "Statistical Computist",
-      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-      accentColor: "#00ff88", // Cyber Green
-      description: "Applying rigorous logic and probability to complex data models. Engineering data-heavy applications that require high-frequency processing.",
-      specializations: ["Data Modeling", "Predictive Analytics", "System Optimization"],
+      title: "App Developer",
+      icon: "phone",
+      accentColor: "#8fdca0",
+      description:
+        "Extending the same backend and security discipline into cross-platform app experiences — mobile-first interfaces backed by the same secure APIs.",
+      specializations: ["Cross-Platform UI", "REST/API Integration", "Offline-First", "Docker"],
       capabilities: [
-        "Complex Algorithm Design",
-        "Performance Benchmarking",
-        "Quantitative Risk Analysis"
-      ]
-    }
+        "Mobile-First Architecture",
+        "API Integration Layers",
+        "Deployment Pipelines",
+      ],
+    },
   ];
 
   return (
-    <section className={styles.section}>
-      <div className={styles.header}>
-        <h2 className={styles.mainTitle}>OPERATIONS_BRIEFING</h2>
-        <div className={styles.headerLine} />
-        <p className={styles.headerSubtitle}>
-          Detailed architectural breakdown of professional service units and active specializations. 
-          Verified operational capacity for Q3 2026.
+    <section className={`${styles.section} deskBg`}>
+      <div className={`${styles.header} paperShadow`}>
+        <h2 className={`${styles.mainTitle} display`}>FOUR OPERATIONAL UNITS</h2>
+        <p className={`${styles.headerSubtitle} bodyCopy`}>
+          Clearance roster — the four hats worn daily. Verified operational capacity for Q3 2026.
         </p>
       </div>
 
       <div className={styles.grid}>
-        {professionalUnits.map(unit => (
-          <StaticProfessionalCard 
-            key={unit.code} 
-            data={unit} 
-          />
+        {professionalUnits.map((unit) => (
+          <EvidenceBadge key={unit.code} data={unit} />
         ))}
       </div>
     </section>

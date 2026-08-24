@@ -5,197 +5,200 @@ import { useSkills } from "../../../../features/skills/useSkills";
 import { groupSkillsByCategory } from "../../../../features/skills/skillUtils";
 
 /**
- * Animated Terminal Component that fetches real skill data
+ * Case printout — a dot-matrix style readout that fetches real skill data,
+ * dressed as a torn receipt instead of a terminal window.
  */
-function TacticalTerminal() {
+function CasePrintout() {
   const { data: rawSkills = [], isLoading } = useSkills();
   const [visibleLines, setVisibleLines] = useState(0);
   const [isDone, setIsDone] = useState(false);
 
-  // Process skills into tactical categories
-  const terminalData = useMemo(() => {
+  const printoutData = useMemo(() => {
     if (!rawSkills.length) return [];
     const grouped = groupSkillsByCategory(rawSkills);
-    
+
     const mapping = [
       { search: "front", label: "FRONTEND" },
       { search: "back", label: "BACKEND" },
       { search: "data", label: "DATABASE" },
       { search: "sec", label: "SECURITY" },
-      { search: "dev", label: "DEVOPS" }
+      { search: "dev", label: "DEVOPS" },
     ];
 
-    return mapping.map(m => {
-      // Find matches using partial string matching
-      const categoryKey = Object.keys(grouped).find(k => 
+    return mapping.map((m) => {
+      const categoryKey = Object.keys(grouped).find((k) =>
         k.toLowerCase().includes(m.search.toLowerCase())
       );
-      const list = categoryKey ? grouped[categoryKey].slice(0, 4).map(s => s.name).join(", ") : "Pending verification...";
+      const list = categoryKey
+        ? grouped[categoryKey].slice(0, 4).map((s) => s.name).join(", ")
+        : "pending verification...";
       return { label: m.label, value: list };
     });
   }, [rawSkills]);
 
-  // Terminal Line Animation
   useEffect(() => {
     if (isLoading) return;
-    
-    const totalLines = terminalData.length + 3; // Commands + Scanning + Categories
+    const totalLines = printoutData.length + 3;
     if (visibleLines < totalLines) {
-      const timer = setTimeout(() => {
-        setVisibleLines(prev => prev + 1);
-      }, visibleLines === 0 ? 500 : visibleLines === 1 ? 1000 : 400);
+      const timer = setTimeout(
+        () => setVisibleLines((prev) => prev + 1),
+        visibleLines === 0 ? 500 : visibleLines === 1 ? 900 : 380
+      );
       return () => clearTimeout(timer);
     } else {
       setIsDone(true);
     }
-  }, [visibleLines, isLoading, terminalData.length]);
+  }, [visibleLines, isLoading, printoutData.length]);
 
   return (
-    <div className={styles.terminalWindow}>
-      <div className={styles.terminalHeader}>
-        <div className={styles.termDots}>
-          <span></span><span></span><span></span>
+    <div className={`${styles.printout} torn paperShadow`}>
+      <div className={`${styles.printoutHead} ink`}>CASE_PRINTOUT // SKILL_SCAN.LOG</div>
+      <div className={styles.perforation} />
+
+      {visibleLines >= 1 && (
+        <div className={`${styles.line} ink`}>
+          <span className={styles.prompt}>&gt;</span> ./analyze --target=okumuraven
         </div>
-        <div className={styles.termTitle}>core_competencies.sh</div>
-      </div>
-      <div className={styles.terminalBody}>
-        {/* Command 1 */}
-        {visibleLines >= 1 && (
-          <div className={styles.termLine}>
-            <span className={styles.prompt}>~/okumuraven/skills$</span> ./analyze --target
-          </div>
-        )}
+      )}
 
-        {/* Loading/Scanning Line */}
-        {visibleLines >= 2 && (
-          <div className={styles.termLine} style={{ color: '#888' }}>
-            {visibleLines === 2 ? (
-              <span className={styles.loadingText}>[SCANNING_SYSTEM_RESOURCES...]</span>
-            ) : (
-              <span style={{ color: 'var(--accent-color)' }}>[SYSTEM_SCAN_COMPLETE] // 100% SUCCESS</span>
-            )}
-          </div>
-        )}
+      {visibleLines >= 2 && (
+        <div className={`${styles.line} ink`} style={{ color: "#6b5b3f" }}>
+          {visibleLines === 2 ? (
+            <span className={styles.blinking}>[SCANNING_SYSTEM_RESOURCES...]</span>
+          ) : (
+            <span style={{ color: "var(--dossier-accent)" }}>[SCAN_COMPLETE] // 100% VERIFIED</span>
+          )}
+        </div>
+      )}
 
-        {/* Skill Lines */}
-        <div className={styles.termOutput}>
-          {terminalData.map((item, idx) => (
-            visibleLines >= (idx + 3) && (
-              <div key={idx} className={styles.skillOutputLine} style={{ marginBottom: '8px' }}>
+      <div className={styles.output}>
+        {printoutData.map(
+          (item, idx) =>
+            visibleLines >= idx + 3 && (
+              <div key={idx} className={`${styles.outputLine} ink`}>
                 <span className={styles.tag}>[{item.label}]</span> {item.value}
               </div>
             )
-          ))}
-        </div>
-
-        {/* Final Prompt & Creative Link */}
-        {isDone && (
-          <div className={styles.termLine}>
-            <span className={styles.prompt}>
-              <a href="https://github.com/okumuraven" target="_blank" rel="noopener noreferrer" className={styles.promptPath}>~/github/okumuraven$</a>
-            </span> 
-            <a href="/skill-matrix" className={styles.termLink}>
-              cd ./SKILL_MATRIX <span className={styles.cursor}>_</span>
-            </a>
-          </div>
-        )}
-        
-        {/* Pre-load cursor if nothing shown yet */}
-        {!isDone && visibleLines === 0 && (
-          <div className={styles.termLine}>
-             <span className={styles.prompt}>~/okumuraven/skills$</span> <span className={styles.cursor}>_</span>
-          </div>
         )}
       </div>
+
+      {isDone && (
+        <div className={`${styles.line} ink`}>
+          <a href="/skill-matrix" className={styles.printoutLink}>
+            cd ./SKILL_MATRIX <span className={styles.cursor}>_</span>
+          </a>
+        </div>
+      )}
+
+      {!isDone && visibleLines === 0 && (
+        <div className={`${styles.line} ink`}>
+          <span className={styles.cursor}>_</span>
+        </div>
+      )}
+
+      <div className={styles.barcode} />
     </div>
   );
 }
 
 export default function Hero() {
   const { personas, activePersonaId, setActivePersonaId } = usePersonas();
-  
+
   // Static Core Identity (Guarantees Instant Load & Perfect UX)
   const coreProfile = {
     name: "OKUMU JOSEPH",
     handle: "OKUMU RAVEN",
     title: "FULL-STACK ARCHITECT & SECURITY RESEARCHER",
-    summary: "Building secure, high-performance digital infrastructure.",
-    description: "Specializing in cutting-edge frontend interfaces, highly concurrent backend systems, and offensive security. I engineer solutions that scale and withstand modern cyber threats.",
-    accentColor: "#ffd700", // Gold (Matches Skill Matrix)
-    systemColor: "#ff5500", // Orange (Matches Admin)
+    description:
+      "Specializing in cutting-edge frontend interfaces, highly concurrent backend systems, and offensive security. I engineer solutions that scale and withstand modern cyber threats.",
   };
 
-  // If we have loaded data and a selected persona, use it. Otherwise, fallback to static.
-  const activePersona = personas?.find(p => String(p.id) === String(activePersonaId)) || null;
+  const activePersona = personas?.find((p) => String(p.id) === String(activePersonaId)) || null;
 
   const displayData = {
     title: activePersona?.title || coreProfile.title,
-    summary: activePersona?.summary || coreProfile.summary,
     description: activePersona?.description || coreProfile.description,
-    accentColor: activePersona?.accent_color || coreProfile.accentColor,
-    systemColor: coreProfile.systemColor,
     type: activePersona?.type || "LEAD ARCHITECT",
   };
 
   return (
-    <section className={styles.hero} style={{ "--accent-color": displayData.accentColor, "--system-color": displayData.systemColor }}>
-      
-      {/* BACKGROUND EFFECTS */}
-      <div className={styles.scanline}></div>
-      <div className={styles.glowOrb}></div>
+    <section className={`${styles.hero} deskBg`}>
+      <div className={styles.heroInner}>
+        {/* Redacted polaroid */}
+        <div className={`${styles.polaroid} paperShadow`}>
+          <div className={styles.pin} />
+          <div className={styles.photoFrame}>
+            <svg viewBox="0 0 100 120" className={styles.silhouette}>
+              <circle cx="50" cy="34" r="26" fill="#0c0c0c" />
+              <path d="M14 118 Q10 70 50 66 Q90 70 86 118 Z" fill="#0c0c0c" />
+            </svg>
+            <div className={`${styles.idTag} ink`}>ID// REDACTED</div>
+          </div>
+          <div className={`${styles.polaroidCaption} ink`}>OKUMU JOSEPH</div>
+        </div>
 
-      <div className={styles.heroContent}>
-        
-        {/* LEFT COLUMN: IDENTITY & TITLE */}
-        <div className={styles.identityCol}>
-          <div className={styles.systemStatus}>
-            <span className={styles.ping}></span>
-            <span className={styles.statusText}>SYSTEM_ONLINE // {displayData.type.toUpperCase()}</span>
+        {/* Quote sticky */}
+        <div className={`${styles.sticky} paperShadow`}>
+          <div className={styles.stickyTape} />
+          <div className="hand">"Secure by design. I build systems that scale — and survive contact with real threats."</div>
+        </div>
+
+        {/* Title kraft card */}
+        <div className={`${styles.titleCard} torn paperShadow`}>
+          <div className={`${styles.fileLabel} ink`}>
+            OPERATIONAL_FILE // NO. 0X29-JR &nbsp;·&nbsp;{" "}
+            <span className={styles.statusText}>STATUS: {displayData.type.toUpperCase()}</span>
           </div>
 
-          <h1 className={styles.mainTitle}>
-            <span className={styles.nameBlock}>{coreProfile.name}</span>
-            <span className={styles.handleBlock}>({coreProfile.handle})</span>
+          <h1 className={`${styles.mainTitle} display`}>
+            {coreProfile.name.split(" ").map((word) => (
+              <React.Fragment key={word}>
+                {word}
+                <br />
+              </React.Fragment>
+            ))}
           </h1>
+          <div className={`${styles.handle} ink`}>( {coreProfile.handle} )</div>
 
-          <h2 className={styles.roleHighlight}>
-            &gt; {displayData.title.toUpperCase()}
-          </h2>
+          <div className={styles.highlightWrap}>
+            <span className={`${styles.highlight} ink`}>{displayData.title.toUpperCase()}</span>
+          </div>
 
-          <p className={styles.heroDescription}>
-            {displayData.description}
-          </p>
+          <p className={`${styles.description} bodyCopy`}>{displayData.description}</p>
 
           <div className={styles.actionRow}>
-            <a href="/projects" className={styles.primaryBtn}>[ VIEW_OPERATIONS ]</a>
-            <a href="/contact" className={styles.secondaryBtn}>INITIATE_CONTACT</a>
+            <a href="/projects" className={`${styles.primaryBtn} ink`}>[ VIEW_OPERATIONS ]</a>
+            <a href="/contact" className={`${styles.secondaryBtn} ink`}>INITIATE_CONTACT</a>
           </div>
 
-          {/* PERSONA OVERRIDE (Only shows if DB loaded and has multiple) */}
           {personas && personas.length > 1 && (
-             <div className={styles.overrideModule}>
-               <span className={styles.overrideLabel}>SYS_OVERRIDE:</span>
-               <select
-                 value={activePersonaId || activePersona?.id || ""}
-                 onChange={(e) => setActivePersonaId(e.target.value)}
-                 className={styles.overrideSelect}
-               >
-                 <option value="" disabled>SELECT_PROFILE</option>
-                 {personas.map((role) => (
-                   <option key={role.id} value={role.id}>
-                     {role.title.toUpperCase()}
-                   </option>
-                 ))}
-               </select>
-             </div>
+            <div className={styles.overrideModule}>
+              <span className={`${styles.overrideLabel} ink`}>CLEARANCE_OVERRIDE:</span>
+              <select
+                value={activePersonaId || activePersona?.id || ""}
+                onChange={(e) => setActivePersonaId(e.target.value)}
+                className={`${styles.overrideSelect} ink`}
+              >
+                <option value="" disabled>SELECT_PROFILE</option>
+                {personas.map((role) => (
+                  <option key={role.id} value={role.id}>{role.title.toUpperCase()}</option>
+                ))}
+              </select>
+            </div>
           )}
+
+          <div className={`${styles.verifiedStamp} stamp`}>VERIFIED<br />// OPERATIONAL</div>
         </div>
 
-        {/* RIGHT COLUMN: TACTICAL TERMINAL */}
-        <div className={styles.terminalCol}>
-          <TacticalTerminal />
+        {/* Location tag */}
+        <div className={`${styles.locationTag} paperShadow ink`}>
+          LOC // KENYA — <span className={styles.circled}>GLOBAL OPS CAPACITY</span>
         </div>
 
+        {/* Case printout */}
+        <div className={styles.printoutCol}>
+          <CasePrintout />
+        </div>
       </div>
     </section>
   );
