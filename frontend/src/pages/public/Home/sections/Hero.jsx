@@ -187,7 +187,7 @@ export default function Hero() {
             </div>
           )}
 
-          <div className={`${styles.verifiedStamp} stamp`}>VERIFIED<br />// OPERATIONAL</div>
+          <div className={`${styles.verifiedStamp} stamp`}>VERIFIED<br />{"// OPERATIONAL"}</div>
         </div>
 
         {/* Location tag */}
