@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTimeline } from "../../../../api/timeline.api";
 import styles from "./TimelinePreview.module.css";
+import { CasePin } from "../../../../components/caseboard/CaseBoard";
 
 export default function TimelinePreview() {
   // Fetch latest timeline events (visible, sorted by most recent date_start)
@@ -13,8 +14,8 @@ export default function TimelinePreview() {
 
   return (
     <section className={`${styles.section} deskBg`}>
-      <span className="railPin" style={{ top: "50px" }} />
       <div className={`${styles.log} torn paperShadow`}>
+        <CasePin id="timeline" order={40} className={styles.pin} />
         <div className={`${styles.logTitle} ink`}>LATEST_MILESTONES</div>
         <div className={styles.perforation} />
 

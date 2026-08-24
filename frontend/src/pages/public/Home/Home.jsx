@@ -1,6 +1,7 @@
 import React from "react";
 import "../../../styles/dossier.css";
 import styles from "./Home.module.css";
+import { CaseBoardProvider } from "../../../components/caseboard/CaseBoard";
 // Import your section components (create them if you haven't yet)
 import Hero from "./sections/Hero";
 import PersonaOperations from "./sections/PersonaOperations";
@@ -13,15 +14,15 @@ import SecureComms from "./sections/SecureComms";
  * Home (Landing) Page
  * - This is the first page users/clients see.
  * - Composed of modular sections for easy maintainability.
- * - Every section is threaded onto one continuous case-board string,
- *   so it reads as one running file rather than separate blocks.
+ * - Every pinned element across every section is threaded onto one
+ *   continuous, live-measured red string (CaseBoardProvider), so the
+ *   page reads as one detective's board of connected clues rather
+ *   than separate blocks.
  */
 export default function Home() {
   return (
     <main className={styles.root}>
-      <div className={styles.caseThread}>
-        <div className={styles.rail} aria-hidden="true" />
-
+      <CaseBoardProvider>
         {/* ==== HERO SECTION ==== */}
         <Hero />
 
@@ -39,7 +40,7 @@ export default function Home() {
 
         {/* ==== SECURE COMMUNICATIONS HUB ==== */}
         <SecureComms />
-      </div>
+      </CaseBoardProvider>
     </main>
   );
 }

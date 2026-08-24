@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./OperationsLog.module.css";
+import { CasePin } from "../../../../components/caseboard/CaseBoard";
 
 const STACK_MODULES = [
   { name: "React.js", caption: "frontend_core", icon: "react/react-original" },
@@ -13,10 +14,10 @@ const STACK_MODULES = [
 export default function OperationsLog() {
   return (
     <section className={`${styles.section} deskBg`}>
-      <span className="railPin" style={{ top: "40px" }} />
       <div className={styles.inner}>
         {/* Operations log receipt */}
         <div className={`${styles.receipt} torn paperShadow`}>
+          <CasePin id="opslog" order={20} className={styles.pin} />
           <div className={styles.washi} />
           <div className={`${styles.receiptTitle} ink`}>OPERATIONS_LOG</div>
           <div className={`${styles.receiptSub} ink`}>role · duration · unit</div>

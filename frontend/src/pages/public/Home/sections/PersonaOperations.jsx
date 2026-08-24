@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./PersonaOperations.module.css";
+import { CasePin } from "../../../../components/caseboard/CaseBoard";
 
 const ICONS = {
   code: (
@@ -37,7 +38,7 @@ const ICONS = {
 function EvidenceBadge({ data }) {
   return (
     <div className={styles.card} style={{ "--card-accent": data.accentColor }}>
-      <div className={styles.pin} />
+      <CasePin id={`persona-${data.code}`} order={10 + Number(data.code)} className={styles.pin} />
 
       <div className={styles.cardHeader}>
         <div className={styles.iconBox}>{ICONS[data.icon]}</div>
@@ -143,7 +144,6 @@ export default function PersonaOperations() {
 
   return (
     <section className={`${styles.section} deskBg`}>
-      <span className="railPin" style={{ top: "70px" }} />
       <div className={`${styles.header} paperShadow`}>
         <h2 className={`${styles.mainTitle} display`}>FOUR OPERATIONAL UNITS</h2>
         <p className={`${styles.headerSubtitle} bodyCopy`}>

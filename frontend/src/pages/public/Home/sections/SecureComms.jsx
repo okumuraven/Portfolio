@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./SecureComms.module.css";
+import { CasePin } from "../../../../components/caseboard/CaseBoard";
 
 const ICONS = {
   envelope: (
@@ -84,9 +85,9 @@ export default function SecureComms() {
 
   return (
     <section className={`${styles.section} deskBg`}>
-      <span className="railPin" style={{ top: "40px" }} />
       <div className={styles.container}>
         <div className={`${styles.headerTag} paperShadow`}>
+          <CasePin id="comms" order={50} className={styles.pin} />
           <span className={`${styles.dot}`}></span>
           <span className="ink" style={{ fontSize: "11px", letterSpacing: "1px" }}>
             SYSTEM_READY // COMMS_HUB_ONLINE

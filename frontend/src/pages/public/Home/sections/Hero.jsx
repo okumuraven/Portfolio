@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Hero.module.css";
 import headshot from "../../../../assets/okumu-headshot.jpg";
+import { CasePin } from "../../../../components/caseboard/CaseBoard";
 import { usePersonas } from "../../../../features/personas/usePersonas";
 import { useSkills } from "../../../../features/skills/useSkills";
 import { groupSkillsByCategory } from "../../../../features/skills/skillUtils";
@@ -124,11 +125,10 @@ export default function Hero() {
 
   return (
     <section className={`${styles.hero} deskBg`}>
-      <span className="railPin" style={{ top: "150px" }} />
       <div className={styles.heroInner}>
         {/* Polaroid */}
         <div className={`${styles.polaroid} paperShadow`}>
-          <div className={styles.pin} />
+          <CasePin id="hero" order={0} className={styles.pin} />
           <div className={styles.photoFrame}>
             <img src={headshot} alt="Okumu Joseph" className={styles.photo} />
           </div>

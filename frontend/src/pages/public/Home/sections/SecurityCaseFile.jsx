@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./SecurityCaseFile.module.css";
 import headshot from "../../../../assets/okumu-headshot.jpg";
+import { CasePin } from "../../../../components/caseboard/CaseBoard";
 
 /**
  * SecurityCaseFile — the detective-corkboard treatment for the
@@ -11,7 +12,6 @@ import headshot from "../../../../assets/okumu-headshot.jpg";
 export default function SecurityCaseFile() {
   return (
     <section className={`${styles.section} deskBg`}>
-      <span className="railPin" style={{ top: "40px" }} />
       <div className={`${styles.board} corkGrid`}>
         <div className={`${styles.boardLabel} paperShadow ink`}>CASE FILE // CYBER_SECURITY</div>
 
@@ -32,6 +32,7 @@ export default function SecurityCaseFile() {
         </svg>
 
         <div className={`${styles.mugshot} paperShadow`}>
+          <CasePin id="secboard-in" order={30} className={styles.mugshotPin} />
           <div className={styles.mugshotPhoto}>
             <img src={headshot} alt="" className={styles.mugshotImg} />
             <span className={`${styles.redactBar} ink`}>REDACTED</span>
@@ -70,6 +71,7 @@ export default function SecurityCaseFile() {
         </div>
 
         <div className={`${styles.bottomTag} paperShadow`}>
+          <CasePin id="secboard-out" order={31} className={styles.bottomTagPin} />
           <div className={`${styles.bottomTagTitle} display`}>THE RESEARCHER STRIKES AGAIN</div>
           <div className={`${styles.bottomTagStatus} ink`}>case status: ongoing</div>
         </div>
