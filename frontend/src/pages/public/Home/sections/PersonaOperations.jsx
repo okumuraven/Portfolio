@@ -37,7 +37,6 @@ const ICONS = {
 function EvidenceBadge({ data }) {
   return (
     <div className={styles.card} style={{ "--card-accent": data.accentColor }}>
-      <div className={styles.tape} />
       <div className={styles.pin} />
 
       <div className={styles.cardHeader}>
@@ -144,6 +143,7 @@ export default function PersonaOperations() {
 
   return (
     <section className={`${styles.section} deskBg`}>
+      <span className="railPin" style={{ top: "70px" }} />
       <div className={`${styles.header} paperShadow`}>
         <h2 className={`${styles.mainTitle} display`}>FOUR OPERATIONAL UNITS</h2>
         <p className={`${styles.headerSubtitle} bodyCopy`}>

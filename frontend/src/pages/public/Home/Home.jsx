@@ -13,28 +13,33 @@ import SecureComms from "./sections/SecureComms";
  * Home (Landing) Page
  * - This is the first page users/clients see.
  * - Composed of modular sections for easy maintainability.
- * - Visual impression and clear value prop are the focus!
+ * - Every section is threaded onto one continuous case-board string,
+ *   so it reads as one running file rather than separate blocks.
  */
 export default function Home() {
   return (
     <main className={styles.root}>
-      {/* ==== HERO SECTION ==== */}
-      <Hero />
+      <div className={styles.caseThread}>
+        <div className={styles.rail} aria-hidden="true" />
 
-      {/* ==== FOUR OPERATIONAL UNITS (Persona Cards) ==== */}
-      <PersonaOperations />
+        {/* ==== HERO SECTION ==== */}
+        <Hero />
 
-      {/* ==== OPERATIONS LOG + STACK MODULES ==== */}
-      <OperationsLog />
+        {/* ==== FOUR OPERATIONAL UNITS (Persona Cards) ==== */}
+        <PersonaOperations />
 
-      {/* ==== SECURITY RESEARCHER CASE FILE (Evidence Board) ==== */}
-      <SecurityCaseFile />
+        {/* ==== OPERATIONS LOG + STACK MODULES ==== */}
+        <OperationsLog />
 
-      {/* ==== RECENT ACHIEVEMENTS/TIMELINE ==== */}
-      <TimelinePreview />
+        {/* ==== SECURITY RESEARCHER CASE FILE (Evidence Board) ==== */}
+        <SecurityCaseFile />
 
-      {/* ==== SECURE COMMUNICATIONS HUB ==== */}
-      <SecureComms />
+        {/* ==== RECENT ACHIEVEMENTS/TIMELINE ==== */}
+        <TimelinePreview />
+
+        {/* ==== SECURE COMMUNICATIONS HUB ==== */}
+        <SecureComms />
+      </div>
     </main>
   );
 }

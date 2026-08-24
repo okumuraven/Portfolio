@@ -13,6 +13,7 @@ const STACK_MODULES = [
 export default function OperationsLog() {
   return (
     <section className={`${styles.section} deskBg`}>
+      <span className="railPin" style={{ top: "40px" }} />
       <div className={styles.inner}>
         {/* Operations log receipt */}
         <div className={`${styles.receipt} torn paperShadow`}>

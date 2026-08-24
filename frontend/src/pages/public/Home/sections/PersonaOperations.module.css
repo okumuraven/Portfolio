@@ -1,4 +1,5 @@
 .section {
+  position: relative;
   padding: 60px 5vw 90px;
 }
 
@@ -27,7 +28,7 @@
   max-width: 1320px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 30px;
 }
 
@@ -41,17 +42,6 @@
 
 .card:nth-child(even) {
   --card-rotate: 0.6deg;
-}
-
-.tape {
-  position: absolute;
-  left: 50%;
-  top: -10px;
-  width: 90px;
-  height: 20px;
-  transform: translateX(-50%) rotate(-2deg);
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.3));
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .pin {
@@ -172,4 +162,22 @@
 .availValue {
   color: var(--dossier-accent);
   font-weight: bold;
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 48px 5vw 70px;
+  }
+
+  .header {
+    padding: 18px 20px;
+  }
+
+  .card {
+    padding: 22px 18px;
+  }
+
+  .cardTitle {
+    font-size: 15px;
+  }
 }

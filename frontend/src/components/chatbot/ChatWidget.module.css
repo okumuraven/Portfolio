@@ -468,6 +468,37 @@
   }
 }
 
+@media (max-width: 640px) {
+  /* Collapse the wide pill + tooltip into a small icon-only button so it
+     stops covering card content at the bottom-right of the viewport. */
+  .widgetContainer {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .helpPrompt {
+    display: none;
+  }
+
+  .bubbleBtn {
+    padding: 0;
+    width: 52px;
+    height: 52px;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .bubbleLabel {
+    display: none;
+  }
+
+  .iconCircle {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 500px) {
   .widgetContainer {
     bottom: 0;

@@ -13,6 +13,7 @@ export default function TimelinePreview() {
 
   return (
     <section className={`${styles.section} deskBg`}>
+      <span className="railPin" style={{ top: "50px" }} />
       <div className={`${styles.log} torn paperShadow`}>
         <div className={`${styles.logTitle} ink`}>LATEST_MILESTONES</div>
         <div className={styles.perforation} />

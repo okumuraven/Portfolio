@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./SecurityCaseFile.module.css";
+import headshot from "../../../../assets/okumu-headshot.jpg";
 
 /**
  * SecurityCaseFile — the detective-corkboard treatment for the
@@ -10,6 +11,7 @@ import styles from "./SecurityCaseFile.module.css";
 export default function SecurityCaseFile() {
   return (
     <section className={`${styles.section} deskBg`}>
+      <span className="railPin" style={{ top: "40px" }} />
       <div className={`${styles.board} corkGrid`}>
         <div className={`${styles.boardLabel} paperShadow ink`}>CASE FILE // CYBER_SECURITY</div>
 
@@ -31,12 +33,10 @@ export default function SecurityCaseFile() {
 
         <div className={`${styles.mugshot} paperShadow`}>
           <div className={styles.mugshotPhoto}>
-            <svg viewBox="0 0 100 120" className={styles.silhouette}>
-              <circle cx="50" cy="34" r="24" fill="#000" />
-              <path d="M16 118 Q12 72 50 68 Q88 72 84 118 Z" fill="#000" />
-            </svg>
+            <img src={headshot} alt="" className={styles.mugshotImg} />
+            <span className={`${styles.redactBar} ink`}>REDACTED</span>
           </div>
-          <div className={`${styles.mugshotCaption} ink`}>ID// SR-02 · REDACTED</div>
+          <div className={`${styles.mugshotCaption} ink`}>ID// SR-02</div>
         </div>
 
         <div className={`${styles.clearance} paperShadow`}>

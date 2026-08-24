@@ -84,6 +84,7 @@ export default function SecureComms() {
 
   return (
     <section className={`${styles.section} deskBg`}>
+      <span className="railPin" style={{ top: "40px" }} />
       <div className={styles.container}>
         <div className={`${styles.headerTag} paperShadow`}>
           <span className={`${styles.dot}`}></span>

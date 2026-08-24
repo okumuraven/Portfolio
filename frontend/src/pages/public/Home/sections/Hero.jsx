@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Hero.module.css";
+import headshot from "../../../../assets/okumu-headshot.jpg";
 import { usePersonas } from "../../../../features/personas/usePersonas";
 import { useSkills } from "../../../../features/skills/useSkills";
 import { groupSkillsByCategory } from "../../../../features/skills/skillUtils";
@@ -123,16 +124,13 @@ export default function Hero() {
 
   return (
     <section className={`${styles.hero} deskBg`}>
+      <span className="railPin" style={{ top: "150px" }} />
       <div className={styles.heroInner}>
-        {/* Redacted polaroid */}
+        {/* Polaroid */}
         <div className={`${styles.polaroid} paperShadow`}>
           <div className={styles.pin} />
           <div className={styles.photoFrame}>
-            <svg viewBox="0 0 100 120" className={styles.silhouette}>
-              <circle cx="50" cy="34" r="26" fill="#0c0c0c" />
-              <path d="M14 118 Q10 70 50 66 Q90 70 86 118 Z" fill="#0c0c0c" />
-            </svg>
-            <div className={`${styles.idTag} ink`}>ID// REDACTED</div>
+            <img src={headshot} alt="Okumu Joseph" className={styles.photo} />
           </div>
           <div className={`${styles.polaroidCaption} ink`}>OKUMU JOSEPH</div>
         </div>
@@ -140,7 +138,7 @@ export default function Hero() {
         {/* Quote sticky */}
         <div className={`${styles.sticky} paperShadow`}>
           <div className={styles.stickyTape} />
-          <div className="hand">"Secure by design. I build systems that scale — and survive contact with real threats."</div>
+          <div className="hand">&ldquo;Secure by design. I build systems that scale — and survive contact with real threats.&rdquo;</div>
         </div>
 
         {/* Title kraft card */}
