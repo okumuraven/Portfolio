@@ -112,7 +112,10 @@ const ProjectsModel = {
 
     for (const key of allowed) {
       if (typeof project[key] !== 'undefined') {
-        sets.push(`${key} = $${idx}`);
+        // `order` is a reserved SQL keyword and must be quoted as an identifier,
+        // same as the column list in create()'s INSERT.
+        const column = key === 'order' ? '"order"' : key;
+        sets.push(`${column} = $${idx}`);
         values.push(project[key]);
         idx++;
       }

@@ -31,6 +31,10 @@ async function listProjects(req, res, next) {
 
     const enriched = projects.map(p => ({
       ...p,
+      // `skills` stays as display names (existing consumers, e.g. the admin
+      // project table, render this directly). `skillIds` carries the raw
+      // integer IDs so the edit form doesn't have to reverse-map names.
+      skillIds: Array.isArray(p.skills) ? p.skills : [],
       skills: Array.isArray(p.skills)
         ? p.skills.map(id => skillMap[id]).filter(Boolean)
         : [],
@@ -65,6 +69,7 @@ async function getProject(req, res, next) {
 
     const enriched = {
       ...project,
+      skillIds: Array.isArray(project.skills) ? project.skills : [],
       skills: Array.isArray(project.skills)
         ? project.skills.map(id => skillMap[id]).filter(Boolean)
         : [],

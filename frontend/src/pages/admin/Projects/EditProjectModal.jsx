@@ -56,7 +56,9 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
       if (project) {
         setForm({
           ...project,
-          skills: Array.isArray(project.skills) ? project.skills.map(Number) : [],
+          // `project.skills` is the display-name array (for cards/lists elsewhere);
+          // `skillIds` is the raw integer ID array the <select> needs.
+          skills: Array.isArray(project.skillIds) ? project.skillIds.map(Number) : [],
           persona_ids: Array.isArray(project.persona_ids) ? project.persona_ids.map(Number) : [],
           collaborators: Array.isArray(project.collaborators) ? project.collaborators : [],
           image: project.image || "",
