@@ -141,29 +141,32 @@ export default function Hero() {
           <div className="hand">&ldquo;Secure by design. I build systems that scale — and survive contact with real threats.&rdquo;</div>
         </div>
 
-        {/* Title kraft card */}
-        <div className={`${styles.titleCard} torn paperShadow`}>
+        {/* Newspaper clipping — the detective found him in the papers */}
+        <div className={`${styles.titleCard} torn paperShadow newsprintTexture`}>
           <CasePin id="hero-title" order={2} className={styles.titlePin} />
-          <div className={`${styles.fileLabel} ink`}>
-            OPERATIONAL_FILE // NO. 0X29-JR &nbsp;·&nbsp;{" "}
-            <span className={styles.statusText}>STATUS: {displayData.type.toUpperCase()}</span>
+
+          <div className={`${styles.masthead} gazette`}>
+            <span className={styles.mastheadRule} />
+            <span className={styles.mastheadName}>The Operations Gazette</span>
+            <span className={styles.mastheadRule} />
           </div>
-
-          <h1 className={`${styles.mainTitle} display`}>
-            {coreProfile.name.split(" ").map((word) => (
-              <React.Fragment key={word}>
-                {word}
-                <br />
-              </React.Fragment>
-            ))}
-          </h1>
-          <div className={`${styles.handle} ink`}>( {coreProfile.handle} )</div>
-
-          <div className={styles.highlightWrap}>
-            <span className={`${styles.highlight} ink`}>{displayData.title.toUpperCase()}</span>
+          <div className={`${styles.editionLine} ink`}>
+            <span>FILE NO. 0X29-JR</span>
+            <span>STATUS: {displayData.type.toUpperCase()}</span>
           </div>
+          <div className={styles.doubleRule} />
 
-          <p className={`${styles.description} bodyCopy`}>{displayData.description}</p>
+          <div className={`${styles.kicker} ink`}>SUBJECT PROFILE // EXCLUSIVE</div>
+
+          <h1 className={`${styles.headline} gazette`}>{coreProfile.name}</h1>
+          <div className={`${styles.byline} gazette`}>By The Case File &nbsp;·&nbsp; ( {coreProfile.handle} )</div>
+
+          <p className={`${styles.deck} gazette`}>{displayData.title.toUpperCase()}</p>
+
+          <p className={`${styles.bodyText} gazette`}>
+            <span className={styles.dropCap}>{displayData.description.charAt(0)}</span>
+            {displayData.description.slice(1)}
+          </p>
 
           <div className={styles.actionRow}>
             <a href="/projects" className={`${styles.primaryBtn} ink`}>[ VIEW_OPERATIONS ]</a>
@@ -186,6 +189,7 @@ export default function Hero() {
             </div>
           )}
 
+          <div className={`${styles.continued} gazette`}>Continued on B4 →</div>
           <div className={`${styles.verifiedStamp} stamp`}>VERIFIED<br />{"// OPERATIONAL"}</div>
         </div>
 

@@ -37,7 +37,10 @@ function CommCard({ icon, label, value, link, color, meta }) {
       </div>
       <div className={`${styles.label} ink`}>{label}</div>
       <div className={`${styles.value} ink`}>{value}</div>
-      <div className={`${styles.action} ink`}>[ INITIATE_CONNECTION ]</div>
+      <div className={`${styles.action} ink`}>
+        <span className={styles.actionLabel}>[ INITIATE_CONNECTION ]</span>
+        <span className={styles.actionRedaction} aria-hidden="true">ENCRYPTED — HOVER TO DECODE</span>
+      </div>
     </a>
   );
 }

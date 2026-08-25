@@ -18,6 +18,8 @@
   --dossier-accent-dim: #8a2b1d;
   --dossier-metal-hi: #4a5058;
   --dossier-metal-lo: #1e2226;
+  --dossier-newsprint: #e8e1c8;
+  --dossier-newsprint-dark: #d8cfae;
 }
 
 .ink {
@@ -31,6 +33,17 @@
 }
 .bodyCopy {
   font-family: Georgia, "Times New Roman", serif;
+}
+.gazette {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+.newsprintTexture {
+  background-color: var(--dossier-newsprint);
+  background-image:
+    repeating-radial-gradient(circle at 0 0, rgba(36, 28, 22, 0.05) 0 0.8px, transparent 0.8px 3px),
+    linear-gradient(115deg, transparent 40%, rgba(36, 28, 22, 0.035) 41%, transparent 42%),
+    linear-gradient(115deg, transparent 70%, rgba(36, 28, 22, 0.035) 71%, transparent 72%);
 }
 
 .torn {

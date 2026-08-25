@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./PersonaOperations.module.css";
 import { CasePin } from "../../../../components/caseboard/CaseBoard";
+import RedactedLink from "../../../../components/caseboard/RedactedLink";
 
 const ICONS = {
   code: (
@@ -57,7 +58,7 @@ function EvidenceBadge({ data }) {
             <span key={idx} className={`${styles.skillTag} ink`}>{s}</span>
           ))}
         </div>
-        <a href="/skill-matrix" className={`${styles.inlineLink} ink`}>[ ACCESS_SKILL_MATRIX ]</a>
+        <RedactedLink href="/skill-matrix" stamp="CLASSIFIED">ACCESS_SKILL_MATRIX</RedactedLink>
       </div>
 
       <div className={styles.subSection}>
@@ -69,7 +70,7 @@ function EvidenceBadge({ data }) {
             </li>
           ))}
         </ul>
-        <a href="/projects" className={`${styles.inlineLink} ink`}>[ VIEW_OPERATIONAL_FEED ]</a>
+        <RedactedLink href="/projects" stamp="TOP SECRET">VIEW_OPERATIONAL_FEED</RedactedLink>
       </div>
 
       <div className={styles.footer}>
