@@ -137,12 +137,13 @@ export default function Hero() {
 
         {/* Quote sticky */}
         <div className={`${styles.sticky} paperShadow`}>
-          <div className={styles.stickyTape} />
+          <CasePin id="hero-quote" order={1} className={styles.stickyPin} />
           <div className="hand">&ldquo;Secure by design. I build systems that scale — and survive contact with real threats.&rdquo;</div>
         </div>
 
         {/* Title kraft card */}
         <div className={`${styles.titleCard} torn paperShadow`}>
+          <CasePin id="hero-title" order={2} className={styles.titlePin} />
           <div className={`${styles.fileLabel} ink`}>
             OPERATIONAL_FILE // NO. 0X29-JR &nbsp;·&nbsp;{" "}
             <span className={styles.statusText}>STATUS: {displayData.type.toUpperCase()}</span>
@@ -190,11 +191,13 @@ export default function Hero() {
 
         {/* Location tag */}
         <div className={`${styles.locationTag} paperShadow ink`}>
+          <CasePin id="hero-location" order={3} className={styles.locationPin} />
           LOC // KENYA — <span className={styles.circled}>GLOBAL OPS CAPACITY</span>
         </div>
 
         {/* Case printout */}
         <div className={styles.printoutCol}>
+          <CasePin id="hero-printout" order={4} className={styles.printoutPin} />
           <CasePrintout />
         </div>
       </div>

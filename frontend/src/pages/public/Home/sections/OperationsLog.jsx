@@ -46,8 +46,11 @@ export default function OperationsLog() {
 
         {/* Stack modules */}
         <div className={styles.stackGrid}>
-          {STACK_MODULES.map((mod) => (
+          {STACK_MODULES.map((mod, idx) => (
             <div key={mod.name} className={`${styles.chip} paperShadow`}>
+              {idx === STACK_MODULES.length - 1 && (
+                <CasePin id="opslog-stack" order={21} className={styles.chipPin} />
+              )}
               <div className={styles.chipPins}>
                 <span /><span /><span />
               </div>
