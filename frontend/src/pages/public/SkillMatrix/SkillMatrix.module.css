@@ -111,14 +111,42 @@
 
 .signatureCard {
   position: relative;
-  background: var(--dossier-paper-light);
-  padding: 20px 16px;
+  background: var(--note-bg, var(--dossier-paper-light));
+  padding: 22px 16px 20px;
   text-align: center;
   transform: rotate(var(--tilt, -1deg));
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .signatureGrid > .signatureCard:nth-child(even) {
   --tilt: 1deg;
+}
+
+.signatureGrid > .signatureCard:nth-child(3n) {
+  --tilt: -1.6deg;
+}
+
+/* the pushpin holding the note to the board */
+.notePin {
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: var(--note-accent, #c23b2c);
+  background-image: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.6), transparent 60%);
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.35), 0 3px 4px rgba(0, 0, 0, 0.55);
+  z-index: 6;
+}
+
+.noteCategory {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: var(--note-accent, var(--dossier-ink-soft));
+  font-weight: bold;
+  margin-bottom: 6px;
 }
 
 .signatureStamp {
@@ -161,7 +189,7 @@
 
 .cacheCard {
   position: relative;
-  background: var(--dossier-manila);
+  background: var(--note-bg, var(--dossier-manila));
   padding: 26px 22px;
   transform: rotate(var(--tilt, -0.5deg));
 }
@@ -185,7 +213,7 @@
 .cacheTitle {
   font-size: 13px;
   letter-spacing: 1px;
-  color: #201509;
+  color: var(--note-accent, #201509);
   border-bottom: 1px dashed rgba(32, 21, 9, 0.3);
   padding-bottom: 12px;
   margin-bottom: 16px;

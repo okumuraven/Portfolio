@@ -27,6 +27,24 @@ function threatFill(level) {
   return THREAT_FILL[key] ?? 50;
 }
 
+// Same categories as the forensic pie chart, but as sticky-note paper
+// colors: a soft tint for the note itself and a saturated accent for its
+// pin/tab, so the note reads as "backend-green" etc. at a glance.
+const CATEGORY_NOTE_COLORS = {
+  backend: { bg: "#cdeecb", accent: "#1f9d55" },
+  frontend: { bg: "#c9ecf6", accent: "#0aa5c2" },
+  database: { bg: "#f8ddb8", accent: "#d97a1f" },
+  devops: { bg: "#e6d3f2", accent: "#8b3fc9" },
+  security: { bg: "#f7edad", accent: "#c9a400" },
+};
+const DEFAULT_NOTE_COLOR = { bg: "#eee9de", accent: "#8a7a5c" };
+
+function noteColor(category) {
+  const key = (category || "").trim().toLowerCase();
+  const match = Object.keys(CATEGORY_NOTE_COLORS).find((k) => key.includes(k));
+  return CATEGORY_NOTE_COLORS[match] || DEFAULT_NOTE_COLOR;
+}
+
 export default function SkillMatrix() {
   const { data: skills = [], isLoading, isError } = useSkills();
 
@@ -64,29 +82,44 @@ export default function SkillMatrix() {
             <div className={styles.signatureSection}>
               <div className={`${styles.sectionLabel} ink`}>SIGNATURE WEAPONS // GO-TO METHOD</div>
               <div className={styles.signatureGrid}>
-                {superpowers.map((skill) => (
-                  <div key={skill.id} className={`${styles.signatureCard} paperShadow`}>
-                    <div className={styles.signatureStamp}>SIGNATURE</div>
-                    {skill.icon && <img src={skill.icon} alt="" className={styles.signatureIcon} loading="lazy" />}
-                    <span className={`${styles.signatureName} ink`}>{skill.name}</span>
-                    <div className={`${styles.signatureDetail} bodyCopy`}>
-                      {skill.level} &middot; {yearString(skill.years)}
+                {superpowers.map((skill) => {
+                  const color = noteColor(skill.category);
+                  return (
+                    <div
+                      key={skill.id}
+                      className={`${styles.signatureCard} paperShadow`}
+                      style={{ "--note-bg": color.bg, "--note-accent": color.accent }}
+                    >
+                      <span className={styles.notePin} />
+                      <div className={styles.signatureStamp}>SIGNATURE</div>
+                      <div className={`${styles.noteCategory} ink`}>{(skill.category || "GENERAL").toUpperCase()}</div>
+                      {skill.icon && <img src={skill.icon} alt="" className={styles.signatureIcon} loading="lazy" />}
+                      <span className={`${styles.signatureName} ink`}>{skill.name}</span>
+                      <div className={`${styles.signatureDetail} bodyCopy`}>
+                        {skill.level} &middot; {yearString(skill.years)}
+                      </div>
+                      {skill.cert_link && (
+                        <RedactedLink href={skill.cert_link} target="_blank" rel="noopener noreferrer" stamp="VERIFIED">
+                          PROOF_ON_FILE
+                        </RedactedLink>
+                      )}
                     </div>
-                    {skill.cert_link && (
-                      <RedactedLink href={skill.cert_link} target="_blank" rel="noopener noreferrer" stamp="VERIFIED">
-                        PROOF_ON_FILE
-                      </RedactedLink>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
 
           {/* WEAPONS CACHE, BY CATEGORY */}
           <div className={styles.cacheGrid}>
-            {Object.entries(grouped).map(([category, catSkills], catIdx) => (
-              <div key={category} className={`${styles.cacheCard} paperShadow`}>
+            {Object.entries(grouped).map(([category, catSkills], catIdx) => {
+              const color = noteColor(category);
+              return (
+              <div
+                key={category}
+                className={`${styles.cacheCard} paperShadow`}
+                style={{ "--note-bg": color.bg, "--note-accent": color.accent }}
+              >
                 <CasePin id={`arsenal-cache-${catIdx}`} order={10 + catIdx} className={styles.cachePin} />
                 <div className={`${styles.cacheTitle} ink`}>
                   {(category || "GENERAL").toUpperCase()} CACHE <span className={styles.cacheCount}>[{catSkills.length}]</span>
@@ -126,7 +159,8 @@ export default function SkillMatrix() {
                   ))}
                 </ul>
               </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       </CaseBoardProvider>
