@@ -22,7 +22,14 @@ import SecureComms from "./sections/SecureComms";
 export default function Home() {
   return (
     <main className={styles.root}>
-      <CaseBoardProvider>
+      <CaseBoardProvider
+        crossTies={[
+          ["hero", "persona-03"],
+          ["persona-01", "secboard-in"],
+          ["opslog", "timeline"],
+          ["secboard-out", "comms"],
+        ]}
+      >
         {/* ==== HERO SECTION ==== */}
         <Hero />
 

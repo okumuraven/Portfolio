@@ -45,7 +45,7 @@
 }
 
 .paperShadow {
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 3px 8px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 6px 14px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .pin {
@@ -78,7 +78,11 @@
 }
 
 .deskBg {
-  background: radial-gradient(circle at 18% 8%, var(--dossier-bg-1) 0%, var(--dossier-bg-0) 55%, #0a0806 100%);
+  background-color: var(--dossier-bg-0);
+  background-image:
+    repeating-radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
+    repeating-radial-gradient(circle at 68% 74%, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px),
+    radial-gradient(circle at 18% 8%, var(--dossier-bg-1) 0%, var(--dossier-bg-0) 55%, #0a0806 100%);
 }
 
 .corkGrid {
