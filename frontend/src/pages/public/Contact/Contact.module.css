@@ -1,96 +1,82 @@
 /* src/pages/public/Contact/Contact.module.css */
 
 .contactRoot {
-  min-height: 80vh;
-  padding: 6rem 2rem 4rem;
-  background-color: #050505;
-  color: #e0e0e0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Inter', sans-serif;
-  background-image: 
-    linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-  background-size: 30px 30px;
+  min-height: 100vh;
+  padding-bottom: 140px; /* keeps the floating chat widget clear of card content */
 }
 
-/* --- HEADERS --- */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 5vw 40px;
+}
+
+/* --- HEADER --- */
 .header {
+  position: relative;
+  max-width: 520px;
+  margin: 0 auto 40px;
+  background: var(--dossier-kraft);
+  padding: 26px 32px;
+  transform: rotate(-1deg);
   text-align: center;
-  margin-bottom: 4rem;
+}
+
+.headerPin {
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2534d, var(--dossier-accent-dim));
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.45), 0 3px 4px rgba(0, 0, 0, 0.55);
+  z-index: 6;
+}
+
+.headerKicker {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--dossier-accent);
+  margin-bottom: 8px;
 }
 
 .title {
-  font-family: 'Courier New', monospace;
-  font-size: 3.5rem;
-  font-weight: 800;
   margin: 0;
-  letter-spacing: 0.05em;
-  color: #fff;
-}
-
-.title span {
-  color: transparent;
-  -webkit-text-stroke: 1px #888;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  color: #201509;
 }
 
 .subtitle {
-  font-family: 'Courier New', monospace;
+  margin: 10px 0 0;
+  color: var(--dossier-ink-soft);
   font-size: 0.9rem;
-  color: #666;
-  letter-spacing: 0.1em;
-  margin-top: 1rem;
 }
 
 /* --- CONTENT LAYOUT --- */
 .contentWrapper {
   width: 100%;
-  max-width: 800px;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 44px;
 }
 
 /* --- STATES --- */
-.loader, .error, .empty {
-  font-family: 'Courier New', monospace;
-  font-size: 1rem;
-  color: #00ff88;
-  margin-top: 10rem;
+.loader {
   text-align: center;
-  animation: pulse 1.5s infinite;
+  color: #6b5b3f;
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 120px 20px;
 }
 
-.error { color: #ff4444; }
-.empty { color: #888; animation: none; }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* =========================================
-   MOBILE RESPONSIVENESS
-   ========================================= */
-@media (max-width: 768px) {
-  .contactRoot {
-    padding: 5rem 1rem 3rem; /* Reduced horizontal padding for mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 48px 5vw 30px;
   }
 
   .header {
-    margin-bottom: 2.5rem;
-  }
-
-  .title {
-    font-size: 2.2rem; /* Scaled down for mobile */
-  }
-
-  .subtitle {
-    font-size: 0.75rem;
-  }
-
-  .contentWrapper {
-    gap: 2rem;
+    padding: 20px 22px;
   }
 }

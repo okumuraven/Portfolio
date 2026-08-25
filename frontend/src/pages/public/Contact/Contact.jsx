@@ -1,6 +1,8 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getContactProfile } from "../../../api/contact.api";
+import "../../../styles/dossier.css";
+import { CaseBoardProvider, CasePin } from "../../../components/caseboard/CaseBoard";
 import ContactCard from "./ContactCard";
 import SocialLinks from "./SocialLinks";
 import styles from "./Contact.module.css";
@@ -19,22 +21,22 @@ export default function Contact() {
   // --- SYSTEM LOADING & ERROR STATES ---
   if (isLoading)
     return (
-      <section className={styles.contactRoot}>
-        <div className={styles.loader}>[ ESTABLISHING_SECURE_CONNECTION... ]</div>
+      <section className={`${styles.contactRoot} deskBg`}>
+        <div className={`${styles.loader} ink`}>PULLING SUBJECT DOSSIER...</div>
       </section>
     );
 
   if (error)
     return (
-      <section className={styles.contactRoot}>
-        <div className={styles.error}>[ SYSTEM_ERROR: COMMS_LINK_FAILED ]</div>
+      <section className={`${styles.contactRoot} deskBg`}>
+        <div className={`${styles.loader} ink`}>SYSTEM ERROR: COMMS LINK FAILED.</div>
       </section>
     );
 
   if (!Array.isArray(data) || data.length === 0)
     return (
-      <section className={styles.contactRoot}>
-        <div className={styles.empty}>[ NO_CONTACT_DATA_FOUND ]</div>
+      <section className={`${styles.contactRoot} deskBg`}>
+        <div className={`${styles.loader} ink`}>NO DOSSIER ON FILE.</div>
       </section>
     );
 
@@ -48,9 +50,7 @@ export default function Contact() {
   let avatarFieldKey = null;
 
   data.forEach((item) => {
-    if (
-      ["social_link", "email", "phone"].includes(item.type)
-    ) {
+    if (["social_link", "email", "phone"].includes(item.type)) {
       socialFields.push(item);
     } else {
       // Everything else goes to mainFields (extensible, not hard-coded)
@@ -66,22 +66,26 @@ export default function Contact() {
   }
 
   return (
-    <section className={styles.contactRoot}>
-      {/* PAGE HEADER */}
-      <div className={styles.header}>
-        <h1 className={styles.title}>
-          SECURE <span>COMMS</span>
-        </h1>
-        <p className={styles.subtitle}>{"// ESTABLISH_CONTACT_PROTOCOL"}</p>
-      </div>
+    <section className={`${styles.contactRoot} deskBg`}>
+      <CaseBoardProvider>
+        <div className={styles.container}>
+          {/* PAGE HEADER */}
+          <div className={`${styles.header} torn paperShadow`}>
+            <CasePin id="dossier-header" order={0} className={styles.headerPin} />
+            <div className={`${styles.headerKicker} ink`}>PERSONNEL FILE</div>
+            <h1 className={`${styles.title} display`}>SUBJECT DOSSIER</h1>
+            <p className={`${styles.subtitle} bodyCopy`}>Everything on file about the man behind the case.</p>
+          </div>
 
-      {/* CONTENT LAYOUT */}
-      <div className={styles.contentWrapper}>
-        {/* The Dossier Card with all about/profile fields */}
-        <ContactCard {...cardFields} />
-        {/* The Social / Link Buttons (contact networks) */}
-        <SocialLinks links={socialFields} />
-      </div>
+          {/* CONTENT LAYOUT */}
+          <div className={styles.contentWrapper}>
+            {/* The Dossier Card with all about/profile fields */}
+            <ContactCard {...cardFields} />
+            {/* The Social / Link Buttons (contact networks) */}
+            <SocialLinks links={socialFields} />
+          </div>
+        </div>
+      </CaseBoardProvider>
     </section>
   );
 }

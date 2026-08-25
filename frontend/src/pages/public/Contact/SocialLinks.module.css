@@ -1,120 +1,133 @@
-/* src/pages/public/Contact/SocialLinks.module.css */
-
 .container {
-  width: 100%;
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
+  text-align: center;
+}
+
+.headerTag {
+  position: relative;
+  display: inline-flex;
   align-items: center;
+  gap: 10px;
+  background: #e9e4da;
+  padding: 8px 16px;
+  transform: rotate(-1.5deg);
+  margin-bottom: 22px;
 }
 
-.sectionLabel {
-  font-family: 'Courier New', monospace;
-  color: #666;
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
-  margin-bottom: 2rem;
-  text-transform: uppercase;
+.headerPin {
+  position: absolute;
+  left: -6px;
+  top: -8px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2534d, var(--dossier-accent-dim));
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.45), 0 3px 4px rgba(0, 0, 0, 0.55);
+  z-index: 6;
 }
 
-/* --- DESKTOP GRID --- */
-.socialLinksRow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  width: 100%;
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dossier-accent);
+  box-shadow: 0 0 8px var(--dossier-accent);
 }
 
-/* --- TACTICAL BUTTON BASE --- */
-.socialButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 2rem;
-  background: #0a0a0a;
-  border: 1px solid #333;
-  border-radius: 4px;
-  color: #aaa;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: 20px;
+  text-align: left;
+}
+
+.stub {
+  position: relative;
+  display: block;
+  background: var(--dossier-paper-light);
+  padding: 20px;
   text-decoration: none;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  transition: all 0.3s ease;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.stub:nth-child(odd) { transform: rotate(-1.2deg); }
+.stub:nth-child(even) { transform: rotate(1.2deg); }
+
+.stub:hover {
+  transform: translateY(-4px) rotate(0deg);
+}
+
+.perforation {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(#c9c5ba 0 6px, transparent 6px 12px);
+}
+
+.stubHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.iconBox {
+  width: 22px;
+  height: 22px;
+  color: var(--dossier-accent);
+}
+
+.meta {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--dossier-ink-soft);
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--dossier-accent);
+}
+
+.value {
+  font-size: 15px;
+  color: var(--dossier-ink);
+  margin: 8px 0 14px;
+  word-break: break-word;
+}
+
+.action {
   position: relative;
-  min-width: 200px;
-  cursor: pointer;
+  overflow: hidden;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--dossier-ink-soft);
+  border-top: 1px dashed #c9c5ba;
+  margin: -1px -20px -20px;
+  padding: 10px 20px 20px;
 }
 
-.socialLabel {
-  position: relative;
-  z-index: 2;
+.actionLabel {
+  display: block;
 }
 
-/* Base Hover State */
-.socialButton:hover {
-  background: #111;
-  transform: translateY(-2px);
+.actionRedaction {
+  position: absolute;
+  inset: 0;
+  top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #0c0c0c;
+  color: #b8ab90;
+  letter-spacing: 1px;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =========================================
-   DYNAMIC NETWORK GLOW EFFECTS
-   ========================================= */
-.socialButton[data-network="whatsapp"]:hover {
-  border-color: #25d366;
-  color: #25d366;
-  box-shadow: 0 0 15px rgba(37, 211, 102, 0.2);
-}
-
-.socialButton[data-network="linkedin"]:hover {
-  border-color: #0a66c2;
-  color: #0a66c2;
-  box-shadow: 0 0 15px rgba(10, 102, 194, 0.2);
-}
-
-.socialButton[data-network="github"]:hover {
-  border-color: #fff;
-  color: #fff;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-}
-
-.socialButton[data-network="email"]:hover {
-  border-color: #ff5500; /* Admin Orange */
-  color: #ff5500;
-  box-shadow: 0 0 15px rgba(255, 85, 0, 0.2);
-}
-
-.socialButton[data-network="phone"]:hover {
-  border-color: #00e5ff; /* Cyan */
-  color: #00e5ff;
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
-}
-
-.socialButton[data-network="twitter"]:hover {
-  border-color: #1da1f2;
-  color: #1da1f2;
-  box-shadow: 0 0 15px rgba(29, 161, 242, 0.2);
-}
-
-
-/* =========================================
-   MOBILE RESPONSIVENESS
-   ========================================= */
-@media (max-width: 768px) {
-  
-  .container {
-    margin-top: 1rem;
-  }
-
-  .socialLinksRow {
-    flex-direction: column; /* Stacks buttons vertically */
-    gap: 0.75rem;
-  }
-
-  .socialButton {
-    width: 100%; /* Makes buttons span the full width of the screen */
-    padding: 1.2rem; /* Makes the tap target taller for thumbs */
-    font-size: 0.85rem;
-  }
+.stub:hover .actionRedaction,
+.stub:focus-visible .actionRedaction {
+  transform: translateY(-100%);
 }
