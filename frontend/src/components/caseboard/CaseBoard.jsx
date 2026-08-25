@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const CaseBoardCtx = createContext(null);
 
@@ -98,8 +98,10 @@ export function CaseBoardProvider({ crossTies = [], children }) {
     };
   }, [recompute]);
 
+  const ctxValue = useMemo(() => ({ registerPin, recompute }), [registerPin, recompute]);
+
   return (
-    <CaseBoardCtx.Provider value={{ registerPin, recompute }}>
+    <CaseBoardCtx.Provider value={ctxValue}>
       <div ref={containerRef} style={{ position: "relative" }}>
         <svg
           aria-hidden="true"

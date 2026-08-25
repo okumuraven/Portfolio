@@ -10,6 +10,16 @@ import SecurityCaseFile from "./sections/SecurityCaseFile";
 import TimelinePreview from "./sections/TimelinePreview";
 import SecureComms from "./sections/SecureComms";
 
+// Defined outside the component so it's the same array reference on every
+// render — CaseBoardProvider's recompute() depends on it, and a fresh
+// literal here would re-trigger that on every Home render.
+const CASE_CROSS_TIES = [
+  ["hero", "persona-03"],
+  ["persona-01", "secboard-in"],
+  ["opslog", "timeline"],
+  ["secboard-out", "comms"],
+];
+
 /**
  * Home (Landing) Page
  * - This is the first page users/clients see.
@@ -22,14 +32,7 @@ import SecureComms from "./sections/SecureComms";
 export default function Home() {
   return (
     <main className={styles.root}>
-      <CaseBoardProvider
-        crossTies={[
-          ["hero", "persona-03"],
-          ["persona-01", "secboard-in"],
-          ["opslog", "timeline"],
-          ["secboard-out", "comms"],
-        ]}
-      >
+      <CaseBoardProvider crossTies={CASE_CROSS_TIES}>
         {/* ==== HERO SECTION ==== */}
         <Hero />
 
