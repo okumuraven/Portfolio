@@ -1,6 +1,7 @@
 import React from "react";
 import "../../../styles/dossier.css";
 import styles from "./Home.module.css";
+import Seo from "../../../components/seo/Seo";
 import { CaseBoardProvider } from "../../../components/caseboard/CaseBoard";
 // Import your section components (create them if you haven't yet)
 import Hero from "./sections/Hero";
@@ -31,8 +32,14 @@ const CASE_CROSS_TIES = [
  */
 export default function Home() {
   return (
-    <main className={styles.root}>
-      <CaseBoardProvider crossTies={CASE_CROSS_TIES}>
+    <>
+      <Seo
+        title="Okumu Joseph (Okumu Raven) | Full-Stack Engineer & Security Researcher in Kenya"
+        description="Okumu Joseph — also known as Okumu Raven, Okumu Musundi, or Joseph Musundi — is a Full-Stack Engineer, Backend Engineer, and Security Researcher based in Kenya, building secure, high-performance web and app systems."
+        path="/"
+      />
+      <main className={styles.root}>
+        <CaseBoardProvider crossTies={CASE_CROSS_TIES}>
         {/* ==== HERO SECTION ==== */}
         <Hero />
 
@@ -50,7 +57,8 @@ export default function Home() {
 
         {/* ==== SECURE COMMUNICATIONS HUB ==== */}
         <SecureComms />
-      </CaseBoardProvider>
-    </main>
+        </CaseBoardProvider>
+      </main>
+    </>
   );
 }

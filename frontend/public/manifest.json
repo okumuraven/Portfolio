@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Okumu Raven",
+  "name": "Okumu Joseph (Okumu Raven) | Full-Stack Engineer & Security Researcher",
+  "description": "Portfolio of Okumu Joseph (Okumu Raven / Musundi) — Full-Stack Engineer and Security Researcher based in Kenya.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -19,7 +20,8 @@
     }
   ],
   "start_url": ".",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#100c09",
+  "background_color": "#100c09"
 }

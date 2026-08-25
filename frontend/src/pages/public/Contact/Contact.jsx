@@ -5,7 +5,14 @@ import "../../../styles/dossier.css";
 import { CaseBoardProvider, CasePin } from "../../../components/caseboard/CaseBoard";
 import ContactCard from "./ContactCard";
 import SocialLinks from "./SocialLinks";
+import Seo from "../../../components/seo/Seo";
 import styles from "./Contact.module.css";
+
+const CONTACT_SEO = {
+  title: "Contact — Okumu Joseph (Okumu Raven) | Full-Stack Engineer & Security Researcher, Kenya",
+  description: "Get in touch with Okumu Joseph (Okumu Raven / Musundi), a full-stack engineer, backend engineer, and security researcher based in Kenya.",
+  path: "/contact",
+};
 
 /**
  * Well-architected public contact/profile page.
@@ -22,6 +29,7 @@ export default function Contact() {
   if (isLoading)
     return (
       <section className={`${styles.contactRoot} deskBg`}>
+        <Seo {...CONTACT_SEO} />
         <div className={`${styles.loader} ink`}>PULLING SUBJECT DOSSIER...</div>
       </section>
     );
@@ -29,6 +37,7 @@ export default function Contact() {
   if (error)
     return (
       <section className={`${styles.contactRoot} deskBg`}>
+        <Seo {...CONTACT_SEO} />
         <div className={`${styles.loader} ink`}>SYSTEM ERROR: COMMS LINK FAILED.</div>
       </section>
     );
@@ -36,6 +45,7 @@ export default function Contact() {
   if (!Array.isArray(data) || data.length === 0)
     return (
       <section className={`${styles.contactRoot} deskBg`}>
+        <Seo {...CONTACT_SEO} />
         <div className={`${styles.loader} ink`}>NO DOSSIER ON FILE.</div>
       </section>
     );
@@ -67,6 +77,7 @@ export default function Contact() {
 
   return (
     <section className={`${styles.contactRoot} deskBg`}>
+      <Seo {...CONTACT_SEO} />
       <CaseBoardProvider>
         <div className={styles.container}>
           {/* PAGE HEADER */}

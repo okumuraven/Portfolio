@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /auth
 
 Sitemap: https://okumuraven.me/sitemap.xml

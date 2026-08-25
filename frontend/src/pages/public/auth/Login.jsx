@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import '../../../styles/dossier.css';
+import Seo from '../../../components/seo/Seo';
 import styles from './LoginPage.module.css';
 
 export default function LoginPage() {
@@ -57,6 +58,12 @@ export default function LoginPage() {
 
   return (
     <div className={`${styles.container} corkGrid`}>
+      <Seo
+        title="Restricted Access — Okumu Raven Admin"
+        description="Admin sign-in."
+        path="/auth/login"
+        noindex
+      />
       <div className={styles.cardWrap}>
         <span className={`${styles.tack} pin`} />
         <span className={`${styles.tack} ${styles.tackRight} pin`} />

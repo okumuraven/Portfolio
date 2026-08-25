@@ -7,6 +7,7 @@ import { groupSkillsByCategory, sortSkills, getSuperpowerSkills } from "../../..
 import SkillPieChart from "../../../components/skill/SkillPieChart";
 import { CaseBoardProvider, CasePin } from "../../../components/caseboard/CaseBoard";
 import RedactedLink from "../../../components/caseboard/RedactedLink";
+import Seo from "../../../components/seo/Seo";
 
 function yearString(years) {
   return years > 1 ? `${years} YRS WIELDED` : years === 1 ? "1 YR WIELDED" : "NEWLY ACQUIRED";
@@ -57,8 +58,14 @@ export default function SkillMatrix() {
   const superpowers = getSuperpowerSkills(skills);
 
   return (
-    <div className={`${styles.page} deskBg`}>
-      <CaseBoardProvider>
+    <>
+      <Seo
+        title="Skills & Tech Stack — Okumu Joseph (Okumu Raven) | Backend & Web Security, Kenya"
+        description="The tech stack and skill set of Okumu Joseph (Okumu Raven / Musundi): backend engineering, full-stack web development, web security, and application security, based in Kenya."
+        path="/skill-matrix"
+      />
+      <div className={`${styles.page} deskBg`}>
+        <CaseBoardProvider>
         <section className={styles.container}>
           {/* HEADER */}
           <div className={`${styles.header} torn paperShadow`}>
@@ -163,7 +170,8 @@ export default function SkillMatrix() {
             })}
           </div>
         </section>
-      </CaseBoardProvider>
-    </div>
+        </CaseBoardProvider>
+      </div>
+    </>
   );
 }

@@ -3,6 +3,7 @@ import { getProjects } from "../../../api/projects.api";
 import "../../../styles/dossier.css";
 import { CaseBoardProvider, CasePin } from "../../../components/caseboard/CaseBoard";
 import RedactedLink from "../../../components/caseboard/RedactedLink";
+import Seo from "../../../components/seo/Seo";
 import styles from "./ProjectsPage.module.css";
 
 // A short label for the margin note — take the part before any " // " split
@@ -89,8 +90,14 @@ export default function ProjectsPage() {
   );
 
   return (
-    <div className={`${styles.page} deskBg`}>
-      <CaseBoardProvider crossTies={skillLinks}>
+    <>
+      <Seo
+        title="Projects — Okumu Joseph (Okumu Raven) | Full-Stack & Security Engineering, Kenya"
+        description="Deployed software projects built by Okumu Joseph (Okumu Raven / Musundi), a full-stack and backend engineer in Kenya, covering web development, web security, and application security."
+        path="/projects"
+      />
+      <div className={`${styles.page} deskBg`}>
+        <CaseBoardProvider crossTies={skillLinks}>
         <section className={styles.container}>
           {/* HEADER */}
           <div className={`${styles.header} torn paperShadow`}>
@@ -228,7 +235,8 @@ export default function ProjectsPage() {
             </div>
           )}
         </section>
-      </CaseBoardProvider>
-    </div>
+        </CaseBoardProvider>
+      </div>
+    </>
   );
 }

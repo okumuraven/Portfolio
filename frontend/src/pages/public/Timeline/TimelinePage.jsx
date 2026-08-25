@@ -5,6 +5,7 @@ import { fetchTimeline } from "../../../api/timeline.api";
 import "../../../styles/dossier.css";
 import { CaseBoardProvider, CasePin } from "../../../components/caseboard/CaseBoard";
 import TimelineList from "../../../components/timeline/TimelineList";
+import Seo from "../../../components/seo/Seo";
 import styles from "./TimelinePage.module.css";
 
 const TimelinePage = ({ maxItems = null }) => {
@@ -22,8 +23,14 @@ const TimelinePage = ({ maxItems = null }) => {
       : data?.data || [];
 
   return (
-    <div className={`${styles.page} deskBg`}>
-      <CaseBoardProvider>
+    <>
+      <Seo
+        title="Career Timeline — Okumu Joseph (Okumu Raven) | Software Engineer, Kenya"
+        description="Career and project chronology of Okumu Joseph (Okumu Raven / Musundi), a software engineer and security researcher based in Kenya."
+        path="/timeline"
+      />
+      <div className={`${styles.page} deskBg`}>
+        <CaseBoardProvider>
         <section aria-labelledby="timeline-heading" className={styles.container}>
           {/* HEADER */}
           <div className={`${styles.header} torn paperShadow`}>
@@ -49,8 +56,9 @@ const TimelinePage = ({ maxItems = null }) => {
             <TimelineList items={timelineItems} />
           )}
         </section>
-      </CaseBoardProvider>
-    </div>
+        </CaseBoardProvider>
+      </div>
+    </>
   );
 };
 
