@@ -100,7 +100,7 @@ function AiMessageContent({ content, isNew }) {
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);

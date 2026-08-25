@@ -17,6 +17,13 @@ function segmentPath(a, b, key) {
   return `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${midX.toFixed(1)} ${midY.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
 }
 
+// A stable "no cross-ties" default. A literal `[]` as a default parameter
+// gets re-created on every render of CaseBoardProvider itself (default
+// params are re-evaluated per call), which would otherwise re-trigger the
+// exact render loop fixed elsewhere in this file — for every page that
+// doesn't pass its own crossTies prop.
+const NO_CROSS_TIES = [];
+
 /**
  * CaseBoardProvider — wraps a run of sections and draws real, taut red
  * string between every <CasePin> mounted inside it: one line threading
@@ -27,7 +34,7 @@ function segmentPath(a, b, key) {
  * correct across any responsive layout, grid reflow, or async content
  * (fonts, images, fetched data) that changes the page's height.
  */
-export function CaseBoardProvider({ crossTies = [], children }) {
+export function CaseBoardProvider({ crossTies = NO_CROSS_TIES, children }) {
   const containerRef = useRef(null);
   const pinsRef = useRef(new Map()); // id -> { order, node }
   const [segments, setSegments] = useState([]);
