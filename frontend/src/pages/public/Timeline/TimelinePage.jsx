@@ -2,8 +2,10 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTimeline } from "../../../api/timeline.api";
+import "../../../styles/dossier.css";
+import { CaseBoardProvider, CasePin } from "../../../components/caseboard/CaseBoard";
 import TimelineList from "../../../components/timeline/TimelineList";
-import styles from "./TimelinePage.module.css"; // Import the CSS
+import styles from "./TimelinePage.module.css";
 
 const TimelinePage = ({ maxItems = null }) => {
   // Params for visible events, sorted by start date descending
@@ -20,34 +22,35 @@ const TimelinePage = ({ maxItems = null }) => {
       : data?.data || [];
 
   return (
-    <section aria-labelledby="timeline-heading" className={styles.container}>
-      
-      {/* HEADER */}
-      <div className={styles.header}>
-        <h1 id="timeline-heading" className={styles.title}>
-          OPERATIONAL <span>TIMELINE</span>
-        </h1>
-          <p className={styles.subtitle}>{"// CHRONOLOGICAL_EVENT_LOG"}</p>
-      </div>
+    <div className={`${styles.page} deskBg`}>
+      <CaseBoardProvider>
+        <section aria-labelledby="timeline-heading" className={styles.container}>
+          {/* HEADER */}
+          <div className={`${styles.header} torn paperShadow`}>
+            <CasePin id="chronology-header" order={0} className={styles.headerPin} />
+            <div className={`${styles.headerKicker} ink`}>SUSPECT ACTIVITY LOG</div>
+            <h1 id="timeline-heading" className={`${styles.title} display`}>CASE CHRONOLOGY</h1>
+            <p className={`${styles.subtitle} bodyCopy`}>
+              Every dated entry in the file, strung together in the order it happened.
+            </p>
+          </div>
 
-      {/* SYSTEM STATES & CONTENT */}
-      {isLoading ? (
-        <div className={styles.loader}>[ INITIALIZING_TIMELINE_DATA... ]</div>
-      ) : error ? (
-        <div className={styles.error}>
-          [ SYSTEM_ERROR: TIMELINE_FETCH_FAILED ]
-          {error.message && <span className={styles.errorMsg}>{error.message}</span>}
-        </div>
-      ) : timelineItems.length === 0 ? (
-        <div className={styles.empty}>
-          [ NO_TIMELINE_RECORDS_FOUND ]
-        </div>
-      ) : (
-        // Renders the list component (We will style this next!)
-        <TimelineList items={timelineItems} />
-      )}
-      
-    </section>
+          {/* SYSTEM STATES & CONTENT */}
+          {isLoading ? (
+            <div className={`${styles.loader} ink`}>PULLING DATED ENTRIES...</div>
+          ) : error ? (
+            <div className={`${styles.loader} ink`}>
+              SYSTEM ERROR: CHRONOLOGY FETCH FAILED.
+              {error.message && <span className={styles.errorMsg}>{error.message}</span>}
+            </div>
+          ) : timelineItems.length === 0 ? (
+            <div className={`${styles.loader} ink`}>NO DATED ENTRIES ON FILE.</div>
+          ) : (
+            <TimelineList items={timelineItems} />
+          )}
+        </section>
+      </CaseBoardProvider>
+    </div>
   );
 };
 

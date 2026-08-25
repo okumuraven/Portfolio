@@ -8,12 +8,12 @@ const TimelineList = ({
   compact = false, // Optional: for preview blocks
   className = '',
 }) => {
-  
+
   // Empty State Handling
   if (!items || items.length === 0) {
     return (
-      <div className={styles.emptyState}>
-        [ NO_TIMELINE_LOGS_AVAILABLE ]
+      <div className={`${styles.emptyState} ink`}>
+        NO DATED ENTRIES ON FILE.
       </div>
     );
   }
@@ -22,13 +22,14 @@ const TimelineList = ({
     <div className={`${styles.wrapper} ${className}`}>
       <ul
         className={`${styles.list} ${compact ? styles.listCompact : ''}`}
-        aria-label="Operational Timeline Events"
+        aria-label="Case Chronology"
       >
-        {items.map(ev => (
-          <TimelineItem 
-            key={ev.id} 
-            event={ev} 
-            compact={compact} 
+        {items.map((ev, idx) => (
+          <TimelineItem
+            key={ev.id}
+            event={ev}
+            index={idx}
+            compact={compact}
           />
         ))}
       </ul>
