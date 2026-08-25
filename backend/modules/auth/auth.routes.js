@@ -29,7 +29,7 @@ router.get('/me', requireAuth(), authController.me);
 // 2FA Management (Requires JWT)
 router.post('/2fa/setup', requireAuth(), authController.setup2FA);
 router.post('/2fa/verify', loginLimiter, requireAuth(), authController.verifyAndEnable2FA);
-router.post('/2fa/disable', requireAuth(), authController.disable2FA);
+router.post('/2fa/disable', loginLimiter, requireAuth(), authController.disable2FA);
 
 // POST /api/auth/logout - (Stateless JWT: just a stub for extensibility)
 router.post('/logout', requireAuth(), authController.logout);

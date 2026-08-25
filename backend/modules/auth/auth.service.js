@@ -164,9 +164,17 @@ exports.verifyAndEnable2FA = async (userId, secret, token) => {
 };
 
 /**
- * Disable 2FA
+ * Disable 2FA — requires the account's current password so a stolen/replayed
+ * JWT alone (a 2h-lived bearer token, readable by anything that can run JS
+ * on the page) can't be used to strip 2FA protection on its own.
  */
-exports.disable2FA = async (userId) => {
+exports.disable2FA = async (userId, currentPassword) => {
+  const user = await db.oneOrNone('SELECT hashed_password FROM users WHERE id = $1', [userId]);
+  if (!user) return false;
+
+  const valid = await bcrypt.compare(currentPassword || '', user.hashed_password);
+  if (!valid) return false;
+
   await db.none('UPDATE users SET two_factor_secret = null, two_factor_enabled = false, recovery_codes = null WHERE id = $1', [userId]);
   return true;
 };

@@ -21,8 +21,8 @@ export async function verifyAndEnable2FA(secret, token) {
   return resp.data;
 }
 
-export async function disable2FA() {
-  const resp = await http.post('/auth/2fa/disable');
+export async function disable2FA(currentPassword) {
+  const resp = await http.post('/auth/2fa/disable', { currentPassword });
   return resp.data;
 }
 

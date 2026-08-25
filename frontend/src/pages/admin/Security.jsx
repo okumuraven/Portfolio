@@ -11,6 +11,8 @@ export default function Security() {
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [showDisableConfirm, setShowDisableConfirm] = useState(false);
+  const [disablePassword, setDisablePassword] = useState('');
 
   const handleInitSetup = async () => {
     setLoading(true);
@@ -48,16 +50,18 @@ export default function Security() {
     }
   };
 
-  const handleDisable = async () => {
-    if (!window.confirm('Are you sure you want to disable 2FA? This will make your account less secure.')) return;
+  const handleDisable = async (e) => {
+    e.preventDefault();
     setLoading(true);
     setError('');
     try {
-      await authAPI.disable2FA();
+      await authAPI.disable2FA(disablePassword);
       setMessage('Two-Factor Authentication has been disabled.');
+      setShowDisableConfirm(false);
+      setDisablePassword('');
       fetchUser();
     } catch (err) {
-      setError('Failed to disable 2FA.');
+      setError(err?.response?.data?.error || 'Failed to disable 2FA.');
     } finally {
       setLoading(false);
     }
@@ -130,13 +134,42 @@ export default function Security() {
           </div>
         )}
 
-        {user?.two_factor_enabled && (
+        {user?.two_factor_enabled && !showDisableConfirm && (
           <div className={styles.enabledBox}>
             <p className={styles.successText}>✓ 2FA is currently protecting your account.</p>
-            <button className={styles.disableBtn} onClick={handleDisable} disabled={loading}>
+            <button className={styles.disableBtn} onClick={() => setShowDisableConfirm(true)} disabled={loading}>
               DISABLE 2FA
             </button>
           </div>
+        )}
+
+        {user?.two_factor_enabled && showDisableConfirm && (
+          <form onSubmit={handleDisable} className={styles.verifyForm}>
+            <p className={styles.description}>
+              This removes 2FA protection from your account. Confirm your current password to continue.
+            </p>
+            <input
+              type="password"
+              placeholder="Current password"
+              value={disablePassword}
+              onChange={(e) => setDisablePassword(e.target.value)}
+              className={styles.tokenInput}
+              autoComplete="current-password"
+              required
+            />
+            <div className={styles.formActions}>
+              <button type="submit" className={styles.disableBtn} disabled={loading || !disablePassword}>
+                {loading ? 'DISABLING...' : 'CONFIRM DISABLE'}
+              </button>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => { setShowDisableConfirm(false); setDisablePassword(''); setError(''); }}
+              >
+                CANCEL
+              </button>
+            </div>
+          </form>
         )}
 
         {recoveryCodes && (

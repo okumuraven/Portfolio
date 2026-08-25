@@ -120,12 +120,22 @@ exports.verifyAndEnable2FA = async (req, res) => {
 
 /**
  * POST /api/auth/2fa/disable
- * (Requires Authentication)
+ * body: { currentPassword }
+ * (Requires Authentication + current password re-verification)
  */
 exports.disable2FA = async (req, res) => {
+  const schema = Joi.object({
+    currentPassword: Joi.string().min(8).required(),
+  });
+  const { error } = schema.validate(req.body);
+  if (error) return res.status(400).json({ error: "Current password is required to disable 2FA." });
+
   try {
     const userId = req.user.userId || req.user.id;
-    await authService.disable2FA(userId);
+    const ok = await authService.disable2FA(userId, req.body.currentPassword);
+    if (!ok) {
+      return res.status(401).json({ error: "Incorrect password." });
+    }
     res.json({ message: "2FA disabled successfully." });
   } catch (err) {
     console.error("2FA Disable error:", err);

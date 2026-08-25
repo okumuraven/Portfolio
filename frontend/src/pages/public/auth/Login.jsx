@@ -1,7 +1,8 @@
-// src/pages/admin/Login/LoginPage.jsx
+// src/pages/public/auth/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
+import '../../../styles/dossier.css';
 import styles from './LoginPage.module.css';
 
 export default function LoginPage() {
@@ -55,16 +56,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.loginCard}>
-        
+    <div className={`${styles.container} deskBg`}>
+      <div className={`${styles.loginCard} paperShadow`}>
+        <div className={styles.folderTab}>
+          <span className="ink">CASE FILE // ADMIN-001</span>
+        </div>
+
+        <div className={styles.stamp}>
+          <span>RESTRICTED</span>
+        </div>
+
         {/* Header Section */}
         <div className={styles.header}>
-          <h2 className={styles.title}>
-            {show2FA ? "Security Challenge" : "Restricted Access"}
+          <p className={styles.eyebrow}>
+            <span className="ink">{show2FA ? 'STEP 02 // MFA_VERIFICATION' : 'STEP 01 // IDENTITY_CHECK'}</span>
+          </p>
+          <h2 className={`${styles.title} display`}>
+            {show2FA ? 'Security Challenge' : 'Restricted Access'}
           </h2>
-          <p className={styles.subtitle}>
-            {show2FA ? "STEP 02: MFA_VERIFICATION" : "STEP 01: IDENTITY_CHECK"}
+          <p className={`${styles.subtitle} bodyCopy`}>
+            {show2FA
+              ? 'A one-time code has been requested to confirm your identity.'
+              : 'Authorized personnel only. All attempts are logged.'}
           </p>
         </div>
 
@@ -72,7 +85,7 @@ export default function LoginPage() {
           <form onSubmit={handleFirstStep}>
             {/* Email Input */}
             <div className={styles.inputGroup}>
-              <label className={styles.label}>USER_ID / EMAIL</label>
+              <label className={`${styles.label} ink`}>USER_ID / EMAIL</label>
               <input
                 className={styles.inputField}
                 type="email"
@@ -86,7 +99,7 @@ export default function LoginPage() {
 
             {/* Password Input */}
             <div className={styles.inputGroup}>
-              <label className={styles.label}>PASSCODE</label>
+              <label className={`${styles.label} ink`}>PASSCODE</label>
               <input
                 className={styles.inputField}
                 type="password"
@@ -99,16 +112,16 @@ export default function LoginPage() {
 
             {/* Action Button */}
             <button className={styles.submitBtn} disabled={loading}>
-              {loading ? "VERIFYING..." : "INITIALIZE SESSION"}
+              {loading ? 'VERIFYING…' : 'INITIALIZE SESSION'}
             </button>
           </form>
         ) : (
           <form onSubmit={handleSecondStep}>
             {/* 2FA Input */}
             <div className={styles.inputGroup}>
-              <label className={styles.label}>SECURITY_CODE [TOTP]</label>
+              <label className={`${styles.label} ink`}>SECURITY_CODE [TOTP]</label>
               <input
-                className={styles.inputField}
+                className={`${styles.inputField} ${styles.codeField}`}
                 type="text"
                 maxLength="6"
                 value={twoFactorCode}
@@ -118,17 +131,17 @@ export default function LoginPage() {
                 placeholder="XXXXXX"
                 autoComplete="one-time-code"
               />
-              <p className={styles.helpText}>Enter the 6-digit code from your authenticator app.</p>
+              <p className={`${styles.helpText} bodyCopy`}>Enter the 6-digit code from your authenticator app, or a recovery code.</p>
             </div>
 
             {/* Action Button */}
             <button className={styles.submitBtn} disabled={loading}>
-              {loading ? "VALIDATING..." : "VERIFY CODE"}
+              {loading ? 'VALIDATING…' : 'VERIFY CODE'}
             </button>
-            
-            <button 
-              type="button" 
-              className={styles.backBtn} 
+
+            <button
+              type="button"
+              className={styles.backBtn}
               onClick={() => setShow2FA(false)}
               disabled={loading}
             >
@@ -140,9 +153,13 @@ export default function LoginPage() {
         {/* Error Display */}
         {err && (
           <div className={styles.errorMsg}>
-            [ERROR]: {err}
+            <span className="ink">[ACCESS DENIED]</span> {err}
           </div>
         )}
+
+        <p className={styles.footNote}>
+          <span className="ink">{'// this terminal is monitored — unauthorized access is a federal offense'}</span>
+        </p>
       </div>
     </div>
   );
