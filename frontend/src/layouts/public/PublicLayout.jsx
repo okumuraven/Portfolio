@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import ChatWidget from "../../components/chatbot/ChatWidget";
 import TerminalLoader from "../../components/feedback/TerminalLoader";
+import "../../styles/dossier.css";
 import styles from "./PublicLayout.module.css";
-import logo from "./logo.jpeg"; 
+import logo from "./logo.jpeg";
 
 const NAV_LINKS = [
   { to: "/", label: "Home", exact: true },
@@ -53,7 +54,10 @@ export default function PublicLayout() {
           {/* Logo Section */}
           <div className={styles.logoGroup}>
             <img src={logo} alt="JR Logo" className={styles.logoImage} />
-            <Link to="/" className={styles.logoText}>MyPortfolio</Link>
+            <Link to="/" className={styles.logoText}>
+              MyPortfolio
+              <span className={styles.logoTag}>{"// CASE_HQ"}</span>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
