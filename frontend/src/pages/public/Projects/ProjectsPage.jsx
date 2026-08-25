@@ -74,7 +74,7 @@ export default function ProjectsPage() {
         const data = Array.isArray(res) ? res : res?.data || [];
         setProjects(data);
       })
-      .catch(() => setProjects(window.__mockProjects || []))
+      .catch(() => setProjects([]))
       .finally(() => setLoading(false));
   }, [category]);
 

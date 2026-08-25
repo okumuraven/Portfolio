@@ -1,433 +1,301 @@
-/* src/pages/public/SkillMatrix/SkillMatrix.module.css */
+.page {
+  min-height: 100vh;
+  padding-bottom: 140px; /* keeps the floating chat widget clear of card content */
+}
 
-/* --- CONTAINER & LAYOUT --- */
 .container {
-  padding: 4rem 5vw;
-  background-color: #050505;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  min-height: 80vh;
-  width: 100%;
-  box-sizing: border-box;
-  
-  /* Subtle Technical Grid Background */
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 5vw 40px;
 }
 
-/* =========================================
-   NEW SECTION: PIE CHART OVERVIEW
-   ========================================= */
-.pieChartSection {
-  margin: 0 auto 5rem auto; 
-  width: 100%;
-  max-width: 900px;
+.loader {
+  text-align: center;
+  color: #6b5b3f;
+  font-size: 13px;
+  letter-spacing: 1px;
+  padding: 120px 20px;
+}
+
+/* --- HEADER --- */
+.header {
   position: relative;
-  /* CLEANUP: No border/background here to prevent "Double Frame" effect */
-}
-
-/* Hide the old external label since the chart has an internal title */
-.pieChartLabel {
-  display: none; 
-}
-
-/* =========================================
-   HEADER TITLE
-   ========================================= */
-.sectionTitle {
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
-  margin-bottom: 4rem;
+  max-width: 640px;
+  margin: 0 auto 36px;
+  background: var(--dossier-kraft);
+  padding: 26px 32px;
+  transform: rotate(-1deg);
   text-align: center;
 }
 
-.sectionTitle span {
-  /* Cinematic Hollow Text Effect */
-  color: transparent;
-  -webkit-text-stroke: 1px #fff;
-}
-
-/* --- ERROR & LOADING STATES --- */
-.loader, .error {
-  text-align: center;
-  padding: 4rem;
-  font-family: 'Courier New', monospace;
-  color: #666;
-  font-size: 1.1rem;
-  letter-spacing: 0.1em;
-}
-.error { color: #ff4444; }
-
-
-/* =========================================
-   SECTION 1: SUPERPOWERS (FEATURED)
-   ========================================= */
-.superpowerSection {
-  margin-bottom: 6rem;
-  text-align: center;
-}
-
-.superLabel {
-  font-family: 'Courier New', monospace;
-  color: #ffd700; /* Gold */
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-  display: inline-block;
-  border-bottom: 1px solid #ffd700;
-  padding-bottom: 6px;
-}
-
-.superGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.superCard {
-  background: linear-gradient(180deg, rgba(255, 215, 0, 0.03) 0%, rgba(10, 10, 10, 0.8) 100%);
-  border: 1px solid rgba(255, 215, 0, 0.2);
-  padding: 2rem;
-  border-radius: 4px;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-.superCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
-  border-color: #ffd700;
-}
-
-.superIconImg {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-  margin-bottom: 1.5rem;
-  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
-}
-
-.starIcon {
+.headerPin {
   position: absolute;
-  top: 15px;
-  right: 15px;
-  color: #ffd700;
-  font-size: 1rem;
-  opacity: 0.8;
+  left: 50%;
+  top: -8px;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2534d, var(--dossier-accent-dim));
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.45), 0 3px 4px rgba(0, 0, 0, 0.55);
+  z-index: 6;
 }
 
-.superName {
-  display: block;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.01em;
+.headerKicker {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--dossier-accent);
+  margin-bottom: 8px;
 }
 
-.superDetail {
-  font-family: 'Courier New', monospace;
-  font-size: 0.8rem;
-  color: #ccc;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-}
-
-
-/* =========================================
-   SECTION 2: CATEGORY GRID
-   ========================================= */
-.categoryGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.categoryCard {
-  background: rgba(15, 15, 15, 0.6);
-  border: 1px solid #222;
-  border-radius: 2px;
-  padding: 2rem;
-  transition: border-color 0.3s;
-  backdrop-filter: blur(5px);
-  box-sizing: border-box;
-}
-
-.categoryCard:hover {
-  border-color: #444;
-}
-
-.catTitle {
-  font-family: 'Courier New', monospace;
-  font-size: 0.95rem;
-  color: #888;
-  text-transform: uppercase;
-  border-bottom: 1px solid #333;
-  padding-bottom: 1rem;
-  margin-bottom: 1.5rem;
-  letter-spacing: 0.1em;
-  display: flex;
-  justify-content: space-between;
-}
-
-/* --- SKILL LIST ITEMS --- */
-.skillList {
-  list-style: none;
-  padding: 0;
+.title {
   margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: #201509;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  color: var(--dossier-ink-soft);
+  font-size: 0.9rem;
+}
+
+/* --- FORENSIC BREAKDOWN PANEL --- */
+.chartPanel {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto 50px;
+  background: var(--dossier-paper);
+  padding: 28px;
+  transform: rotate(0.5deg);
+}
+
+.chartPin {
+  position: absolute;
+  left: 24px;
+  top: -8px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2534d, var(--dossier-accent-dim));
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.45), 0 3px 4px rgba(0, 0, 0, 0.55);
+  z-index: 6;
+}
+
+.panelKicker {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--dossier-ink-soft);
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+/* --- SIGNATURE WEAPONS --- */
+.signatureSection {
+  margin-bottom: 50px;
+}
+
+.sectionLabel {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--dossier-accent);
+  margin-bottom: 20px;
+}
+
+.signatureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 20px;
+}
+
+.signatureCard {
+  position: relative;
+  background: var(--dossier-paper-light);
+  padding: 20px 16px;
+  text-align: center;
+  transform: rotate(var(--tilt, -1deg));
+}
+
+.signatureGrid > .signatureCard:nth-child(even) {
+  --tilt: 1deg;
+}
+
+.signatureStamp {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  border: 1.5px solid var(--dossier-accent);
+  color: var(--dossier-accent);
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  transform: rotate(6deg);
+}
+
+.signatureIcon {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 10px;
+}
+
+.signatureName {
+  display: block;
+  font-size: 14px;
+  color: var(--dossier-ink);
+}
+
+.signatureDetail {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--dossier-ink-soft);
+  margin: 6px 0 12px;
+}
+
+/* --- WEAPONS CACHE GRID --- */
+.cacheGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 28px;
+}
+
+.cacheCard {
+  position: relative;
+  background: var(--dossier-manila);
+  padding: 26px 22px;
+  transform: rotate(var(--tilt, -0.5deg));
+}
+
+.cacheGrid > .cacheCard:nth-child(even) {
+  --tilt: 0.5deg;
+}
+
+.cachePin {
+  position: absolute;
+  left: 20px;
+  top: -8px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2534d, var(--dossier-accent-dim));
+  box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.45), 0 3px 4px rgba(0, 0, 0, 0.55);
+  z-index: 6;
+}
+
+.cacheTitle {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #201509;
+  border-bottom: 1px dashed rgba(32, 21, 9, 0.3);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.cacheCount {
+  color: var(--dossier-ink-soft);
+  font-weight: normal;
+}
+
+.weaponList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 18px;
 }
 
-.skillItem {
-  display: flex;
-  flex-direction: row; 
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding-bottom: 1rem;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+.weaponRow {
+  border-bottom: 1px dashed rgba(32, 21, 9, 0.18);
+  padding-bottom: 16px;
 }
 
-.skillItem:last-child {
+.weaponRow:last-child {
   border-bottom: none;
   padding-bottom: 0;
 }
 
-.skillLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1; 
-  min-width: 150px;
-}
-
-.skillRight {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  justify-content: flex-end;
-}
-
-/* Elements */
-.nodeDot {
-  width: 6px;
-  height: 6px;
-  background: #333;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.skillItem:hover .nodeDot {
-  background: #fff;
-  box-shadow: 0 0 8px #fff;
-}
-
-.iconImg {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-  opacity: 0.8;
-}
-
-.skillName {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #e0e0e0;
+.weaponHeader {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-.activeIndicator {
+.weaponIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.weaponName {
+  font-size: 13px;
+  color: #201509;
+  font-weight: bold;
+}
+
+.weaponStar {
+  color: var(--dossier-accent);
+  font-size: 12px;
+}
+
+.activeDot {
   width: 6px;
   height: 6px;
-  background-color: #00ff88;
   border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 0 6px #00ff88;
+  background: #2f7d4f;
+  box-shadow: 0 0 5px #2f7d4f;
 }
 
-.superpowerStar {
-  color: #ffd700;
-  font-size: 0.8rem;
-  margin-left: 5px;
+.weaponMeta {
+  margin-left: auto;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: var(--dossier-ink-soft);
 }
 
-.skillLevel {
-  font-size: 0.85rem;
-  color: #aaa;
-  font-weight: 500;
+/* --- THREAT METER --- */
+.threatMeter {
+  position: relative;
+  margin-top: 10px;
+  height: 14px;
+  background: rgba(32, 21, 9, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
 }
 
-.skillMeta {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  color: #666;
+.threatFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--dossier-accent-dim), var(--dossier-accent));
+  transition: width 0.4s ease;
 }
 
-.skillOrderTag {
-  font-family: 'Courier New', monospace;
-  font-size: 0.7rem;
-  color: #333;
-  border: 1px solid #222;
-  padding: 1px 4px;
-  border-radius: 3px;
+.threatLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #f4f1e9;
+  mix-blend-mode: difference;
 }
 
-/* --- THE INFO ROW (Links, Certs, Personas) --- */
-.skillInfoRow {
-  width: 100%; 
-  margin-top: 6px;
-  padding-left: 38px; 
+.evidenceRow {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.8rem;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-/* Links */
-.certLink, .skillProjectLink {
-  font-family: 'Courier New', monospace;
-  text-decoration: none;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  transition: all 0.2s;
-}
-
-.certLink {
-  color: #00ff88;
-  border: 1px solid #00ff88;
-  padding: 2px 6px;
-  border-radius: 2px;
-  background: rgba(0, 255, 136, 0.05);
-}
-
-.certLink:hover {
-  background: #00ff88;
-  color: #000;
-}
-
-.skillProjectLinks {
-  color: #666;
-  display: flex;
-  gap: 5px;
-}
-
-.skillProjectLink {
-  color: #888;
-  border-bottom: 1px dotted #666;
-}
-
-.skillProjectLink:hover {
-  color: #fff;
-  border-bottom-style: solid;
-}
-
-.skillPersonas {
-  display: flex;
-  gap: 4px;
-}
-
-.personaChip {
-  font-family: 'Courier New', monospace;
-  font-size: 0.65rem;
-  background: #222;
-  color: #aaa;
-  padding: 2px 6px;
-  border-radius: 10px;
-  border: 1px solid #333;
-}
-
-/* =========================================
-   MOBILE RESPONSIVENESS FIXES
-   ========================================= */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .container {
-    padding: 3rem 1.5rem;
-    width: 100%;
-    overflow-x: hidden;
+    padding: 48px 5vw 30px;
   }
 
-  /* Pie Chart spacing on mobile */
-  .pieChartSection {
-    margin-bottom: 3rem; 
-    padding: 0; /* Remove padding to maximize width */
-  }
-  
-  .sectionTitle {
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-  }
-  
-  /* --- SUPERPOWER STACKING --- */
-  .superGrid {
-    display: flex; 
-    flex-direction: column;
-    width: 100%;
-    gap: 20px;
-  }
-  
-  .superCard {
-    width: 100%; 
-    padding: 1.5rem;
-    margin: 0;
-    /* Force stack vertical items */
-    flex-direction: column;
-  }
-  
-  .superIconImg {
-    margin-bottom: 1rem;
-    width: 56px;
-    height: 56px;
-  }
-  
-  /* --- CATEGORY STACKING --- */
-  .categoryGrid {
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
-
-  .categoryCard {
-    padding: 1.5rem 1rem;
-    width: 100%;
-  }
-
-  /* --- SKILL ITEMS --- */
-  .skillItem {
-    align-items: flex-start;
-  }
-
-  .skillLeft {
-    min-width: 0;
-    max-width: 70%;
-  }
-  
-  .skillRight {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-    max-width: 30%;
-  }
-
-  .skillInfoRow {
-    padding-left: 0;
-    margin-top: 10px;
+  .header,
+  .chartPanel {
+    padding: 20px 22px;
   }
 }
