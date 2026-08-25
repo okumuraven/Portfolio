@@ -59,11 +59,19 @@ export function CaseBoardProvider({ crossTies = [], children }) {
       next.push(segmentPath(centerOf(prevPin.node), centerOf(curPin.node), `${prevId}-${curId}`));
     }
 
-    crossTies.forEach(([idA, idB]) => {
-      const a = pinsRef.current.get(idA);
-      const b = pinsRef.current.get(idB);
-      if (a && b) next.push(segmentPath(centerOf(a.node), centerOf(b.node), `${idA}~${idB}`));
-    });
+    // The bold diagonal cross-ties only read as deliberate "detective board"
+    // connections when there's horizontal spread to cross (a multi-column
+    // grid). On a single narrow mobile column everything sits on nearly the
+    // same x, so a cross-tie would just draw a near-duplicate of the main
+    // vertical thread a few pixels to the side — noise, not drama. Skip
+    // them below the width where the grids collapse to one column.
+    if (containerRect.width >= 720) {
+      crossTies.forEach(([idA, idB]) => {
+        const a = pinsRef.current.get(idA);
+        const b = pinsRef.current.get(idB);
+        if (a && b) next.push(segmentPath(centerOf(a.node), centerOf(b.node), `${idA}~${idB}`));
+      });
+    }
 
     setSegments(next);
   }, [crossTies]);

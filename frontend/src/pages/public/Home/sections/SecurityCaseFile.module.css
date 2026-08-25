@@ -314,10 +314,24 @@
   .certificate,
   .stickyRow,
   .bottomTag {
-    position: static;
+    /* relative, not static: these still need to be a valid containing
+       block for their own pin (mugshotPin/bottomTagPin), just without
+       being pulled out of the flex flow. */
+    position: relative;
+    left: auto;
+    top: auto;
     width: 100%;
     max-width: 340px;
     transform: none;
+  }
+
+  .mugshotPin {
+    top: -8px;
+  }
+
+  .bottomTagPin {
+    left: 12px;
+    top: -8px;
   }
 
   .boardLabel {
