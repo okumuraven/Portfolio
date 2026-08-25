@@ -8,6 +8,7 @@
   position: relative;
   max-width: 520px;
   width: 100%;
+  box-sizing: border-box;
   background: var(--dossier-paper, #f0ecdf);
   color: var(--dossier-ink, #241c16);
   padding: 3rem 2.25rem 2.25rem;
@@ -15,6 +16,19 @@
   border-radius: 2px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   transform: rotate(-0.5deg);
+}
+
+@media (max-width: 480px) {
+  .folder {
+    padding: 2.75rem 1.5rem 1.75rem;
+    transform: none;
+  }
+
+  .sealStamp {
+    top: 14px;
+    right: 14px;
+    font-size: 0.72rem;
+  }
 }
 
 .tab {

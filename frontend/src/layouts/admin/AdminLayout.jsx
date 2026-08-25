@@ -118,7 +118,7 @@ export default function AdminLayout() {
           <div className={styles.userBadge} style={{ marginLeft: "auto" }}>
             USER: <strong>{user?.role?.toUpperCase() || "ADMIN"}</strong>
             {" / "}
-            <span>{user?.email}</span>
+            <span className={styles.userEmail}>{user?.email}</span>
             <button
               className={styles.logoutBtn}
               onClick={() => { logout(); navigate("/auth/login"); }}

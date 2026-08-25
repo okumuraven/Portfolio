@@ -323,10 +323,20 @@
   color: var(--dossier-ink-soft, #4a3620);
   font-family: var(--font-mono);
   font-size: 0.58rem;
-  padding: 2px 7px;
+  padding: 11px 7px;
+  margin: -9px 0;
   cursor: pointer;
   transition: all 0.2s;
   letter-spacing: 0.04em;
+  min-height: 40px;
+}
+
+@media (min-width: 768px) {
+  .syncBtn {
+    padding: 2px 7px;
+    margin: 0;
+    min-height: auto;
+  }
 }
 
 .syncBtn:hover:not(:disabled) {
@@ -633,6 +643,13 @@
   line-height: 1;
   cursor: pointer;
   transition: color 0.2s;
+  padding: 10px;
+  margin: -10px;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (min-width: 768px) {
@@ -713,13 +730,14 @@
   background: transparent;
   border: 1px solid rgba(232, 225, 200, 0.3);
   color: rgba(232, 225, 200, 0.6);
-  padding: 0.6rem 1.2rem;
+  padding: 0.85rem 1.2rem;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 700;
+  min-height: 40px;
 }
 
 @media (min-width: 768px) {
@@ -1123,16 +1141,22 @@
   border: none;
   color: var(--neon-red);
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.6rem;
   cursor: pointer;
-  padding: 0.2rem 0.4rem;
+  padding: 0.6rem 0.6rem;
+  margin: -0.6rem -0.6rem -0.6rem 0;
   opacity: 0.6;
+  min-height: 40px;
+  min-width: 40px;
 }
 
 @media (min-width: 768px) {
   .deleteBtn {
-    font-size: 0.6rem;
-    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+    padding: 0.4rem 0.5rem;
+    margin: -0.4rem -0.4rem -0.4rem 0;
+    min-height: auto;
+    min-width: auto;
   }
 }
 
@@ -1303,12 +1327,13 @@
   background: transparent;
   border: 1px solid var(--neon-red);
   color: var(--neon-red);
-  padding: 0.6rem;
+  padding: 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
+  min-height: 40px;
 }
 
 @media (min-width: 768px) {
@@ -1340,12 +1365,13 @@
   background: transparent;
   border: 1px solid rgba(36, 28, 22, 0.3);
   color: rgba(36, 28, 22, 0.55);
-  padding: 0.6rem;
+  padding: 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
+  min-height: 40px;
 }
 
 .testEmailBtn {
@@ -1353,12 +1379,13 @@
   background: transparent;
   border: 1px solid var(--neon-blue);
   color: var(--neon-blue);
-  padding: 0.6rem;
+  padding: 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
+  min-height: 40px;
 }
 
 .testEmailBtn:hover:not(:disabled) {

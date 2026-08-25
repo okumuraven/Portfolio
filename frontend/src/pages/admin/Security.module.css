@@ -148,6 +148,8 @@
   background: #fff;
   padding: 1rem;
   width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
   margin-bottom: 2rem;
   border-radius: 2px;
   border: 1px solid rgba(36, 28, 22, 0.2);
@@ -156,6 +158,8 @@
 
 .qrCode {
   display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .verifyForm {
@@ -186,6 +190,7 @@
 .formActions {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .verifyBtn {
@@ -335,5 +340,21 @@
 
   .codesGrid {
     grid-template-columns: 1fr;
+  }
+
+  .verifyForm {
+    max-width: 100%;
+  }
+
+  .formActions {
+    flex-direction: column-reverse;
+  }
+
+  .verifyBtn,
+  .cancelBtn,
+  .disableBtn,
+  .copyBtn {
+    width: 100%;
+    text-align: center;
   }
 }

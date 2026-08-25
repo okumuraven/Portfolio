@@ -216,4 +216,25 @@
   .dataTable td:nth-child(5)::before { content: "PERSONA:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
   .dataTable td:nth-child(6)::before { content: "STATUS:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
   .dataTable td:nth-child(7)::before { content: "ORDER:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
+
+  /* Skills/Persona cells hold a variable number of chips — the generic
+     flex/space-between row squeezes them onto one nowrap line and can push
+     them off-screen. Stack label-above-chips and let chips wrap normally. */
+  .dataTable td:nth-child(4),
+  .dataTable td:nth-child(5) {
+    display: block;
+    text-align: left;
+  }
+
+  .dataTable td:nth-child(4)::before,
+  .dataTable td:nth-child(5)::before {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* Larger touch targets for row actions */
+  .actionBtn {
+    padding: 10px 14px;
+    font-size: 0.72rem;
+  }
 }

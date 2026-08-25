@@ -75,6 +75,7 @@
 .loginCard {
   width: 100%;
   max-width: 460px;
+  box-sizing: border-box;
   background: var(--dossier-paper, #f0ecdf);
   padding: 3rem 2.5rem 2rem;
   border: 1px solid rgba(36, 28, 22, 0.25);

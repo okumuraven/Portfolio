@@ -417,4 +417,12 @@
     display: block;
     text-align: center;
   }
+
+  /* 7. Larger touch targets for row actions */
+  .actionBtn {
+    padding: 10px 16px;
+    font-size: 0.75rem;
+    margin-right: 10px;
+    margin-bottom: 6px;
+  }
 }

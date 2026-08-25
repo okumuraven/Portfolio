@@ -373,9 +373,26 @@
   }
 
   /* Add pseudo-labels for context on mobile */
-  .dataTable td:nth-child(1)::before { content: "SKILL:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; }
-  .dataTable td:nth-child(2)::before { content: "CAT:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; }
-  .dataTable td:nth-child(3)::before { content: "LVL:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; }
+  .dataTable td:nth-child(1)::before { content: "SKILL:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; flex-shrink: 0; }
+  .dataTable td:nth-child(2)::before { content: "CAT:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; flex-shrink: 0; }
+  .dataTable td:nth-child(3)::before { content: "LVL:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; flex-shrink: 0; }
+  .dataTable td:nth-child(4)::before { content: "YEARS:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; flex-shrink: 0; }
+  .dataTable td:nth-child(5)::before { content: "SUPERPOWER:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; flex-shrink: 0; }
+  .dataTable td:nth-child(6)::before { content: "STATUS:"; color: var(--dossier-ink-soft, #4a3620); font-size: 0.65rem; flex-shrink: 0; }
+
+  /* Columns 5 & 6 lose their desktop text-align:center flex behavior on mobile —
+     force them back into a label-left/value-right row like every other cell. */
+  .dataTable td.centerCell {
+    text-align: left;
+    justify-content: space-between;
+  }
+
+  /* Larger touch targets for row actions */
+  .actionBtn {
+    padding: 9px 14px;
+    font-size: 0.75rem;
+    margin-right: 8px;
+  }
 
   /* Adjust Form */
   .formGrid { grid-template-columns: 1fr; gap: 1rem; }

@@ -6,6 +6,15 @@ import { getPersonas } from "../../../api/personas.api";
 import "../../../styles/dossier.css";
 import styles from "./EditProjectModal.module.css";
 
+// <input type="date"> only accepts "YYYY-MM-DD"; the API can return a full
+// ISO timestamp, which the input silently rejects (and the backend's
+// `date` column rejects an empty string, so this also normalizes to null).
+function toDateInputValue(value) {
+  if (!value) return "";
+  const str = String(value);
+  return str.length >= 10 ? str.slice(0, 10) : str;
+}
+
 export default function EditProjectModal({ open, onClose, project, onSave }) {
   const isEdit = !!project;
 
@@ -52,6 +61,8 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
           collaborators: Array.isArray(project.collaborators) ? project.collaborators : [],
           image: project.image || "",
           highlight: project.highlight || "",
+          date_start: toDateInputValue(project.date_start),
+          date_end: toDateInputValue(project.date_end),
         });
       } else {
         setForm({
@@ -121,6 +132,8 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
         persona_ids: form.persona_ids.map(Number),
         collaborators: form.collaborators,
         image: form.image && form.image.length > 0 ? form.image : null,
+        date_start: form.date_start ? form.date_start : null,
+        date_end: form.date_end ? form.date_end : null,
       };
 
       let saved;
