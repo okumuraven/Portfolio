@@ -3,7 +3,6 @@
   bottom: 25px;
   right: 25px;
   z-index: 9999; /* HIGHER THAN NAVBAR (2000) */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -18,15 +17,14 @@
 }
 
 .helpPrompt {
-  background: #00ff00;
-  color: #000;
+  background: var(--dossier-sticky);
+  color: var(--dossier-ink);
   padding: 8px 16px;
-  border-radius: 8px;
   font-size: 0.7rem;
-  font-weight: 800;
-  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.5px;
   position: relative;
-  box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2);
+  transform: rotate(-2deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   animation: prompt-float 3s infinite ease-in-out;
   pointer-events: none;
 }
@@ -40,25 +38,25 @@
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid #00ff00;
+  border-top: 6px solid var(--dossier-sticky);
 }
 
 @keyframes prompt-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  0%, 100% { transform: rotate(-2deg) translateY(0); }
+  50% { transform: rotate(-2deg) translateY(-5px); }
 }
 
 .bubbleBtn {
-  background: #000;
-  color: #00ff00;
-  border: 2px solid #00ff00;
+  background: var(--dossier-bg-0);
+  color: var(--dossier-accent);
+  border: 2px solid var(--dossier-accent);
   padding: 10px 24px 10px 10px;
   font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 255, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 10px rgba(194, 59, 44, 0.15);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border-radius: 50px;
   font-size: 0.85rem;
@@ -68,37 +66,37 @@
 
 .bubbleBtn:hover {
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(0, 255, 0, 0.3);
-  background: #00ff00;
-  color: #000;
+  box-shadow: 0 15px 40px rgba(194, 59, 44, 0.35);
+  background: var(--dossier-accent);
+  color: var(--dossier-bg-0);
 }
 
 .iconCircle {
   width: 40px;
   height: 40px;
-  background: #00ff00;
-  color: #000;
+  background: var(--dossier-accent);
+  color: var(--dossier-bg-0);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
   transition: all 0.4s;
 }
 
-.bubbleBtn:hover .iconCircle {
-  background: #000;
-  color: #00ff00;
+.triggerIcon {
+  width: 18px;
+  height: 18px;
 }
 
-.bubbleLabel {
-  font-family: 'Courier New', Courier, monospace;
+.bubbleBtn:hover .iconCircle {
+  background: var(--dossier-bg-0);
+  color: var(--dossier-accent);
 }
 
 .ping {
   width: 10px;
   height: 10px;
-  background: #00ff00;
+  background: var(--dossier-accent);
   border-radius: 50%;
   position: absolute;
   top: 0;
@@ -106,7 +104,7 @@
 }
 
 .bubbleBtn:hover .ping {
-  background: #000;
+  background: var(--dossier-bg-0);
 }
 
 .ping::after {
@@ -126,20 +124,18 @@
   100% { transform: scale(4); opacity: 0; }
 }
 
-/* MODERN CHAT WINDOW */
+/* MODERN CHAT WINDOW — a dossier folder laid open */
 .chatWindow {
   width: 420px;
   height: 650px;
   max-height: calc(100vh - 120px);
-  background: rgba(5, 5, 5, 0.95);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(0, 255, 0, 0.2);
+  border: 1px solid rgba(194, 59, 44, 0.35);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.9), inset 0 0 20px rgba(0,255,0,0.05);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.75);
   position: relative;
   overflow: hidden;
-  border-radius: 12px; /* Tactical blocky feel */
+  border-radius: 6px;
   animation: window-appear 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   margin-bottom: 15px;
 }
@@ -149,14 +145,14 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* HEADER */
+/* HEADER — a torn kraft strip, matching the site nav's folder tabs */
 .chatHeader {
-  background: #111;
+  background: var(--dossier-kraft);
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #222;
+  border-bottom: 2px solid rgba(32, 21, 9, 0.2);
   position: relative;
   z-index: 10;
 }
@@ -170,9 +166,9 @@
 .headerPulse {
   width: 8px;
   height: 8px;
-  background: #00ff00;
+  background: var(--dossier-accent);
   border-radius: 50%;
-  box-shadow: 0 0 10px #00ff00;
+  box-shadow: 0 0 10px var(--dossier-accent);
   animation: header-pulse 1.5s infinite ease-in-out;
 }
 
@@ -189,17 +185,14 @@
 
 .headerTitle {
   margin: 0;
-  font-size: 0.75rem;
-  color: #fff;
-  font-weight: 800;
+  font-size: 0.72rem;
+  color: #201509;
   letter-spacing: 1px;
-  font-family: 'Courier New', Courier, monospace;
 }
 
 .headerSub {
   font-size: 0.55rem;
-  color: #666;
-  font-weight: 700;
+  color: var(--dossier-ink-soft);
   letter-spacing: 0.5px;
 }
 
@@ -212,22 +205,21 @@
 
 .statusBadge {
   font-size: 0.6rem;
-  color: #00ff00;
-  background: rgba(0, 255, 0, 0.1);
+  color: #2f7d4f;
+  background: rgba(47, 125, 79, 0.1);
   padding: 2px 8px;
-  border: 1px solid rgba(0, 255, 0, 0.3);
+  border: 1px solid #2f7d4f;
   border-radius: 2px;
-  font-weight: 900;
-  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
 }
 
 .closeBtn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid #333;
-  color: #888;
+  background: rgba(32, 21, 9, 0.08);
+  border: 1px solid rgba(32, 21, 9, 0.3);
+  color: #201509;
   width: 32px;
   height: 32px;
-  border-radius: 4px; /* Matches tactical blocks */
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,10 +230,9 @@
 }
 
 .closeBtn:hover {
-  background: #ff3333;
+  background: var(--dossier-accent);
   color: #fff;
-  border-color: #ff3333;
-  box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
+  border-color: var(--dossier-accent);
 }
 
 /* MESSAGE AREA */
@@ -252,15 +243,13 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: #080808;
   scrollbar-width: thin;
-  scrollbar-color: #222 transparent;
+  scrollbar-color: rgba(194, 59, 44, 0.4) transparent;
 }
 
 .systemLog {
-  font-family: 'Courier New', Courier, monospace;
   font-size: 0.6rem;
-  color: #444;
+  color: #6b5b3f;
   line-height: 1.4;
   margin-bottom: 10px;
 }
@@ -281,15 +270,13 @@
 
 .msgLabel {
   font-size: 0.55rem;
-  color: #666;
-  font-weight: 800;
-  font-family: 'Courier New', Courier, monospace;
+  color: var(--dossier-ink-soft);
   letter-spacing: 1px;
 }
 
 .msgTimestamp {
   font-size: 0.55rem;
-  color: #333;
+  color: #8a7a5c;
 }
 
 .ai { align-self: flex-start; }
@@ -297,25 +284,22 @@
 .user .msgMetadata { flex-direction: row-reverse; }
 
 .msgAi {
-  background: #121212;
-  border: 1px solid #222;
-  border-left: 2px solid #00ff00;
+  background: var(--dossier-paper);
+  border-left: 3px solid var(--dossier-accent);
   padding: 14px 18px;
-  color: #ccc;
+  color: #201509;
   font-size: 0.9rem;
   line-height: 1.6;
-  border-radius: 0 12px 12px 12px;
 }
 
 .msgUser {
-  background: #00ff00;
-  color: #000;
+  background: var(--dossier-sticky);
+  color: #201509;
   padding: 12px 18px;
   font-size: 0.9rem;
   line-height: 1.5;
-  border-radius: 12px 0 12px 12px;
-  font-weight: 700;
-  box-shadow: 0 5px 15px rgba(0, 255, 0, 0.1);
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .msgPara { margin: 0 0 12px 0; }
@@ -324,9 +308,9 @@
 .msgHeading {
   font-size: 1rem;
   margin: 15px 0 10px 0;
-  color: #fff;
+  color: #201509;
   font-weight: 800;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgba(32, 21, 9, 0.25);
   padding-bottom: 5px;
 }
 
@@ -335,7 +319,7 @@
   padding-left: 20px;
   position: relative;
   margin-bottom: 8px;
-  color: #aaa;
+  color: #2c2013;
   font-size: 0.85rem;
 }
 
@@ -343,8 +327,7 @@
   content: '>';
   position: absolute;
   left: 0;
-  color: #00ff00;
-  font-family: 'Courier New', Courier, monospace;
+  color: var(--dossier-accent);
 }
 
 /* CONTACT LINKS (Rendered by AI) */
@@ -355,20 +338,18 @@
   gap: 10px;
   margin-top: 15px;
   padding-top: 15px;
-  border-top: 1px dashed #333;
+  border-top: 1px dashed rgba(32, 21, 9, 0.25);
 }
 
 .contactTab {
-  background: rgba(0, 255, 0, 0.05);
-  border: 1px solid #00ff00;
-  color: #00ff00;
+  background: rgba(194, 59, 44, 0.06);
+  border: 1.5px solid var(--dossier-accent);
+  color: var(--dossier-accent);
   padding: 8px 12px;
   font-size: 0.75rem;
-  font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   text-decoration: none;
   transition: all 0.3s ease;
-  border-radius: 4px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -376,16 +357,15 @@
 }
 
 .contactTab:hover {
-  background: #00ff00;
-  color: #000;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+  background: var(--dossier-accent);
+  color: #100c09;
 }
 
 /* FOOTER */
 .chatFooter {
   padding: 20px;
-  background: #111;
-  border-top: 1px solid #222;
+  background: var(--dossier-bg-0);
+  border-top: 1px solid rgba(194, 59, 44, 0.2);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -395,31 +375,30 @@
   flex: 1;
   display: flex;
   align-items: center;
-  background: #000;
-  border: 1px solid #333;
+  background: var(--dossier-paper-light);
+  border: 1px solid rgba(32, 21, 9, 0.3);
   padding: 0 15px;
-  border-radius: 4px;
+  border-radius: 3px;
   transition: all 0.3s;
 }
 
 .inputWrapper:focus-within {
-  border-color: #00ff00;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+  border-color: var(--dossier-accent);
+  box-shadow: 0 0 10px rgba(194, 59, 44, 0.15);
 }
 
 .inputPrefix {
-  color: #00ff00;
+  color: var(--dossier-accent);
   font-weight: 900;
   margin-right: 8px;
   font-size: 0.8rem;
-  font-family: 'Courier New', Courier, monospace;
 }
 
 .chatInput {
   flex: 1;
   background: transparent;
   border: none;
-  color: #fff;
+  color: #201509;
   padding: 12px 0;
   font-family: inherit;
   font-size: 0.9rem;
@@ -428,31 +407,50 @@
 .chatInput:focus { outline: none; }
 
 .sendBtn {
-  background: #222;
-  color: #00ff00;
-  border: 1px solid #333;
-  width: 42px;
+  background: var(--dossier-ink);
+  color: var(--dossier-paper-light);
+  border: 1px solid var(--dossier-ink);
+  padding: 0 16px;
   height: 42px;
-  border-radius: 4px;
+  border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s;
   font-size: 0.75rem;
-  font-weight: 900;
-  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
 }
 
 .sendBtn:hover:not(:disabled) {
-  background: #00ff00;
-  color: #000;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+  background: var(--dossier-accent);
+  border-color: var(--dossier-accent);
 }
 
 .sendBtn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+/* LOADING STATE */
+.loaderWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: var(--dossier-ink-soft);
+  padding: 8px 4px;
+}
+
+.loaderDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dossier-accent);
+  box-shadow: 0 0 8px var(--dossier-accent);
+  animation: header-pulse 1s infinite ease-in-out;
+  flex-shrink: 0;
 }
 
 /* RESPONSIVE */
@@ -461,7 +459,7 @@
     bottom: 20px;
     right: 20px;
   }
-  
+
   .chatWindow {
     width: 350px;
     height: 550px;
@@ -495,7 +493,11 @@
   .iconCircle {
     width: 30px;
     height: 30px;
-    font-size: 1rem;
+  }
+
+  .triggerIcon {
+    width: 15px;
+    height: 15px;
   }
 }
 

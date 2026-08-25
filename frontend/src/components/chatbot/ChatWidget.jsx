@@ -1,8 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { sendChatMessage, getChatbotStatus } from '../../api/chatbot.api';
 import styles from './ChatWidget.module.css';
-import InlineTacticalLoader from '../feedback/InlineTacticalLoader';
 import Typewriter from '../feedback/Typewriter';
+
+// A magnifying glass — the same "detective tool" mark used on the
+// RedactedLink tabs elsewhere, so the widget reads as part of the case
+// board rather than a leftover terminal-era icon (the old FontAwesome
+// robot glyph never rendered — that font was never loaded on this site).
+function MagnifierIcon(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...props}>
+      <circle cx="10" cy="10" r="6" />
+      <line x1="14.5" y1="14.5" x2="20" y2="20" />
+    </svg>
+  );
+}
 
 // Parses the contact link lines from AI responses and renders them as tab buttons.
 // Matches: - [LABEL](URL)
@@ -75,7 +87,7 @@ function AiMessageContent({ content, isNew }) {
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.contactTab}
+              className={`${styles.contactTab} ink`}
             >
               {link.label}
             </a>
@@ -88,7 +100,7 @@ function AiMessageContent({ content, isNew }) {
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -98,7 +110,7 @@ export default function ChatWidget() {
     {
       role: 'ai',
       isNew: false,
-      content: 'SYSTEM ONLINE. I am the Virtual Operative proxy for Okumu Joseph. State your query regarding operational capacity, stack experience, or deployment costs.'
+      content: "Case consultant standing by. I'm briefed on Okumu Joseph's full file — ask about his operational capacity, stack experience, or deployment costs."
     }
   ]);
 
@@ -135,7 +147,7 @@ export default function ChatWidget() {
       setMessages(prev => [...prev, {
         role: 'ai',
         isNew: true,
-        content: "ERR_CONNECTION_REFUSED: Uplink to main AI core failed. Please try again or use the Contact secure comms."
+        content: "ERR_LINE_DOWN: Couldn't reach the case file right now. Try again, or reach out directly on the Contact page."
       }]);
     } finally {
       setIsLoading(false);
@@ -148,48 +160,46 @@ export default function ChatWidget() {
     <div className={styles.widgetContainer}>
       {!isOpen ? (
         <div className={styles.triggerWrapper}>
-          <div className={styles.helpPrompt}>
-            <span>NEED ARCHITECTURAL GUIDANCE?</span>
+          <div className={`${styles.helpPrompt} ink`}>
+            <span>GOT A LEAD ON THIS CASE?</span>
           </div>
           <button className={styles.bubbleBtn} onClick={() => setIsOpen(true)}>
             <div className={styles.iconCircle}>
-              <i className="fas fa-robot"></i>
+              <MagnifierIcon className={styles.triggerIcon} />
             </div>
-            <span className={styles.bubbleLabel}>AI_ASSISTANT</span>
+            <span className={`${styles.bubbleLabel} ink`}>CASE_CONSULTANT</span>
             <span className={styles.ping}></span>
           </button>
         </div>
       ) : (
-        <div className={styles.chatWindow}>
-          <div className={styles.scanline} />
-
+        <div className={`${styles.chatWindow} newsprintTexture`}>
           <div className={styles.chatHeader}>
             <div className={styles.headerLeft}>
               <div className={styles.headerPulse} />
               <div className={styles.headerMeta}>
-                <h4 className={styles.headerTitle}>OPERATIONAL_AI_UPLINK</h4>
-                <span className={styles.headerSub}>ENCRYPTION: AES-256_ACTIVE</span>
+                <h4 className={`${styles.headerTitle} ink`}>CASE CONSULTANT // UPLINK</h4>
+                <span className={`${styles.headerSub} ink`}>ENCRYPTION: AES-256_ACTIVE</span>
               </div>
             </div>
             <div className={styles.headerActions}>
-              <span className={styles.statusBadge}>ONLINE</span>
-              <button className={styles.closeBtn} onClick={() => setIsOpen(false)} title="Terminate Session">×</button>
+              <span className={`${styles.statusBadge} ink`}>ONLINE</span>
+              <button className={styles.closeBtn} onClick={() => setIsOpen(false)} title="Close File">×</button>
             </div>
           </div>
 
           <div className={styles.chatBody}>
-            <div className={styles.systemLog}>
-              [SYSTEM] Connection established...<br/>
-              [SYSTEM] Virtual Operative proxy initialized.
+            <div className={`${styles.systemLog} ink`}>
+              [CASE_LOG] Secure line established...<br/>
+              [CASE_LOG] Consultant standing by.
             </div>
 
             {messages.map((msg, idx) => (
               <div key={idx} className={`${styles.msgWrapper} ${msg.role === 'ai' ? styles.ai : styles.user}`}>
                 <div className={styles.msgMetadata}>
-                  <span className={styles.msgLabel}>
-                    {msg.role === 'ai' ? 'SYS.AGENT' : 'GUEST_USER'}
+                  <span className={`${styles.msgLabel} ink`}>
+                    {msg.role === 'ai' ? 'CONSULTANT' : 'YOU'}
                   </span>
-                  <span className={styles.msgTimestamp}>[{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}]</span>
+                  <span className={`${styles.msgTimestamp} ink`}>[{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}]</span>
                 </div>
                 <div className={msg.role === 'ai' ? styles.msgAi : styles.msgUser}>
                   {msg.role === 'ai' ? (
@@ -201,10 +211,12 @@ export default function ChatWidget() {
               </div>
             ))}
 
-            {/* Tactical Loading State */}
+            {/* Loading state — kept local so it doesn't touch the shared
+                InlineTacticalLoader used by the (unrelated) admin area */}
             {isLoading && (
-              <div className={styles.loaderWrapper}>
-                <InlineTacticalLoader />
+              <div className={`${styles.loaderWrapper} ink`}>
+                <span className={styles.loaderDot} />
+                PULLING AN ANSWER FROM THE FILE...
               </div>
             )}
 
@@ -213,18 +225,18 @@ export default function ChatWidget() {
 
           <form onSubmit={handleSend} className={styles.chatFooter}>
             <div className={styles.inputWrapper}>
-              <span className={styles.inputPrefix}>&gt;_</span>
+              <span className={`${styles.inputPrefix} ink`}>&gt;_</span>
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Execute command or ask..."
-                className={styles.chatInput}
+                placeholder="Ask about the case..."
+                className={`${styles.chatInput} ink`}
                 autoComplete="off"
                 disabled={isLoading}
               />
             </div>
-            <button type="submit" disabled={isLoading || !input.trim()} className={styles.sendBtn}>
-              EXE
+            <button type="submit" disabled={isLoading || !input.trim()} className={`${styles.sendBtn} ink`}>
+              SEND
             </button>
           </form>
         </div>
