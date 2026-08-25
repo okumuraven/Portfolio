@@ -32,9 +32,9 @@ export function CaseBoardProvider({ crossTies = [], children }) {
   const pinsRef = useRef(new Map()); // id -> { order, node }
   const [segments, setSegments] = useState([]);
 
-  const registerPin = useCallback((id, order, node) => {
+  const registerPin = useCallback((id, order, node, sequential) => {
     if (node) {
-      pinsRef.current.set(id, { order, node });
+      pinsRef.current.set(id, { order, node, sequential });
     } else {
       pinsRef.current.delete(id);
     }
@@ -50,7 +50,12 @@ export function CaseBoardProvider({ crossTies = [], children }) {
       return { x: r.left + r.width / 2 - containerRect.left, y: r.top + r.height / 2 - containerRect.top };
     };
 
-    const ordered = Array.from(pinsRef.current.entries()).sort((a, b) => a[1].order - b[1].order);
+    // Only pins meant to sit on the main running thread join the sequential
+    // chain; "cross-tie only" pins (e.g. a specific shared-skill chip) are
+    // registered but skip this so they don't insert a stray detour into it.
+    const ordered = Array.from(pinsRef.current.entries())
+      .filter(([, v]) => v.sequential !== false)
+      .sort((a, b) => a[1].order - b[1].order);
 
     const next = [];
     for (let i = 1; i < ordered.length; i++) {
@@ -139,16 +144,16 @@ export function CaseBoardProvider({ crossTies = [], children }) {
  * control its own visual look and position (usually a red pin dot
  * positioned relative to its own parent card).
  */
-export function CasePin({ id, order, className, style }) {
+export function CasePin({ id, order, className, style, sequential = true }) {
   const ctx = useContext(CaseBoardCtx);
   const ref = useRef(null);
 
   useEffect(() => {
     if (!ctx) return undefined;
-    ctx.registerPin(id, order, ref.current);
+    ctx.registerPin(id, order, ref.current, sequential);
     ctx.recompute();
-    return () => ctx.registerPin(id, order, null);
-  }, [ctx, id, order]);
+    return () => ctx.registerPin(id, order, null, sequential);
+  }, [ctx, id, order, sequential]);
 
   return <span ref={ref} className={className} style={style} />;
 }

@@ -1,9 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { getProjects } from "../../../api/projects.api";
 import "../../../styles/dossier.css";
 import { CaseBoardProvider, CasePin } from "../../../components/caseboard/CaseBoard";
 import RedactedLink from "../../../components/caseboard/RedactedLink";
 import styles from "./ProjectsPage.module.css";
+
+// A short label for the margin note — take the part before any " // " split
+// so "Raven OS // Secure Portfolio & Admin Console" just reads "Raven OS".
+function shortTitle(title) {
+  return (title || "").split(" // ")[0];
+}
+
+// The detective's own cross-reference: find every pair of case files that
+// share a piece of stack, and note which one chip on each card is the
+// "same as" evidence — so the string system can draw a line between them
+// and the UI can circle exactly those two chips in red.
+function computeSharedSkillLinks(projects) {
+  const bySkill = new Map();
+  projects.forEach((p, pi) => {
+    (p.skills || []).forEach((sk, si) => {
+      const key = sk.trim().toLowerCase();
+      if (!bySkill.has(key)) bySkill.set(key, []);
+      bySkill.get(key).push({ pi, si });
+    });
+  });
+
+  const links = [];
+  const chipMeta = new Map(); // `${pi}-${si}` -> { primary, note }
+
+  bySkill.forEach((occurrences) => {
+    const distinct = [];
+    for (const occ of occurrences) {
+      if (!distinct.some((d) => d.pi === occ.pi)) distinct.push(occ);
+    }
+    if (distinct.length < 2) return;
+    const [a, b] = distinct;
+    const idA = `skill-${a.pi}-${a.si}`;
+    const idB = `skill-${b.pi}-${b.si}`;
+    if (chipMeta.has(idA) || chipMeta.has(idB)) return; // keep each card's markup to one flagged chip
+    links.push([idA, idB]);
+    chipMeta.set(idA, { primary: true, note: `SAME AS ${shortTitle(projects[b.pi]?.title).toUpperCase()}` });
+    chipMeta.set(idB, { primary: false, note: `SAME AS ${shortTitle(projects[a.pi]?.title).toUpperCase()}` });
+  });
+
+  return { links, chipMeta };
+}
 
 const categoryList = ["All", "Client", "Personal", "Open Source", "Hackathon", "Other"];
 
@@ -33,7 +74,7 @@ export default function ProjectsPage() {
         const data = Array.isArray(res) ? res : res?.data || [];
         setProjects(data);
       })
-      .catch(() => setProjects([]))
+      .catch(() => setProjects(window.__mockProjects || []))
       .finally(() => setLoading(false));
   }, [category]);
 
@@ -41,11 +82,15 @@ export default function ProjectsPage() {
     setImgErrorMap((prev) => ({ ...prev, [id]: true }));
   }
 
-  const visibleProjects = projects.filter((p) => p.visible !== false);
+  const visibleProjects = useMemo(() => projects.filter((p) => p.visible !== false), [projects]);
+  const { links: skillLinks, chipMeta } = useMemo(
+    () => computeSharedSkillLinks(visibleProjects),
+    [visibleProjects]
+  );
 
   return (
     <div className={`${styles.page} deskBg`}>
-      <CaseBoardProvider>
+      <CaseBoardProvider crossTies={skillLinks}>
         <section className={styles.container}>
           {/* HEADER */}
           <div className={`${styles.header} torn paperShadow`}>
@@ -130,7 +175,10 @@ export default function ProjectsPage() {
                     )}
 
                     {project.highlight && (
-                      <div className={`${styles.highlight} ink`}>&#9733; {project.highlight}</div>
+                      <div className={`${styles.highlight} ink`}>
+                        <span className={styles.highlightMark}>KEY EVIDENCE</span>
+                        &#9733; {project.highlight}
+                      </div>
                     )}
 
                     {project.description && (
@@ -141,9 +189,24 @@ export default function ProjectsPage() {
 
                     {!!(project.skills && project.skills.length) && (
                       <div className={styles.techStack}>
-                        {project.skills.map((sk, i) => (
-                          <span className={`${styles.techChip} ink`} key={i}>{sk}</span>
-                        ))}
+                        {project.skills.map((sk, i) => {
+                          const chipId = `skill-${idx}-${i}`;
+                          const meta = chipMeta.get(chipId);
+                          if (!meta) {
+                            return (
+                              <span className={`${styles.techChip} ink`} key={i}>{sk}</span>
+                            );
+                          }
+                          return (
+                            <span className={`${styles.techChip} ${styles.linkedChip} ink`} key={i}>
+                              <CasePin id={chipId} order={0} sequential={false} className={styles.chipAnchor} />
+                              {sk}
+                              {meta.primary && (
+                                <span className={`${styles.linkNote} hand`}>{meta.note}</span>
+                              )}
+                            </span>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
