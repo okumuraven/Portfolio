@@ -7,9 +7,9 @@ import styles from "./RedactedLink.module.css";
  * away to reveal the real label underneath, the way a detective would
  * peel back a censor bar on a file.
  */
-export default function RedactedLink({ href, children, stamp = "CLASSIFIED" }) {
+export default function RedactedLink({ href, children, stamp = "CLASSIFIED", target, rel }) {
   return (
-    <a href={href} className={`${styles.tab} ink`}>
+    <a href={href} target={target} rel={rel} className={`${styles.tab} ink`}>
       <svg className={styles.magnifier} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="10" cy="10" r="6" />
         <line x1="14.5" y1="14.5" x2="20" y2="20" />

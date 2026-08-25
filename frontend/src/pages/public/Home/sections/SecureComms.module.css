@@ -126,11 +126,38 @@
 }
 
 .action {
+  position: relative;
+  overflow: hidden;
   font-size: 10px;
   letter-spacing: 0.5px;
   color: var(--dossier-ink-soft);
   border-top: 1px dashed #c9c5ba;
   padding-top: 10px;
+  margin: -1px -20px -20px;
+  padding: 10px 20px 20px;
+}
+
+.actionLabel {
+  display: block;
+}
+
+.actionRedaction {
+  position: absolute;
+  inset: 0;
+  top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #0c0c0c;
+  color: #b8ab90;
+  letter-spacing: 1px;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stub:hover .actionRedaction,
+.stub:focus-visible .actionRedaction {
+  transform: translateY(-100%);
 }
 
 .signature {
