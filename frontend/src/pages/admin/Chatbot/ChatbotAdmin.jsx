@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getChatbotConfig, updateChatbotConfig } from "../../../api/chatbot.api";
+import "../../../styles/dossier.css";
 import styles from "./ChatAdmin.module.css";
 
 export default function ChatbotAdmin() {
@@ -40,25 +41,32 @@ export default function ChatbotAdmin() {
     mutation.mutate(form);
   };
 
-  if (isLoading) return <div className={styles.loader}>[ FETCHING_SYSTEM_DATA... ]</div>;
-  if (error) return <div className={styles.error}>[ ERROR_FETCHING_DATA ]</div>;
+  if (isLoading) return <div className={`${styles.loader} ink`}>{"// PULLING CONSULTANT BRIEFING..."}</div>;
+  if (error) return <div className={`${styles.error} ink`}>[ BRIEFING FILE COULD NOT BE RETRIEVED ]</div>;
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>AI_ESTIMATOR_CONTROL</h2>
+        <div>
+          <p className={`${styles.kicker} ink`}>{"// CASE CONSULTANT UPLINK"}</p>
+          <h2 className={`${styles.title} display`}>AI Estimator Control</h2>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.formCard}>
 
-        <div className={styles.infoBox}>
-          <p>The chatbot pricing tiers and professional rules are now <strong>PERMANENTly</strong> linked to the system core. You can only control the online status from this terminal.</p>
+        <div className={`${styles.infoBox} bodyCopy`}>
+          <p>
+            The chatbot&rsquo;s pricing tiers and professional rules are permanently
+            linked to the system core &mdash; this terminal only controls whether the
+            consultant is reachable to visitors.
+          </p>
         </div>
 
         {/* ONLINE/OFFLINE TOGGLE */}
         <div className={styles.statusContainer}>
-          <span className={`${styles.statusLabel} ${form.is_active ? styles.online : styles.offline}`}>
-            {form.is_active ? ">> BOT IS ONLINE" : ">> BOT IS OFFLINE"}
+          <span className={`${styles.statusLabel} ink ${form.is_active ? styles.online : styles.offline}`}>
+            {form.is_active ? "CONSULTANT ONLINE" : "CONSULTANT OFFLINE"}
           </span>
           <label className={styles.switch}>
             <input
@@ -76,7 +84,7 @@ export default function ChatbotAdmin() {
           disabled={mutation.isPending}
           className={styles.submitBtn}
         >
-          {mutation.isPending ? "UPDATING..." : "SAVE STATUS"}
+          {mutation.isPending ? "UPDATING…" : "SAVE STATUS"}
         </button>
 
       </form>

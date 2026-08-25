@@ -3,6 +3,7 @@ import Modal from "../../../components/feedback/Modal";
 import { createProject, updateProject } from "../../../api/projects.api";
 import { getSkills } from "../../../api/skills.api";
 import { getPersonas } from "../../../api/personas.api";
+import "../../../styles/dossier.css";
 import styles from "./EditProjectModal.module.css";
 
 export default function EditProjectModal({ open, onClose, project, onSave }) {
@@ -143,9 +144,20 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
 
   return (
     <Modal open={open} onClose={onClose} title={isEdit ? "MODIFY_PROJECT_CONFIG" : "INITIALIZE_NEW_PROJECT"}>
+      <div className={styles.overlay}>
+        <div className={styles.modalCard}>
+          <div className={styles.folderTab}>
+            <span className="ink">{isEdit ? "CASE FILE // EDIT" : "CASE FILE // NEW"}</span>
+          </div>
+          <div className={styles.stamp}>
+            <span>{isEdit ? "REOPENED" : "INTAKE"}</span>
+          </div>
+          <h2 className={`${styles.modalTitle} display`}>
+            {isEdit ? "Modify Case File" : "Open New Case"}
+          </h2>
       <form onSubmit={handleSubmit} className={styles.formContainer}>
         {/* --- SECTION 1: IDENTITY --- */}
-        <div className={styles.sectionHeader}>PROJECT_IDENTITY</div>
+        <div className={`${styles.sectionHeader} ink`}>{"// PROJECT_IDENTITY"}</div>
         <div className={styles.formGrid}>
           <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
             <label className={styles.label}>Title / Codename *</label>
@@ -184,7 +196,7 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
         </div>
 
         {/* --- SECTION 2: TIMELINE & ASSETS --- */}
-        <div className={styles.sectionHeader}>TIMELINE_AND_LINKS</div>
+        <div className={`${styles.sectionHeader} ink`}>{"// TIMELINE_AND_LINKS"}</div>
         <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
             <label className={styles.label}>Start Date</label>
@@ -213,12 +225,12 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
               placeholder="https://cdn.example.com/image.png"
               required // or omit if not required
             />
-            {isEdit && <span style={{fontSize:'0.7rem', color:'#666', marginTop:'4px'}}>* Leaving blank keeps current image</span>}
+            {isEdit && <span style={{fontSize:'0.7rem', color:'rgba(36,28,22,0.5)', marginTop:'4px', display:'block'}}>* Leaving blank keeps current image</span>}
           </div>
         </div>
 
         {/* --- SECTION 3: TECH STACK --- */}
-        <div className={styles.sectionHeader}>TECH_STACK_CONFIGURATION</div>
+        <div className={`${styles.sectionHeader} ink`}>{"// TECH_STACK_CONFIGURATION"}</div>
         <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
             <label className={styles.label}>Associated Skills</label>
@@ -249,7 +261,7 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
         </div>
 
         {/* --- SECTION 4: SQUAD --- */}
-        <div className={styles.sectionHeader}>TEAM_ROSTER</div>
+        <div className={`${styles.sectionHeader} ink`}>{"// TEAM_ROSTER"}</div>
         <div className={styles.collabList}>
           {form.collaborators.map((col, idx) => (
             <div key={idx} className={styles.collabRow}>
@@ -261,7 +273,7 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
             </div>
           ))}
           <button type="button" className={styles.addCollabBtn} onClick={addCollaborator}>
-             + ADD_OPERATIVE
+             + ADD OPERATIVE
           </button>
         </div>
 
@@ -269,19 +281,21 @@ export default function EditProjectModal({ open, onClose, project, onSave }) {
         <div className={styles.inputGroup} style={{marginTop: '2rem'}}>
           <label className={styles.checkboxLabel}>
             <input name="visible" type="checkbox" className={styles.checkboxInput} checked={!!form.visible} onChange={handleChange} />
-            <span>PROJECT_IS_PUBLICLY_VISIBLE</span>
+            <span>PROJECT IS PUBLICLY VISIBLE</span>
           </label>
         </div>
 
-        {error && <div style={{color: '#ff4444', marginTop: '1rem', fontFamily: 'Courier New'}}>[ERROR]: {error}</div>}
+        {error && <div className={styles.errorMsg}>[FILE ROOM ERROR]: {error}</div>}
 
         <div className={styles.actions}>
-          <button type="button" className={styles.btn} style={{border:'1px solid #333', color: '#888'}} onClick={onClose}>CANCEL</button>
-          <button type="submit" className={`${styles.btn} ${styles.saveBtn}`} disabled={saving}>
-            {saving ? "PROCESSING..." : isEdit ? "UPDATE_SYSTEM" : "DEPLOY_PROJECT"}
+          <button type="button" className={styles.cancelBtn} onClick={onClose}>CANCEL</button>
+          <button type="submit" className={styles.saveBtn} disabled={saving}>
+            {saving ? "PROCESSING…" : isEdit ? "UPDATE FILE" : "OPEN CASE"}
           </button>
         </div>
       </form>
+        </div>
+      </div>
     </Modal>
   );
 }

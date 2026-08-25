@@ -1,134 +1,128 @@
 /* src/pages/admin/Projects/ProjectsAdminPage.module.css */
 
-/* ... Keep Container ... */
 .container {
-  color: #e0e0e0;
-  font-family: 'Inter', sans-serif;
+  color: var(--dossier-newsprint, #e8e1c8);
+  font-family: "Special Elite", "Courier New", monospace;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
-  box-sizing: border-box; /* Prevent side-scroll */
+  box-sizing: border-box;
 }
 
-/* --- HEADER FIX --- */
+/* --- HEADER --- */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #222;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid rgba(199, 171, 125, 0.25);
   padding-bottom: 1rem;
-  flex-wrap: wrap; /* Allows stacking */
-  gap: 1.5rem; /* Space between title and button */
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
 .title {
-  font-family: 'Courier New', monospace;
-  text-transform: uppercase;
-  font-size: 1.25rem;
-  letter-spacing: 0.1em;
-  color: #fff;
+  font-size: 1.5rem;
+  letter-spacing: 0.03em;
+  color: var(--dossier-paper, #f0ecdf);
   display: flex;
   align-items: center;
-  gap: 10px;
-  
-  /* CRITICAL FIX: Allow text wrapping */
-  white-space: normal; 
+  gap: 12px;
+  white-space: normal;
   word-break: break-word;
-  line-height: 1.4;
+  line-height: 1.3;
   max-width: 100%;
+  text-transform: uppercase;
 }
 
 .title::before {
-  content: '';
+  content: "";
   display: block;
   width: 6px;
   height: 24px;
-  min-width: 6px; /* Don't shrink */
-  background: #ff5500;
+  min-width: 6px;
+  background: var(--dossier-accent, #c23b2c);
 }
 
 .createBtn {
-  background: #fff;
-  color: #000;
+  background: var(--dossier-ink, #241c16);
+  color: var(--dossier-paper, #f0ecdf);
   border: none;
   padding: 12px 20px;
-  font-family: 'Courier New', monospace;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-family: "Anton", "Arial Narrow", sans-serif;
+  letter-spacing: 0.06em;
   cursor: pointer;
   transition: all 0.2s;
-  white-space: nowrap; /* Keep button text on one line */
+  white-space: nowrap;
+  border-radius: 1px;
 }
 
 .createBtn:hover {
-  background: #ff5500;
-  color: #fff;
-  box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+  background: var(--dossier-accent, #c23b2c);
 }
 
-/* ... Keep Table Styles ... */
+/* --- TABLE / LEDGER --- */
 .tableContainer {
-  background: rgba(10, 10, 10, 0.5);
-  border: 1px solid #222;
-  border-radius: 4px;
+  background: var(--dossier-paper, #f0ecdf);
+  border: 1px solid rgba(36, 28, 22, 0.25);
+  border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
 .dataTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 .dataTable thead {
-  background: #111;
-  border-bottom: 1px solid #333;
+  background: var(--dossier-kraft-dark, #b39a68);
 }
 
 .dataTable th {
   text-align: left;
-  padding: 1rem;
-  color: #888;
-  font-family: 'Courier New', monospace;
+  padding: 0.9rem 1rem;
+  color: var(--dossier-ink, #241c16);
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
 }
 
 .dataTable td {
-  padding: 1rem;
-  border-bottom: 1px solid #1a1a1a;
-  color: #ccc;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px dashed rgba(36, 28, 22, 0.2);
+  color: var(--dossier-ink-soft, #4a3620);
   vertical-align: middle;
+}
+
+.dataTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dataTable tbody tr:hover {
+  background: rgba(194, 59, 44, 0.05);
 }
 
 /* --- CELL DETAILS --- */
 .thumbnail {
-  width: 60px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 2px;
-  border: 1px solid #333;
-  background: #000;
+  border: 1px solid rgba(36, 28, 22, 0.3);
 }
 
 .projectTitle {
   font-weight: 700;
-  color: #fff;
+  color: var(--dossier-ink, #241c16);
 }
 
 .chip {
   display: inline-block;
-  font-size: 0.7rem;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  padding: 2px 6px;
+  font-size: 0.68rem;
+  background: rgba(36, 28, 22, 0.08);
+  border: 1px solid rgba(36, 28, 22, 0.2);
+  padding: 2px 7px;
   border-radius: 3px;
-  margin-right: 4px;
-  font-family: 'Courier New', monospace;
-  color: #aaa;
+  margin: 2px 4px 2px 0;
+  color: var(--dossier-ink-soft, #4a3620);
 }
 
 .statusDot {
@@ -139,29 +133,45 @@
   margin-right: 6px;
 }
 
-.statusDot.visible { background: #00ff88; box-shadow: 0 0 5px #00ff88; }
-.statusDot.hidden { background: #333; }
+.statusDot.visible { background: #3c6b35; box-shadow: 0 0 4px rgba(60, 107, 53, 0.6); }
+.statusDot.hidden { background: rgba(36, 28, 22, 0.3); }
 
 /* --- ACTIONS --- */
 .actionBtn {
   background: transparent;
-  border: 1px solid #333;
-  color: #888;
+  border: 1px solid rgba(36, 28, 22, 0.3);
+  color: var(--dossier-ink-soft, #4a3620);
   padding: 6px 10px;
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   margin-right: 8px;
-  font-family: 'Courier New', monospace;
+  font-family: "Special Elite", "Courier New", monospace;
   text-transform: uppercase;
   transition: all 0.2s;
+  border-radius: 1px;
 }
 
-.editBtn:hover { border-color: #fff; color: #fff; }
-.deleteBtn:hover { border-color: #ff4444; color: #ff4444; }
+.editBtn:hover { border-color: var(--dossier-ink, #241c16); color: var(--dossier-ink, #241c16); background: rgba(36, 28, 22, 0.06); }
+.deleteBtn:hover { border-color: var(--dossier-accent, #c23b2c); color: var(--dossier-accent, #c23b2c); background: rgba(194, 59, 44, 0.08); }
+
+/* --- STATE BANNERS --- */
+.loader,
+.error {
+  background: var(--dossier-paper, #f0ecdf);
+  color: var(--dossier-ink, #241c16);
+  border: 1px solid rgba(36, 28, 22, 0.25);
+  border-radius: 2px;
+  padding: 1.4rem 1.6rem;
+  letter-spacing: 0.04em;
+}
+
+.error {
+  border-color: rgba(194, 59, 44, 0.4);
+  color: var(--dossier-accent-dim, #8a2b1d);
+}
 
 /* --- MOBILE RESPONSIVE FIX --- */
 @media (max-width: 768px) {
-  /* 1. Stack Header Elements */
   .header {
     flex-direction: column;
     align-items: flex-start;
@@ -169,28 +179,28 @@
   }
 
   .title {
-    font-size: 1rem; /* Smaller font */
+    font-size: 1.1rem;
   }
 
   .createBtn {
-    width: 100%; /* Full width button is easier to tap */
+    width: 100%;
     text-align: center;
   }
 
-  /* 2. Table Card View */
   .dataTable thead { display: none; }
   .dataTable tbody tr {
     display: block;
-    background: #0e0e0e;
+    background: var(--dossier-paper, #f0ecdf);
     margin-bottom: 1rem;
-    border: 1px solid #222;
+    border: 1px solid rgba(36, 28, 22, 0.25);
     padding: 1rem;
+    border-radius: 2px;
   }
   .dataTable td {
     display: flex;
     justify-content: space-between;
     padding: 0.5rem 0;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px dashed rgba(36, 28, 22, 0.2);
     text-align: right;
   }
   .dataTable td:last-child {
@@ -198,13 +208,12 @@
     padding-top: 1rem;
     justify-content: flex-start;
   }
-  
-  /* Labels */
-  .dataTable td:nth-child(1)::before { content: "PREVIEW:"; color: #666; font-size: 0.7rem; }
-  .dataTable td:nth-child(2)::before { content: "TITLE:"; color: #666; font-size: 0.7rem; }
-  .dataTable td:nth-child(3)::before { content: "CATEGORY:"; color: #666; font-size: 0.7rem; }
-  .dataTable td:nth-child(4)::before { content: "SKILLS:"; color: #666; font-size: 0.7rem; }
-  .dataTable td:nth-child(5)::before { content: "PERSONA:"; color: #666; font-size: 0.7rem; }
-  .dataTable td:nth-child(6)::before { content: "STATUS:"; color: #666; font-size: 0.7rem; }
-  .dataTable td:nth-child(7)::before { content: "ORDER:"; color: #666; font-size: 0.7rem; }
+
+  .dataTable td:nth-child(1)::before { content: "PREVIEW:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
+  .dataTable td:nth-child(2)::before { content: "TITLE:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
+  .dataTable td:nth-child(3)::before { content: "CATEGORY:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
+  .dataTable td:nth-child(4)::before { content: "SKILLS:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
+  .dataTable td:nth-child(5)::before { content: "PERSONA:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
+  .dataTable td:nth-child(6)::before { content: "STATUS:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
+  .dataTable td:nth-child(7)::before { content: "ORDER:"; color: var(--dossier-accent-dim, #8a2b1d); font-size: 0.65rem; }
 }

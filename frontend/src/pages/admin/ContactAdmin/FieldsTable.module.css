@@ -1,68 +1,77 @@
-/* src/pages/admin/Contact/FieldsTable.module.css */
+/* src/pages/admin/ContactAdmin/FieldsTable.module.css */
 
 .tableContainer {
-  background: rgba(10, 10, 10, 0.5);
-  border: 1px solid #222;
-  border-radius: 4px;
+  background: var(--dossier-paper, #f0ecdf);
+  border: 1px solid rgba(36, 28, 22, 0.2);
+  border-radius: 2px;
   overflow-x: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
   width: 100%;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
-  color: #e0e0e0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.88rem;
+  color: var(--dossier-ink, #241c16);
 }
 
 /* --- HEADERS --- */
 .table thead {
-  background: #111;
-  border-bottom: 1px solid #333;
+  background: var(--dossier-kraft-dark, #b39a68);
+  border-bottom: 1px solid rgba(36, 28, 22, 0.3);
 }
 
 .table th {
   text-align: left;
-  padding: 1.2rem 1rem;
-  color: #888;
-  font-family: 'Courier New', monospace;
+  padding: 1rem;
+  color: var(--dossier-ink, #241c16);
+  font-family: "Special Elite", "Courier New", monospace;
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   letter-spacing: 0.1em;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 /* --- ROWS & CELLS --- */
 .table td {
-  padding: 1rem;
-  border-bottom: 1px solid #1a1a1a;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px dashed rgba(36, 28, 22, 0.18);
   vertical-align: middle;
 }
 
 .table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(194, 59, 44, 0.05);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .cellField {
   font-weight: 700;
-  color: #fff;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
+  color: var(--dossier-ink, #241c16);
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 .cellType {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  color: #888;
-  background: #111;
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 0.7rem;
+  color: var(--dossier-ink-soft, #4a3620);
+  background: rgba(199, 171, 125, 0.2);
   padding: 3px 8px;
   border-radius: 2px;
-  border: 1px solid #222;
+  border: 1px solid rgba(36, 28, 22, 0.2);
   text-transform: uppercase;
+}
+
+.cellOrder {
+  font-family: "Special Elite", "Courier New", monospace;
+  color: var(--dossier-ink-soft, #4a3620);
 }
 
 /* Value Truncation (Replaces inline styles) */
@@ -71,18 +80,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #aaa;
+  color: var(--dossier-ink-soft, #4a3620);
 }
 
 .cellValue a {
-  color: #00ff88;
+  color: var(--dossier-accent-dim, #8a2b1d);
   text-decoration: none;
-  transition: all 0.2s ease;
+  border-bottom: 1px dotted currentColor;
+  transition: color 0.2s ease;
 }
 
 .cellValue a:hover {
-  color: #fff;
-  text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+  color: var(--dossier-accent, #c23b2c);
 }
 
 /* --- STATUS INDICATORS --- */
@@ -90,12 +99,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
   padding: 4px 8px;
   border-radius: 2px;
-  background: #111;
-  border: 1px solid #222;
+  background: rgba(36, 28, 22, 0.05);
+  border: 1px solid rgba(36, 28, 22, 0.2);
 }
 
 .dot {
@@ -104,36 +114,36 @@
   border-radius: 50%;
 }
 
-.dot.active { background: #00ff88; box-shadow: 0 0 5px #00ff88; }
-.dot.inactive { background: #ff4444; }
+.dot.active { background: var(--dossier-accent-dim, #8a2b1d); }
+.dot.inactive { background: var(--dossier-accent, #c23b2c); box-shadow: 0 0 4px rgba(194, 59, 44, 0.5); }
 
 /* --- ACTIONS --- */
 .actionBtn {
   background: transparent;
-  border: 1px solid #333;
-  color: #888;
+  border: 1px solid rgba(36, 28, 22, 0.3);
+  color: var(--dossier-ink-soft, #4a3620);
   padding: 6px 12px;
   cursor: pointer;
-  font-size: 0.7rem;
-  font-family: 'Courier New', monospace;
+  font-size: 0.68rem;
+  font-family: "Special Elite", "Courier New", monospace;
   text-transform: uppercase;
   transition: all 0.2s;
   margin-right: 8px;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
-.editBtn:hover { border-color: #fff; color: #fff; }
-.deleteBtn:hover { border-color: #ff4444; color: #ff4444; }
+.editBtn:hover { border-color: var(--dossier-ink, #241c16); color: var(--dossier-ink, #241c16); }
+.deleteBtn:hover { border-color: var(--dossier-accent, #c23b2c); color: var(--dossier-accent, #c23b2c); }
 .actionBtn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* --- EMPTY STATE --- */
 .emptyState {
   padding: 3rem;
   text-align: center;
-  font-family: 'Courier New', monospace;
-  color: #666;
+  color: var(--dossier-ink-soft, #4a3620);
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  font-size: 0.85rem;
 }
 
 /* =========================================
@@ -141,44 +151,44 @@
    ========================================= */
 @media (max-width: 768px) {
   .table thead {
-    display: none; /* Hide headers */
+    display: none;
   }
-  
+
   .table tbody tr {
     display: block;
-    background: #0e0e0e;
+    background: var(--dossier-paper-light, #f4f1e9);
     margin-bottom: 1rem;
-    border: 1px solid #222;
+    border: 1px solid rgba(36, 28, 22, 0.2);
     padding: 0.5rem 1rem;
   }
-  
+
   .table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 0;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px dashed rgba(36, 28, 22, 0.18);
     text-align: right;
   }
-  
+
   .table td:last-child {
     border-bottom: none;
     padding-top: 1rem;
     padding-bottom: 0.5rem;
-    justify-content: flex-start; /* Align buttons left */
+    justify-content: flex-start;
   }
-  
+
   /* Use data-label attribute to create mobile headers */
   .table td::before {
     content: attr(data-label);
-    color: #666;
-    font-family: 'Courier New', monospace;
-    font-size: 0.7rem;
+    color: var(--dossier-ink-soft, #4a3620);
+    font-family: "Special Elite", "Courier New", monospace;
+    font-size: 0.65rem;
     text-transform: uppercase;
     font-weight: 600;
   }
 
   .cellValue {
-    max-width: 160px; /* Shrink to prevent breaking mobile layout */
+    max-width: 160px;
   }
 }

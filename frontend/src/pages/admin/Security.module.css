@@ -1,106 +1,132 @@
 /* Security.module.css */
 
 .container {
-  padding: 2rem;
-  max-width: 800px;
+  padding: 0;
+  max-width: 760px;
   margin: 0 auto;
-  color: #fff;
-  font-family: 'Inter', sans-serif;
+  color: var(--dossier-newsprint, #e8e1c8);
 }
 
 .header {
-  margin-bottom: 3rem;
-  border-bottom: 1px solid #222;
-  padding-bottom: 1.5rem;
+  margin-bottom: 2.25rem;
+  border-bottom: 1px solid rgba(199, 171, 125, 0.18);
+  padding-bottom: 1.25rem;
+}
+
+.eyebrow {
+  color: var(--dossier-accent, #c23b2c);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.5rem;
 }
 
 .title {
   font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  color: var(--dossier-paper, #f0ecdf);
 }
 
 .subtitle {
-  color: #888;
-  font-size: 0.9rem;
+  color: rgba(232, 225, 200, 0.6);
+  font-size: 0.92rem;
 }
 
 .section {
-  background: rgba(15, 15, 15, 0.5);
-  border: 1px solid #222;
-  border-radius: 4px;
+  background: var(--dossier-paper, #f0ecdf);
+  color: var(--dossier-ink, #241c16);
+  border: 1px solid rgba(36, 28, 22, 0.2);
+  border-radius: 2px;
   padding: 2rem;
   position: relative;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--dossier-accent, #c23b2c);
 }
 
 .sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
 .sectionTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  margin: 0;
 }
 
 .badge {
   padding: 4px 12px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  border-radius: 20px;
-  font-family: 'Courier New', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  font-family: "Anton", "Arial Narrow", sans-serif;
+  border: 2px solid transparent;
+  transform: rotate(-2deg);
 }
 
 .active {
-  background: rgba(0, 255, 100, 0.1);
-  color: #00ff64;
-  border: 1px solid rgba(0, 255, 100, 0.3);
+  background: transparent;
+  color: var(--dossier-accent, #c23b2c);
+  border-color: var(--dossier-accent, #c23b2c);
+  mix-blend-mode: multiply;
 }
 
 .inactive {
-  background: rgba(255, 255, 255, 0.05);
-  color: #666;
-  border: 1px solid #333;
+  background: rgba(36, 28, 22, 0.06);
+  color: var(--dossier-ink-soft, #4a3620);
+  border-color: rgba(36, 28, 22, 0.25);
 }
 
 .description {
-  color: #aaa;
+  color: var(--dossier-ink-soft, #4a3620);
   line-height: 1.6;
   margin-bottom: 2rem;
   font-size: 0.95rem;
 }
 
 .actionBtn {
-  background: #fff;
-  color: #000;
+  background: var(--dossier-ink, #241c16);
+  color: var(--dossier-paper, #f0ecdf);
   border: none;
   padding: 12px 24px;
-  font-weight: 700;
+  font-family: "Anton", "Arial Narrow", sans-serif;
+  letter-spacing: 0.06em;
   cursor: pointer;
   transition: all 0.2s;
+  border-radius: 1px;
 }
 
 .actionBtn:hover {
-  background: #ff5500;
-  color: #fff;
+  background: var(--dossier-accent, #c23b2c);
 }
 
 .setupBox {
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px dashed #333;
+  border-top: 1px dashed rgba(36, 28, 22, 0.25);
 }
 
 .setupTitle {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  color: #ff5500;
+  font-size: 1.05rem;
+  margin-bottom: 1.25rem;
+  color: var(--dossier-accent-dim, #8a2b1d);
 }
 
 .steps {
-  color: #888;
+  color: var(--dossier-ink-soft, #4a3620);
   margin-bottom: 2rem;
   padding-left: 1.2rem;
 }
@@ -110,11 +136,11 @@
 }
 
 .secret {
-  background: #000;
-  color: #ff5500;
+  background: var(--dossier-ink, #241c16);
+  color: var(--dossier-paper, #f0ecdf);
   padding: 2px 6px;
-  border-radius: 3px;
-  font-family: monospace;
+  border-radius: 2px;
+  font-family: "Special Elite", "Courier New", monospace;
   margin-left: 5px;
 }
 
@@ -123,7 +149,9 @@
   padding: 1rem;
   width: fit-content;
   margin-bottom: 2rem;
-  border-radius: 4px;
+  border-radius: 2px;
+  border: 1px solid rgba(36, 28, 22, 0.2);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .qrCode {
@@ -131,24 +159,28 @@
 }
 
 .verifyForm {
-  max-width: 300px;
+  max-width: 320px;
 }
 
 .tokenInput {
   width: 100%;
-  background: #000;
-  border: 1px solid #333;
-  color: #fff;
+  background: var(--dossier-paper-light, #f4f1e9);
+  border: 1px solid rgba(36, 28, 22, 0.35);
+  border-bottom: 2px solid var(--dossier-ink, #241c16);
+  color: var(--dossier-ink, #241c16);
   padding: 12px;
-  font-size: 1.5rem;
-  letter-spacing: 0.5rem;
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 1.4rem;
+  letter-spacing: 0.4rem;
   text-align: center;
   margin-bottom: 1.5rem;
   outline: none;
+  border-radius: 1px;
 }
 
 .tokenInput:focus {
-  border-color: #ff5500;
+  border-bottom-color: var(--dossier-accent, #c23b2c);
+  box-shadow: 0 0 0 2px rgba(194, 59, 44, 0.15);
 }
 
 .formActions {
@@ -157,68 +189,91 @@
 }
 
 .verifyBtn {
-  background: #ff5500;
-  color: #fff;
+  background: var(--dossier-ink, #241c16);
+  color: var(--dossier-paper, #f0ecdf);
   border: none;
   padding: 10px 20px;
-  font-weight: 600;
+  font-family: "Anton", "Arial Narrow", sans-serif;
+  letter-spacing: 0.04em;
   cursor: pointer;
+  border-radius: 1px;
+  transition: background 0.2s;
+}
+
+.verifyBtn:hover:not(:disabled) {
+  background: var(--dossier-accent, #c23b2c);
 }
 
 .cancelBtn {
   background: transparent;
-  color: #666;
-  border: 1px solid #333;
+  color: var(--dossier-ink-soft, #4a3620);
+  border: 1px solid rgba(36, 28, 22, 0.3);
   padding: 10px 20px;
   cursor: pointer;
+  border-radius: 1px;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  border-color: var(--dossier-ink, #241c16);
+  color: var(--dossier-ink, #241c16);
 }
 
 .enabledBox {
-  background: rgba(0, 255, 100, 0.05);
-  border: 1px solid rgba(0, 255, 100, 0.1);
+  background: rgba(194, 59, 44, 0.06);
+  border: 1px solid rgba(194, 59, 44, 0.25);
   padding: 1.5rem;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .successText {
-  color: #00ff64;
+  color: var(--dossier-accent-dim, #8a2b1d);
   margin-bottom: 1.5rem;
-  font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .disableBtn {
   background: transparent;
-  color: #ff4444;
-  border: 1px solid rgba(255, 68, 68, 0.3);
+  color: var(--dossier-accent, #c23b2c);
+  border: 1px solid var(--dossier-accent, #c23b2c);
   padding: 8px 16px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  font-family: "Special Elite", "Courier New", monospace;
   cursor: pointer;
+  border-radius: 1px;
+  transition: all 0.2s;
 }
 
-.disableBtn:hover {
-  background: rgba(255, 68, 68, 0.1);
-  border-color: #ff4444;
+.disableBtn:hover:not(:disabled) {
+  background: var(--dossier-accent, #c23b2c);
+  color: var(--dossier-paper, #f0ecdf);
+}
+
+.disableBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .recoveryBox {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: rgba(255, 85, 0, 0.05);
-  border: 1px solid rgba(255, 85, 0, 0.2);
-  border-radius: 4px;
+  background: rgba(199, 171, 125, 0.08);
+  border: 1px solid rgba(199, 171, 125, 0.35);
+  border-radius: 2px;
 }
 
 .recoveryTitle {
   font-size: 1rem;
-  color: #ff5500;
+  color: var(--dossier-accent-dim, #8a2b1d);
   margin-bottom: 0.5rem;
 }
 
 .recoveryDesc {
   font-size: 0.85rem;
-  color: #888;
+  color: var(--dossier-ink-soft, #4a3620);
   margin-bottom: 1.5rem;
+  line-height: 1.5;
 }
 
 .codesGrid {
@@ -229,39 +284,56 @@
 }
 
 .codeItem {
-  background: #000;
-  border: 1px solid #222;
+  background: var(--dossier-paper-light, #f4f1e9);
+  border: 1px dashed rgba(36, 28, 22, 0.35);
   padding: 8px;
   text-align: center;
-  font-family: monospace;
+  font-family: "Special Elite", "Courier New", monospace;
   font-size: 0.9rem;
   letter-spacing: 1px;
+  color: var(--dossier-ink, #241c16);
+  border-radius: 2px;
 }
 
 .copyBtn {
   background: transparent;
-  color: #fff;
-  border: 1px solid #444;
+  color: var(--dossier-ink, #241c16);
+  border: 1px solid rgba(36, 28, 22, 0.3);
   padding: 8px 16px;
   font-size: 0.75rem;
-  font-weight: 600;
+  letter-spacing: 0.04em;
   cursor: pointer;
   transition: all 0.2s;
+  border-radius: 1px;
 }
 
 .copyBtn:hover {
-  border-color: #fff;
+  border-color: var(--dossier-ink, #241c16);
+  background: rgba(36, 28, 22, 0.05);
 }
 
 .errorMsg {
   margin-top: 1.5rem;
-  color: #ff4444;
-  font-family: monospace;
+  color: var(--dossier-accent, #c23b2c);
   font-size: 0.85rem;
 }
 
 .successMsg {
   margin-top: 1.5rem;
-  color: #00ff64;
-  font-weight: 500;
+  color: var(--dossier-accent-dim, #8a2b1d);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .codesGrid {
+    grid-template-columns: 1fr;
+  }
 }

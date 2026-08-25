@@ -1,10 +1,9 @@
-/* src/pages/admin/Contact/ContactAdmin.module.css */
+/* src/pages/admin/ContactAdmin/ContactAdmin.module.css */
 
 /* --- CONTAINER --- */
 .container {
-  color: #e0e0e0;
-  font-family: 'Inter', sans-serif;
-  max-width: 1400px;
+  color: var(--dossier-newsprint, #e8e1c8);
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
@@ -16,110 +15,97 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- HEADER --- */
+/* --- HEADER (paper folder header) --- */
 .header {
+  position: relative;
+  background: var(--dossier-paper, #f0ecdf);
+  color: var(--dossier-ink, #241c16);
+  padding: 2rem 2rem 1.75rem;
+  margin-bottom: 2rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2.5rem;
-  border-bottom: 1px solid #222;
-  padding-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.headerKicker {
+  color: var(--dossier-accent-dim, #8a2b1d);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
 }
 
 .title {
-  font-family: 'Courier New', monospace;
+  font-size: 1.7rem;
+  letter-spacing: 0.02em;
+  color: var(--dossier-ink, #241c16);
   text-transform: uppercase;
-  font-size: 1.25rem;
-  letter-spacing: 0.1em;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   margin: 0;
-  white-space: normal;
-  word-break: break-word;
-}
-
-/* The Orange Admin Accent Line */
-.title::before {
-  content: '';
-  display: block;
-  width: 6px;
-  height: 24px;
-  min-width: 6px;
-  background: #ff5500; 
-  box-shadow: 0 0 8px rgba(255, 85, 0, 0.4);
 }
 
 /* --- TACTICAL BUTTON --- */
 .addBtn {
-  background: #fff;
-  color: #000;
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  background: var(--dossier-ink, #241c16);
+  color: var(--dossier-paper, #f0ecdf);
   border: none;
   padding: 10px 20px;
-  font-family: 'Courier New', monospace;
-  font-weight: 700;
+  font-family: "Special Elite", "Courier New", monospace;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
   letter-spacing: 0.05em;
-  border-radius: 2px;
+  border-radius: 1px;
+  font-size: 0.8rem;
 }
 
 .addBtn:hover {
-  background: #ff5500;
-  color: #fff;
-  box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+  background: var(--dossier-accent, #c23b2c);
 }
 
 /* --- SYSTEM STATES (Loading / Error) --- */
 .loader, .error {
   padding: 3rem;
   text-align: center;
-  font-family: 'Courier New', monospace;
-  color: #888;
-  font-size: 0.9rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: rgba(10, 10, 10, 0.5);
-  border: 1px dashed #333;
-  border-radius: 4px;
+  color: rgba(232, 225, 200, 0.6);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  background: rgba(199, 171, 125, 0.05);
+  border: 1px dashed rgba(199, 171, 125, 0.3);
+  border-radius: 2px;
   margin-top: 2rem;
 }
 
 .error {
-  color: #ff4444;
-  border-color: #ff4444;
-  background: rgba(255, 68, 68, 0.05);
+  color: var(--dossier-accent, #c23b2c);
+  border-color: rgba(194, 59, 44, 0.4);
+  background: rgba(194, 59, 44, 0.06);
 }
 
 /* --- LAYOUT SPACING --- */
 .formWrapper {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   width: 100%;
 }
 
 .tableWrapper {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   width: 100%;
 }
 
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
   .header {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 1.5rem 1.25rem;
   }
-  
+
   .addBtn {
     width: 100%;
     text-align: center;
     padding: 12px 20px;
   }
-  
+
   .title {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 }

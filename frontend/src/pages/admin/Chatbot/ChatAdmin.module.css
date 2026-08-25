@@ -1,8 +1,7 @@
-/* src/features/chatbot/ChatAdmin.module.css (or your specific path) */
+/* src/pages/admin/Chatbot/ChatAdmin.module.css */
 
 .container {
-    color: #e0e0e0;
-    font-family: 'Inter', sans-serif;
+    color: var(--dossier-newsprint, #e8e1c8);
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
@@ -13,51 +12,60 @@
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     margin-bottom: 2rem;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid rgba(199, 171, 125, 0.2);
     padding-bottom: 1rem;
 }
 
-.title {
-    font-family: 'Courier New', monospace;
-    text-transform: uppercase;
-    font-size: 1.25rem;
+.kicker {
+    color: var(--dossier-accent, #c23b2c);
+    font-size: 0.7rem;
     letter-spacing: 0.1em;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0;
+    margin: 0 0 0.4rem;
 }
 
-/* The signature Admin Orange block */
-.title::before {
-    content: '';
-    display: block;
-    width: 6px;
-    height: 24px;
-    background: #ff5500;
+.title {
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    letter-spacing: 0.02em;
+    color: var(--dossier-paper, #f0ecdf);
+    margin: 0;
 }
 
 /* --- FORM CONFIGURATION --- */
 .formCard {
-    background: #0a0a0a;
-    border: 1px solid #333;
+    background: var(--dossier-paper, #f0ecdf);
+    color: var(--dossier-ink, #241c16);
+    border: 1px solid rgba(36, 28, 22, 0.25);
     padding: 2rem;
     position: relative;
     max-width: 800px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
 }
 
-/* The signature Admin Orange top line */
 .formCard::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: #ff5500;
+    height: 3px;
+    background: var(--dossier-accent, #c23b2c);
+}
+
+.infoBox {
+    background: rgba(36, 28, 22, 0.05);
+    border: 1px dashed rgba(36, 28, 22, 0.25);
+    padding: 1rem 1.15rem;
+    margin-bottom: 1.75rem;
+}
+
+.infoBox p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--dossier-ink-soft, #4a3620);
 }
 
 /* --- THE TOGGLE SWITCH PANEL --- */
@@ -65,34 +73,34 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #111;
-    border: 1px solid #222;
+    background: var(--dossier-paper-light, #f4f1e9);
+    border: 1px solid rgba(36, 28, 22, 0.18);
     padding: 1.5rem;
     margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .statusLabel {
-    font-family: 'Courier New', monospace;
-    font-size: 1rem;
-    font-weight: bold;
-    letter-spacing: 0.05em;
-    color: #888;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: var(--dossier-ink-soft, #4a3620);
 }
 
 .statusLabel.online {
-    color: #fff;
-    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+    color: var(--dossier-accent-dim, #8a2b1d);
 }
 
 .statusLabel.offline {
-    color: #666;
+    color: rgba(36, 28, 22, 0.4);
 }
 
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 30px;
+    width: 56px;
+    height: 28px;
+    flex-shrink: 0;
 }
 
 .switch input {
@@ -108,30 +116,31 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #333;
-    transition: .4s;
+    background-color: rgba(36, 28, 22, 0.25);
+    transition: .3s;
+    border-radius: 2px;
 }
 
 .slider:before {
     position: absolute;
     content: "";
-    height: 22px;
-    width: 22px;
+    height: 20px;
+    width: 20px;
     left: 4px;
     bottom: 4px;
-    background-color: #aaa;
-    transition: .4s;
+    background-color: var(--dossier-paper, #f0ecdf);
+    transition: .3s;
+    border-radius: 1px;
 }
 
 input:checked+.slider {
-    background-color: #000;
-    border: 1px solid #00ff88;
+    background-color: var(--dossier-ink, #241c16);
+    border: 1px solid var(--dossier-accent, #c23b2c);
 }
 
 input:checked+.slider:before {
-    transform: translateX(30px);
-    background-color: #00ff88;
-    box-shadow: 0 0 8px #00ff88;
+    transform: translateX(28px);
+    background-color: var(--dossier-accent, #c23b2c);
 }
 
 /* --- INPUT GROUPS --- */
@@ -143,19 +152,21 @@ input:checked+.slider:before {
 }
 
 .label {
-    font-family: 'Courier New', monospace;
-    font-size: 0.75rem;
-    color: #666;
+    font-family: "Special Elite", "Courier New", monospace;
+    font-size: 0.72rem;
+    color: var(--dossier-ink-soft, #4a3620);
     text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 .input,
 .textarea {
-    background: #000;
-    border: 1px solid #333;
-    color: #fff;
+    background: var(--dossier-paper-light, #f4f1e9);
+    border: 1px solid rgba(36, 28, 22, 0.3);
+    border-bottom: 2px solid var(--dossier-ink, #241c16);
+    color: var(--dossier-ink, #241c16);
     padding: 12px;
-    font-family: 'Inter', sans-serif;
+    font-family: "Special Elite", "Courier New", monospace;
     font-size: 16px;
     outline: none;
     width: 100%;
@@ -165,7 +176,7 @@ input:checked+.slider:before {
 
 .input:focus,
 .textarea:focus {
-    border-color: #ff5500;
+    border-bottom-color: var(--dossier-accent, #c23b2c);
 }
 
 .textarea {
@@ -173,47 +184,47 @@ input:checked+.slider:before {
     resize: vertical;
 }
 
-/* --- THE TACTICAL SUBMIT BUTTON --- */
+/* --- SUBMIT BUTTON --- */
 .submitBtn {
-    background: #fff;
-    color: #000;
+    background: var(--dossier-ink, #241c16);
+    color: var(--dossier-paper, #f0ecdf);
     border: none;
     padding: 12px 24px;
-    font-weight: 700;
-    font-family: 'Inter', sans-serif;
+    font-family: "Anton", "Arial Narrow", sans-serif;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
     width: auto;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    border-radius: 1px;
 }
 
 .submitBtn:hover:not(:disabled) {
-    background: #ff5500;
-    color: #fff;
+    background: var(--dossier-accent, #c23b2c);
 }
 
 .submitBtn:disabled {
-    background: #333;
-    color: #666;
+    background: rgba(36, 28, 22, 0.35);
+    color: rgba(240, 236, 223, 0.7);
     cursor: not-allowed;
 }
 
 /* States */
 .loader,
 .error {
-    font-family: 'Courier New', monospace;
     font-size: 0.85rem;
     padding: 2rem 0;
+    letter-spacing: 0.04em;
 }
 
 .loader {
-    color: #888;
+    color: var(--dossier-kraft, #c7ab7d);
     animation: pulse 1.5s infinite;
 }
 
 .error {
-    color: #ff4444;
+    color: var(--dossier-accent, #c23b2c);
 }
 
 @keyframes fadeIn {
@@ -235,5 +246,20 @@ input:checked+.slider:before {
 
     50% {
         opacity: 0.5;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .formCard {
+        padding: 1.5rem;
     }
 }

@@ -1,5 +1,6 @@
-// src/features/skills/SkillTable.jsx
+// src/pages/admin/skill/SkillTable.jsx
 import React from 'react';
+import '../../../styles/dossier.css';
 import styles from './SkillTable.module.css';
 
 export default function SkillTable({

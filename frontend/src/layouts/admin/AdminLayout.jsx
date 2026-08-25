@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
+import "../../styles/dossier.css";
 import styles from "./AdminLayout.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -56,7 +57,12 @@ export default function AdminLayout() {
       >
         <div className={styles.adminTitle}>
           <span className={styles.statusDot} aria-label="Status: Online"></span>
-          Admin_Console
+          Case_HQ // Admin
+        </div>
+        <div className={`${styles.caseTag} ink`}>
+          FILE: OKUMU-JOSEPH
+          <br />
+          CLEARANCE: {user?.role?.toUpperCase() || "ADMIN"}
         </div>
         <nav className={styles.navGroup} aria-label="Admin Main Menu">
           <NavLink to="/admin" end className={getLinkClass} onClick={closeSidebar}>
@@ -108,7 +114,7 @@ export default function AdminLayout() {
           >
             [::]
           </button>
-          <span className={styles.headerTitle}>System Configuration</span>
+          <span className={styles.headerTitle}>Case Configuration Log</span>
           <div className={styles.userBadge} style={{ marginLeft: "auto" }}>
             USER: <strong>{user?.role?.toUpperCase() || "ADMIN"}</strong>
             {" / "}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../../styles/dossier.css";
 import styles from "./ProfileFieldForm.module.css";
 
 const ALLOWED_TYPES = [
@@ -56,14 +57,15 @@ export default function ProfileFieldForm({
   };
 
   return (
-    <div className={styles.formPanel}>
-      <h3 className={styles.panelHeader}>
-        {initialValues ? "MODIFY_PROFILE_RECORD" : "INITIALIZE_NEW_FIELD"}
+    <div className={`${styles.formPanel} paperShadow`}>
+      <span className={`${styles.formTab} ink`}>CASE FILE // FIELD RECORD</span>
+      <h3 className={`${styles.panelHeader} display`}>
+        {initialValues ? "Modify Profile Record" : "Initialize New Field"}
       </h3>
       <form onSubmit={handleSubmit} autoComplete="off">
         {errors.length > 0 && (
           <div className={styles.errorBox}>
-            <div style={{ marginBottom: "8px" }}>[ SYSTEM_ERR_DETECTED ]:</div>
+            <div className={styles.errorHeading}>{"[ VALIDATION ERRORS DETECTED ]:"}</div>
             {errors.map((err, i) => (
               <div key={i} className={styles.errorItem}>{err}</div>
             ))}
@@ -71,7 +73,7 @@ export default function ProfileFieldForm({
         )}
         <div className={styles.formGrid}>
           <div className={styles.inputGroup}>
-            <label className={styles.label}>Field Key (DB Identity) *</label>
+            <label className={`${styles.label} ink`}>Field Key (DB Identity) *</label>
             <input
               className={styles.input}
               name="field"
@@ -82,7 +84,7 @@ export default function ProfileFieldForm({
             />
           </div>
           <div className={styles.inputGroup}>
-            <label className={styles.label}>Data Type *</label>
+            <label className={`${styles.label} ink`}>Data Type *</label>
             <select
               className={styles.select}
               name="type"
@@ -95,7 +97,7 @@ export default function ProfileFieldForm({
             </select>
           </div>
           <div className={`${styles.inputGroup} ${styles.fullWidth}`}>
-            <label className={styles.label}>Data Value *</label>
+            <label className={`${styles.label} ink`}>Data Value *</label>
             <input
               className={styles.input}
               name="value"
@@ -105,7 +107,7 @@ export default function ProfileFieldForm({
             />
           </div>
           <div className={styles.inputGroup}>
-            <label className={styles.label}>Sort Order</label>
+            <label className={`${styles.label} ink`}>Sort Order</label>
             <input
               className={styles.input}
               name="sort_order"
@@ -126,15 +128,15 @@ export default function ProfileFieldForm({
               checked={values.visible}
               onChange={handleChange}
             />
-            <span style={{ color: values.visible ? "#00ff88" : "inherit" }}>STATUS: VISIBLE</span>
+            <span className={values.visible ? styles.visibleOn : styles.visibleOff}>STATUS: VISIBLE</span>
           </label>
         </div>
         <div className={styles.actionRow}>
           <button type="button" className={`${styles.btn} ${styles.cancelBtn}`} disabled={loading} onClick={onCancel}>
-            CANCEL_OP
+            CANCEL
           </button>
           <button type="submit" className={`${styles.btn} ${styles.saveBtn}`} disabled={loading}>
-            {loading ? "PROCESSING..." : (initialValues ? "UPDATE_RECORD" : "DEPLOY_FIELD")}
+            {loading ? "PROCESSING…" : (initialValues ? "UPDATE RECORD" : "DEPLOY FIELD")}
           </button>
         </div>
       </form>

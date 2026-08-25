@@ -4,17 +4,19 @@
 .layoutWrapper {
   display: flex;
   min-height: 100vh;
-  background-color: #050505;
-  color: #e0e0e0;
-  font-family: 'Inter', sans-serif;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  background-color: var(--dossier-bg-0, #100c09);
+  color: var(--dossier-newsprint, #e8e1c8);
+  font-family: "Special Elite", "Courier New", monospace;
+  overflow-x: hidden;
 }
 
-/* --- SIDEBAR (Command Center) --- */
+/* --- SIDEBAR (Case Cabinet) --- */
 .sidebar {
-  width: 260px;
-  background-color: #0a0a0a;
-  border-right: 1px solid #222;
+  width: 264px;
+  background-color: var(--dossier-bg-1, #1c1310);
+  background-image:
+    repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0 2px, transparent 2px 42px);
+  border-right: 1px solid rgba(199, 171, 125, 0.18);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -22,20 +24,19 @@
   left: 0;
   height: 100vh;
   padding: 2rem 0;
-  z-index: 100; /* High z-index to sit on top */
-  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); /* Smooth slide */
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 /* Brand Title */
 .adminTitle {
-  font-family: 'Courier New', monospace;
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 0.1em;
-  color: #fff;
+  font-family: "Anton", "Arial Narrow", sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--dossier-paper, #f0ecdf);
   text-transform: uppercase;
   padding: 0 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -45,10 +46,11 @@
 .statusDot {
   width: 8px;
   height: 8px;
-  background-color: #ff5500;
+  background-color: var(--dossier-accent, #c23b2c);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+  box-shadow: 0 0 10px rgba(194, 59, 44, 0.6);
   animation: pulse 2s infinite;
+  flex-shrink: 0;
 }
 
 @keyframes pulse {
@@ -57,97 +59,116 @@
   100% { opacity: 1; }
 }
 
+.caseTag {
+  margin: 0 2rem 1.75rem;
+  padding: 8px 12px;
+  border: 1px dashed rgba(199, 171, 125, 0.35);
+  color: var(--dossier-kraft, #c7ab7d);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+}
+
 /* --- NAVIGATION --- */
 .navGroup {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 2px;
+  overflow-y: auto;
 }
 
 .navLink {
   display: block;
-  padding: 12px 2rem;
-  color: #666;
+  padding: 11px 2rem;
+  color: rgba(232, 225, 200, 0.45);
   text-decoration: none;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  border-left: 2px solid transparent;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  transition: all 0.15s ease;
+  border-left: 3px solid transparent;
 }
 
-.navLink:hover,
-.navLinkActive {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.03);
-  border-left-color: #ff5500;
-  padding-left: 2.5rem;
+.navLink:hover {
+  color: var(--dossier-newsprint, #e8e1c8);
+  background: rgba(199, 171, 125, 0.06);
+  border-left-color: rgba(199, 171, 125, 0.4);
 }
 
-.navLinkActive {
-  color: #ff5500;
+.navLinkActive,
+.navLinkActive:hover {
+  color: var(--dossier-paper, #f0ecdf);
+  background: rgba(194, 59, 44, 0.12);
+  border-left-color: var(--dossier-accent, #c23b2c);
 }
 
 /* Back Link */
 .backLinkWrapper {
   margin-top: auto;
-  padding: 2rem;
-  border-top: 1px solid #222;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(199, 171, 125, 0.18);
 }
 
 .backLink {
-  color: #444;
+  color: rgba(232, 225, 200, 0.35);
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  transition: color 0.3s;
+  transition: color 0.2s;
 }
 
 .backLink:hover {
-  color: #fff;
+  color: var(--dossier-kraft, #c7ab7d);
 }
 
 /* --- MAIN CONTENT AREA --- */
 .mainWrapper {
   flex: 1;
-  margin-left: 260px; /* PC: Push content right to make room for sidebar */
+  margin-left: 264px;
   display: flex;
   flex-direction: column;
-  background-image: 
-    linear-gradient(#111 1px, transparent 1px),
-    linear-gradient(90deg, #111 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-color: var(--dossier-bg-0, #100c09);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(199, 171, 125, 0.035) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(90deg, rgba(199, 171, 125, 0.035) 0 1px, transparent 1px 40px);
   transition: margin-left 0.3s ease;
+  min-width: 0;
 }
 
 /* Top Header */
 .topHeader {
-  height: 60px;
-  border-bottom: 1px solid #222;
+  height: 64px;
+  border-bottom: 1px solid rgba(199, 171, 125, 0.18);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.5rem;
-  background: rgba(5, 5, 5, 0.95);
+  background: rgba(16, 12, 9, 0.94);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 90;
+  gap: 1rem;
 }
 
 @media (min-width: 1024px) {
   .topHeader {
-    padding: 0 3rem;
-    height: 70px;
+    padding: 0 2.5rem;
+    height: 72px;
   }
 }
 
 .headerTitle {
-  font-size: 0.75rem;
-  color: #555;
+  font-size: 0.72rem;
+  color: var(--dossier-kraft, #c7ab7d);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.16em;
   display: none;
+}
+
+.headerTitle::before {
+  content: "// ";
+  opacity: 0.6;
 }
 
 @media (min-width: 640px) {
@@ -157,11 +178,11 @@
 }
 
 .userBadge {
-  font-size: 0.7rem;
-  background: #000;
-  padding: 4px 8px;
-  border: 1px solid #222;
-  color: #888;
+  font-size: 0.68rem;
+  background: var(--dossier-paper, #f0ecdf);
+  color: var(--dossier-ink, #241c16);
+  padding: 5px 10px;
+  border: 1px solid rgba(36, 28, 22, 0.3);
   border-radius: 2px;
   white-space: nowrap;
   display: flex;
@@ -170,35 +191,38 @@
   max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 @media (min-width: 768px) {
   .userBadge {
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     padding: 6px 12px;
     max-width: none;
   }
 }
 
 .userBadge strong {
-  color: #00ff00;
+  color: var(--dossier-accent-dim, #8a2b1d);
 }
 
 .logoutBtn {
   background: transparent;
-  border: 1px solid #333;
-  color: #ff3333;
-  padding: 4px 8px;
-  font-size: 0.65rem;
+  border: 1px solid var(--dossier-accent, #c23b2c);
+  color: var(--dossier-accent, #c23b2c);
+  padding: 4px 9px;
+  font-size: 0.62rem;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
   transition: all 0.2s;
-  font-family: 'Courier New', monospace;
+  font-family: "Special Elite", "Courier New", monospace;
+  border-radius: 1px;
 }
 
 .logoutBtn:hover {
-  background: #221111;
-  border-color: #ff3333;
+  background: var(--dossier-accent, #c23b2c);
+  color: var(--dossier-paper, #f0ecdf);
 }
 
 /* Toggle Button */
@@ -206,19 +230,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
-  border: 1px solid #333;
-  color: #00ff00;
+  background: var(--dossier-bg-1, #1c1310);
+  border: 1px solid rgba(199, 171, 125, 0.3);
+  color: var(--dossier-kraft, #c7ab7d);
   width: 36px;
   height: 36px;
-  font-family: 'Courier New', monospace;
+  font-family: "Special Elite", "Courier New", monospace;
   font-size: 1rem;
   cursor: pointer;
   transition: border-color 0.2s;
+  flex-shrink: 0;
 }
 
 .mobileToggle:hover {
-  border-color: #00ff00;
+  border-color: var(--dossier-accent, #c23b2c);
+  color: var(--dossier-accent, #c23b2c);
 }
 
 @media (min-width: 1024px) {
@@ -229,16 +255,17 @@
 
 /* Content & Footer */
 .contentArea {
-  padding: 3rem;
+  padding: 2.5rem 3rem;
   flex: 1;
 }
 
 .footer {
   text-align: center;
-  padding: 1.5rem;
-  color: #444;
-  font-size: 0.8rem;
-  border-top: 1px solid #1a1a1a;
+  padding: 1.25rem;
+  color: rgba(232, 225, 200, 0.25);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  border-top: 1px solid rgba(199, 171, 125, 0.12);
 }
 
 /* Overlay for Mobile when menu is open */
@@ -249,7 +276,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   z-index: 95;
   backdrop-filter: blur(3px);
 }
@@ -258,45 +285,39 @@
    MOBILE RESPONSIVE STYLES
    ========================================= */
 @media (max-width: 768px) {
-  /* 1. Sidebar becomes a Drawer */
   .sidebar {
-    transform: translateX(-100%); /* Hidden by default */
-    width: 85%; /* Cover most of the screen */
-    box-shadow: 10px 0 30px rgba(0,0,0,0.9);
+    transform: translateX(-100%);
+    width: 85%;
+    max-width: 300px;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.9);
   }
 
-  /* Class to slide it in */
   .sidebarOpen {
     transform: translateX(0);
   }
 
-  /* 2. Main Content expands to full width */
   .mainWrapper {
-    margin-left: 0; /* Remove the gap */
+    margin-left: 0;
     width: 100%;
   }
 
-  /* 3. Header Adjustments */
   .topHeader {
-    padding: 0 1.5rem; /* Less padding */
-    justify-content: flex-start; /* Align left */
+    padding: 0 1.5rem;
+    justify-content: flex-start;
   }
 
   .headerTitle {
-    display: none; /* Hide title on small screens to save space */
+    display: none;
   }
 
-  /* 4. Show the Toggle Button */
   .mobileToggle {
-    display: block;
+    display: flex;
   }
 
-  /* 5. Show Overlay when open */
   .overlayOpen {
     display: block;
   }
 
-  /* 6. Content Padding */
   .contentArea {
     padding: 1.5rem;
   }

@@ -9,6 +9,7 @@ import {
 import TimelineAdminTable from "../../components/timeline/TimelineAdminTable";
 import TimelineForm from "../../components/timeline/TimelineForm";
 import { useAuth } from "../../hooks/useAuth";
+import "../../styles/dossier.css";
 import styles from "./TimelineAdmin.module.css"; // Ensure this path matches!
 
 const getTimelineItems = (data) =>
@@ -50,7 +51,7 @@ const TimelineAdmin = () => {
   if (loading || isLoading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loader}>INITIALIZING TIMELINE LOGS...</div>
+        <div className={`${styles.loader} ink`}>{"// PULLING CHRONOLOGY RECORDS..."}</div>
       </div>
     );
   }
@@ -58,9 +59,9 @@ const TimelineAdmin = () => {
   if (error) {
     return (
       <div className={styles.container}>
-        <div className={styles.error}>
-          [ SYSTEM ERROR: UNABLE TO RETRIEVE TIMELINE LOGS ]<br /><br />
-          <span style={{ fontSize: '0.75rem', color: '#aaa' }}>{error.message}</span>
+        <div className={`${styles.error} ink`}>
+          [ RECORD ROOM UNREACHABLE — CHRONOLOGY LOGS COULD NOT BE PULLED ]<br /><br />
+          <span className={styles.errorDetail}>{error.message}</span>
         </div>
       </div>
     );
@@ -70,29 +71,38 @@ const TimelineAdmin = () => {
     <section className={styles.container}>
       {/* HEADER */}
       <div className={styles.header}>
-        <h2 className={styles.title}>TIMELINE_EVENT_RECORDS</h2>
+        <div>
+          <p className={`${styles.kicker} ink`}>{"// CASE CHRONOLOGY — RECORD ROOM"}</p>
+          <h2 className={`${styles.title} display`}>Timeline Event Records</h2>
+        </div>
       </div>
 
       {/* FORM AREA */}
-      <div className={styles.formWrapper}>
-        <TimelineForm
-          mode="create"
-          onSubmit={addMutation.mutate}
-          isLoading={addMutation.isLoading}
-        />
+      <div className={styles.panel}>
+        <span className={`${styles.panelTab} ink`}>{"// LOG NEW ENTRY"}</span>
+        <div className={styles.formWrapper}>
+          <TimelineForm
+            mode="create"
+            onSubmit={addMutation.mutate}
+            isLoading={addMutation.isLoading}
+          />
+        </div>
       </div>
 
       {/* TABLE AREA */}
-      <div className={styles.tableWrapper}>
-        <TimelineAdminTable
-          items={getTimelineItems(data)}
-          onEdit={updateMutation.mutate}
-          onDelete={deleteMutation.mutate}
-          loadingIds={{
-            updating: updateMutation.isLoading,
-            deleting: deleteMutation.isLoading,
-          }}
-        />
+      <div className={styles.panel}>
+        <span className={`${styles.panelTab} ink`}>{"// LOGGED ENTRIES"}</span>
+        <div className={styles.tableWrapper}>
+          <TimelineAdminTable
+            items={getTimelineItems(data)}
+            onEdit={updateMutation.mutate}
+            onDelete={deleteMutation.mutate}
+            loadingIds={{
+              updating: updateMutation.isLoading,
+              deleting: deleteMutation.isLoading,
+            }}
+          />
+        </div>
       </div>
 
     </section>

@@ -1,13 +1,15 @@
-/* src/features/skills/SkillForm.module.css */
+/* src/pages/admin/skill/SkillForm.module.css */
 
 /* --- FORM CONTAINER --- */
 .formCard {
-  background: #0a0a0a;
-  border: 1px solid #333;
+  background: var(--dossier-paper, #f0ecdf);
+  color: var(--dossier-ink, #241c16);
+  border: 1px solid rgba(36, 28, 22, 0.2);
   padding: 2rem;
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  border-radius: 2px;
   animation: fadeIn 0.3s ease-out;
 }
 
@@ -16,23 +18,19 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Orange Top Border (The Brand Signature) */
 .formCard::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 2px;
-  background: #ff5500; /* Admin Orange */
-  box-shadow: 0 0 10px rgba(255, 85, 0, 0.4);
+  height: 3px;
+  background: var(--dossier-accent, #c23b2c);
 }
 
 /* --- GRID LAYOUT --- */
 .formGrid {
   display: grid;
-  /* Auto-fit: Creates columns that are at least 200px wide. 
-     On mobile (<400px), this naturally forces a single column. */
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
@@ -46,32 +44,31 @@
 }
 
 .label {
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  color: #888;
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 0.72rem;
+  color: var(--dossier-ink-soft, #4a3620);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
+  letter-spacing: 0.06em;
 }
 
 .input {
-  background: #050505;
-  border: 1px solid #333;
-  color: #fff;
-  padding: 12px 16px;
-  font-family: 'Inter', sans-serif;
+  background: var(--dossier-paper-light, #f4f1e9);
+  border: 1px solid rgba(36, 28, 22, 0.3);
+  border-bottom: 2px solid var(--dossier-ink, #241c16);
+  color: var(--dossier-ink, #241c16);
+  padding: 11px 14px;
+  font-family: "Special Elite", "Courier New", monospace;
   font-size: 16px; /* Prevents iOS Zoom */
   outline: none;
   width: 100%;
-  transition: all 0.3s;
-  border-radius: 2px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  border-radius: 1px;
   box-sizing: border-box;
 }
 
 .input:focus {
-  border-color: #ff5500;
-  background: #000;
-  box-shadow: 0 0 15px rgba(255, 85, 0, 0.1);
+  border-bottom-color: var(--dossier-accent, #c23b2c);
+  box-shadow: 0 0 0 2px rgba(194, 59, 44, 0.12);
 }
 
 /* --- CHECKBOXES --- */
@@ -80,7 +77,7 @@
   gap: 2rem;
   align-items: center;
   margin-top: 10px;
-  flex-wrap: wrap; /* Wraps on tiny screens */
+  flex-wrap: wrap;
 }
 
 .checkboxLabel {
@@ -88,76 +85,73 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
-  color: #666;
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 0.82rem;
+  color: var(--dossier-ink-soft, #4a3620);
   user-select: none;
-  transition: color 0.3s;
+  transition: color 0.2s;
 }
 
 .checkboxLabel input {
   cursor: pointer;
-  accent-color: #ff5500; /* Colors the browser checkbox */
+  accent-color: var(--dossier-accent, #c23b2c);
   width: 16px;
   height: 16px;
 }
 
 .checkboxLabel:hover {
-  color: #fff;
+  color: var(--dossier-ink, #241c16);
 }
 
-/* Highlight "Superpower" text when checked */
 .checkboxLabel input:checked + span.superText {
-  color: #ffd700; /* Gold */
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  color: #b8860b;
 }
 
 .checkboxLabel input:checked + span.activeText {
-  color: #00ff88; /* Green */
+  color: #1f9d55;
 }
 
 /* --- ACTION BUTTONS --- */
 .actionRow {
   display: flex;
-  justify-content: flex-end; /* Align buttons to right */
+  justify-content: flex-end;
   gap: 12px;
   margin-top: 2rem;
-  border-top: 1px solid #222;
+  border-top: 1px dashed rgba(36, 28, 22, 0.25);
   padding-top: 1.5rem;
 }
 
 .btn {
-  padding: 12px 24px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
-  font-weight: 700;
+  padding: 11px 22px;
+  font-family: "Special Elite", "Courier New", monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
   border: none;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
 .submitBtn {
-  background: #fff;
-  color: #000;
+  background: var(--dossier-ink, #241c16);
+  color: var(--dossier-paper, #f0ecdf);
+  font-family: "Anton", "Arial Narrow", sans-serif;
 }
 
 .submitBtn:hover {
-  background: #ff5500;
-  color: #fff;
-  box-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+  background: var(--dossier-accent, #c23b2c);
 }
 
 .cancelBtn {
   background: transparent;
-  border: 1px solid #333;
-  color: #888;
+  border: 1px solid rgba(36, 28, 22, 0.3);
+  color: var(--dossier-ink-soft, #4a3620);
 }
 
 .cancelBtn:hover {
-  border-color: #ff4444;
-  color: #ff4444;
+  border-color: var(--dossier-accent, #c23b2c);
+  color: var(--dossier-accent, #c23b2c);
 }
 
 /* --- MOBILE OPTIMIZATION --- */
@@ -167,16 +161,16 @@
   }
 
   .formGrid {
-    grid-template-columns: 1fr; /* Stack everything vertically */
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
 
   .actionRow {
-    flex-direction: column; /* Stack buttons */
+    flex-direction: column;
   }
 
   .btn {
-    width: 100%; /* Full width buttons */
+    width: 100%;
     text-align: center;
   }
 }

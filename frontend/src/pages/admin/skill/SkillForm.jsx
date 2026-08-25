@@ -1,5 +1,6 @@
-// src/features/skills/SkillForm.jsx
+// src/pages/admin/skill/SkillForm.jsx
 import React, { useState } from 'react';
+import '../../../styles/dossier.css';
 import styles from './SkillForm.module.css';
 
 export default function SkillForm({ 
@@ -42,7 +43,7 @@ export default function SkillForm({
         
         {/* Name */}
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Skill Identifier</label>
+          <label className={`${styles.label} ink`}>Skill Identifier</label>
           <input 
             className={styles.input} 
             name="name" 
@@ -55,7 +56,7 @@ export default function SkillForm({
 
         {/* Category */}
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Category / Tag</label>
+          <label className={`${styles.label} ink`}>Category / Tag</label>
           <input 
             className={styles.input} 
             name="category" 
@@ -68,7 +69,7 @@ export default function SkillForm({
 
         {/* Level */}
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Proficiency</label>
+          <label className={`${styles.label} ink`}>Proficiency</label>
           <input 
             className={styles.input} 
             name="level" 
@@ -81,7 +82,7 @@ export default function SkillForm({
 
         {/* Years */}
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Experience (Yrs)</label>
+          <label className={`${styles.label} ink`}>Experience (Yrs)</label>
           <input 
             className={styles.input} 
             type="number" 
@@ -95,7 +96,7 @@ export default function SkillForm({
 
         {/* Order */}
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Sort Priority</label>
+          <label className={`${styles.label} ink`}>Sort Priority</label>
           <input 
             className={styles.input} 
             type="number" 

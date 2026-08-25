@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import '../../styles/dossier.css';
 import styles from './TerminalLoader.module.css';
 
 const MESSAGES = [
-  "INITIATING SECURE HANDSHAKE...",
-  "BYPASSING FIREWALL...",
-  "DECRYPTING DOSSIER...",
+  "PULLING CASE FILE...",
+  "CROSS-REFERENCING EVIDENCE...",
+  "OPENING SUSPECT DOSSIER...",
   "ACCESS GRANTED."
 ];
 
@@ -45,11 +46,11 @@ const TerminalLoader = ({ onComplete }) => {
             <span className={styles.dot} />
             <span className={styles.dot} />
           </div>
-          <span className={styles.title}>SESSION_INIT.sh</span>
+          <span className={`${styles.title} ink`}>CASE_ACCESS.log</span>
         </div>
         <div className={styles.content}>
           {visibleMessages.map((msg, i) => (
-            <div key={i} className={styles.line}>
+            <div key={i} className={`${styles.line} ink`}>
               <span className={styles.prompt}>&gt;</span> {msg}
             </div>
           ))}

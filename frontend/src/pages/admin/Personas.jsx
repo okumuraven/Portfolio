@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { usePersonas } from "../../features/personas/usePersonas";
+import "../../styles/dossier.css";
 import styles from "./Personas.module.css";
 
 const initialFormState = {
@@ -125,19 +126,27 @@ export default function PersonasAdminPage() {
     }
   };
 
-  if (isLoading) return <div className={styles.container}>Loading System Data...</div>;
-  if (isError) return <div className={styles.container} style={{color:'red'}}>Error: {error?.message}</div>;
+  if (isLoading) return <div className={`${styles.container} ink`}>Loading case registry&hellip;</div>;
+  if (isError) return <div className={`${styles.container} ${styles.loadError} ink`}>Error: {error?.message}</div>;
 
   return (
     <div className={styles.container}>
       {/* --- HEADER --- */}
       <div className={styles.header}>
-        <div className={styles.title}>PERSONA_MANAGEMENT_PROTOCOL</div>
-        {message && <div style={{ color: message.startsWith("ERROR") ? "#ff3333" : "#00ff88", fontSize: "0.9rem" }}>{message}</div>}
+        <div>
+          <p className={`${styles.eyebrow} ink`}>{"// KNOWN ASSOCIATES"}</p>
+          <h1 className={`${styles.title} display`}>Persona Registry</h1>
+        </div>
+        {message && (
+          <div className={`${styles.message} ${message.startsWith("ERROR") ? styles.messageError : styles.messageOk} ink`}>
+            {message}
+          </div>
+        )}
       </div>
 
       {/* --- DATA TABLE --- */}
-      <div className={styles.tableContainer}>
+      <div className={`${styles.tableContainer} paperShadow`}>
+        <span className={`${styles.tableTab} ink`}>CASE LEDGER</span>
         <table className={styles.dataTable}>
           <thead>
             <tr>
@@ -152,26 +161,26 @@ export default function PersonasAdminPage() {
           </thead>
           <tbody>
             {personas.length === 0 && (
-              <tr><td colSpan={7} style={{textAlign: "center", padding: "2rem"}}>NO DATA FOUND IN REGISTRY</td></tr>
+              <tr><td colSpan={7} className={styles.emptyRow}>NO RECORDS ON FILE</td></tr>
             )}
             {personas.map((p) => (
               <tr key={p.id}>
-                <td style={{ fontWeight: "bold", color: "#fff" }}>{p.title}</td>
-                <td>
+                <td data-label="Title / Identity" className={styles.identityCell}>{p.title}</td>
+                <td data-label="Status Type">
                   <span className={styles.badge}>{p.type}</span>
                 </td>
-                <td>{p.availability}</td>
-                <td>
+                <td data-label="Availability">{p.availability}</td>
+                <td data-label="Accent">
                   <div className={styles.colorDot} style={{ background: p.accent_color }}></div>
-                  <span style={{ marginLeft: 8, fontSize: '0.8rem' }}>{p.accent_color}</span>
+                  <span className={styles.colorHex}>{p.accent_color}</span>
                 </td>
-                <td>#{p.order}</td>
-                <td>
+                <td data-label="Priority">#{p.order}</td>
+                <td data-label="State">
                   <span className={`${styles.badge} ${p.is_active ? styles.activeBadge : styles.inactiveBadge}`}>
-                    {p.is_active ? "ONLINE" : "OFFLINE"}
+                    {p.is_active ? "ACTIVE" : "SEALED"}
                   </span>
                 </td>
-                <td>
+                <td data-label="Actions">
                   <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={() => startEdit(p)}>EDIT</button>
                   <button className={`${styles.actionBtn} ${styles.deleteBtn}`} onClick={() => handleDelete(p.id)} disabled={isDeleting}>DELETE</button>
                 </td>
@@ -182,21 +191,24 @@ export default function PersonasAdminPage() {
       </div>
 
       {/* --- CONFIGURATION FORM --- */}
-      <div className={styles.formCard}>
-        <h3 className={styles.title} style={{ fontSize: "1rem", marginBottom: "1.5rem" }}>
-          {editingId ? ">> MODIFY_PERSONA_CONFIG" : ">> INITIALIZE_NEW_PERSONA"}
+      <div className={`${styles.formCard} paperShadow`}>
+        <span className={`${styles.formTab} ink`}>
+          {editingId ? "MODIFY RECORD" : "NEW INTAKE FORM"}
+        </span>
+        <h3 className={`${styles.formTitle} display`}>
+          {editingId ? "Modify Persona File" : "Initialize New Persona"}
         </h3>
-        
+
         <form onSubmit={handleSubmit}>
           {/* Row 1: Basics */}
           <div className={styles.formGrid}>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Title (Role Name) <span className={styles.req}>*</span></label>
+              <label className={`${styles.label} ink`}>Title (Role Name) <span className={styles.req}>*</span></label>
               <input name="title" className={styles.input} value={form.title} onChange={onChange} required />
               {fieldErrors.title && <span className={styles.error}>{fieldErrors.title}</span>}
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Type</label>
+              <label className={`${styles.label} ink`}>Type</label>
               <select name="type" className={styles.select} value={form.type} onChange={onChange}>
                 <option value="current">Current Focus</option>
                 <option value="past">Past Role</option>
@@ -204,7 +216,7 @@ export default function PersonasAdminPage() {
               </select>
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Sort Order</label>
+              <label className={`${styles.label} ink`}>Sort Order</label>
               <input type="number" name="order" className={styles.input} value={form.order} onChange={onChange} />
             </div>
           </div>
@@ -212,14 +224,14 @@ export default function PersonasAdminPage() {
           {/* Row 2: Appearance */}
           <div className={styles.formGrid}>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Accent Color (Hex)</label>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <input type="color" name="accent_color" value={form.accent_color} onChange={onChange} style={{ height: '45px', width: '60px' }} />
+              <label className={`${styles.label} ink`}>Accent Color (Hex)</label>
+              <div className={styles.colorRow}>
+                <input type="color" name="accent_color" value={form.accent_color} onChange={onChange} className={styles.colorSwatch} />
                 <input name="accent_color" className={styles.input} value={form.accent_color} onChange={onChange} />
               </div>
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Call To Action Text <span className={styles.req}>*</span></label>
+              <label className={`${styles.label} ink`}>Call To Action Text <span className={styles.req}>*</span></label>
               <input name="cta" className={styles.input} value={form.cta} onChange={onChange} required placeholder="e.g. HIRE FOR SECURITY" />
               {fieldErrors.cta && <span className={styles.error}>{fieldErrors.cta}</span>}
             </div>
@@ -228,21 +240,21 @@ export default function PersonasAdminPage() {
           {/* Row 3: Details */}
           <div className={styles.formGrid}>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Summary (Short)</label>
+              <label className={`${styles.label} ink`}>Summary (Short)</label>
               <input name="summary" className={styles.input} value={form.summary} onChange={onChange} />
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Availability</label>
+              <label className={`${styles.label} ink`}>Availability</label>
               <select name="availability" className={styles.select} value={form.availability} onChange={onChange}>
-                <option value="open">🟢 Open to Work</option>
-                <option value="consulting">🟡 Consulting Only</option>
-                <option value="closed">🔴 Closed</option>
+                <option value="open">Open to Work</option>
+                <option value="consulting">Consulting Only</option>
+                <option value="closed">Closed</option>
               </select>
             </div>
           </div>
 
           <div className={styles.inputGroup}>
-            <label className={styles.label}>
+            <label className={`${styles.label} ink`}>
               Icon (URL or name) <span className={styles.req}>*</span>
             </label>
             <input name="icon" className={styles.input} value={form.icon} onChange={onChange} required placeholder="e.g. fa-shield-alt or image URL" />
@@ -250,22 +262,22 @@ export default function PersonasAdminPage() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label className={styles.label}>Full Description</label>
+            <label className={`${styles.label} ink`}>Full Description</label>
             <textarea name="description" className={styles.textarea} rows={3} value={form.description} onChange={onChange} />
           </div>
           <div className={styles.inputGroup}>
-            <label className={styles.label}>Motivation</label>
+            <label className={`${styles.label} ink`}>Motivation</label>
             <input name="motivation" className={styles.input} value={form.motivation} onChange={onChange} />
           </div>
           {/* Actions */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "2rem" }}>
-            <label className={styles.checkboxLabel}>
-              <input type="checkbox" name="is_active" checked={form.is_active} onChange={onChange} style={{ transform: "scale(1.5)" }} />
-              <span style={{fontFamily: 'Courier New', fontSize: '0.9rem'}}>SET_AS_ACTIVE_MODE</span>
+          <div className={styles.formFooter}>
+            <label className={`${styles.checkboxLabel} ink`}>
+              <input type="checkbox" name="is_active" checked={form.is_active} onChange={onChange} className={styles.checkbox} />
+              <span>SET AS ACTIVE MODE</span>
             </label>
             <div>
               <button type="submit" className={styles.submitBtn} disabled={isCreating || isUpdating}>
-                {editingId ? "UPDATE CONFIG" : "DEPLOY"}
+                {editingId ? "UPDATE FILE" : "DEPLOY PERSONA"}
               </button>
               {editingId && (
                 <button type="button" className={styles.cancelBtn} onClick={cancelEdit}>

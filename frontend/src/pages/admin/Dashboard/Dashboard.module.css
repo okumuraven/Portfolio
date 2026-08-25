@@ -1,0 +1,157 @@
+.wrap {
+  max-width: 1100px;
+}
+
+.header {
+  margin-bottom: 2.25rem;
+}
+
+.eyebrow {
+  color: var(--dossier-accent, #c23b2c);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.5rem;
+}
+
+.title {
+  color: var(--dossier-paper, #f0ecdf);
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  margin: 0 0 0.6rem;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  color: rgba(232, 225, 200, 0.6);
+  font-size: 0.95rem;
+  max-width: 60ch;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* --- STAT TILES --- */
+.tileGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--dossier-paper, #f0ecdf);
+  color: var(--dossier-ink, #241c16);
+  padding: 1.25rem 1.4rem 1.1rem;
+  border: 1px solid rgba(36, 28, 22, 0.2);
+  border-radius: 2px;
+  text-decoration: none;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tile::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--dossier-accent, #c23b2c);
+}
+
+.tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.45);
+}
+
+.tileTag {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--dossier-accent-dim, #8a2b1d);
+}
+
+.tileCount {
+  font-size: 2.6rem;
+  line-height: 1;
+  margin: 4px 0 2px;
+}
+
+.tileLabel {
+  font-size: 0.85rem;
+  color: var(--dossier-ink-soft, #4a3620);
+}
+
+.tileLink {
+  margin-top: 10px;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--dossier-ink, #241c16);
+  opacity: 0.55;
+}
+
+.tile:hover .tileLink {
+  opacity: 1;
+  color: var(--dossier-accent, #c23b2c);
+}
+
+/* --- OPERATIONS --- */
+.opsSection {
+  margin-top: 1rem;
+}
+
+.opsTitle {
+  color: rgba(232, 225, 200, 0.55);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem;
+}
+
+.opsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem;
+}
+
+.opsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 1rem 1.2rem;
+  background: rgba(199, 171, 125, 0.05);
+  border: 1px solid rgba(199, 171, 125, 0.18);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.18s ease;
+}
+
+.opsCard:hover {
+  background: rgba(194, 59, 44, 0.08);
+  border-color: rgba(194, 59, 44, 0.4);
+}
+
+.opsLabel {
+  font-family: "Special Elite", "Courier New", monospace;
+  color: var(--dossier-paper, #f0ecdf);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+}
+
+.opsDesc {
+  color: rgba(232, 225, 200, 0.5);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .tileCount {
+    font-size: 2.1rem;
+  }
+}

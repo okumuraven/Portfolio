@@ -6,6 +6,7 @@ import {
   updateContactField,
   deleteContactField,
 } from "../../../api/contact.api";
+import "../../../styles/dossier.css";
 import FieldsTable from "./FieldsTable";
 import ProfileFieldForm from "./ProfileFieldForm";
 import styles from "./ContactAdmin.module.css";
@@ -78,20 +79,21 @@ export default function ContactAdmin() {
   // SYSTEM STATES
   if (isLoading) return (
     <div className={styles.container}>
-      <div className={styles.loader}>[ INITIALIZING_CONTACT_RECORDS... ]</div>
+      <div className={`${styles.loader} ink`}>{"// PULLING CONTACT RECORDS FROM THE CABINET..."}</div>
     </div>
   );
 
   if (error) return (
     <div className={styles.container}>
-      <div className={styles.error}>[ SYSTEM ERROR: FAILED TO LOAD PROFILE DATA ]</div>
+      <div className={`${styles.error} ink`}>{"// SYSTEM ERROR: FAILED TO LOAD PROFILE DATA"}</div>
     </div>
   );
 
   return (
     <section className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>CONTACT_PROFILE_RECORDS</h2>
+      <div className={`${styles.header} torn paperShadow`}>
+        <span className={`${styles.headerKicker} ink`}>PERSONNEL FILE // ADMIN</span>
+        <h2 className={`${styles.title} display`}>Contact Profile Records</h2>
         {!showForm && (
           <button className={styles.addBtn} onClick={handleAdd}>
             + DEPLOY NEW FIELD

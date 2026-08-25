@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useSkills } from '../../../features/skills/useSkills';
 import { useCreateSkill, useUpdateSkill, useDeleteSkill } from '../../../features/skills/useSkillMutations';
 import { sortSkills } from '../../../features/skills/skillUtils';
+import '../../../styles/dossier.css';
 import styles from './AdminSkillMatrix.module.css';
 
 const CATEGORY_OPTIONS = [
@@ -11,6 +12,23 @@ const CATEGORY_OPTIONS = [
 const LEVEL_OPTIONS = [
   'Expert', 'Proficient', 'Intermediate', 'Learning', 'Interested'
 ];
+
+// Same category -> paper/accent palette used on the public Arsenal page, so a
+// "Backend" row reads the same color here as it does out front.
+const CATEGORY_NOTE_COLORS = {
+  backend: { bg: '#cdeecb', accent: '#1f9d55' },
+  frontend: { bg: '#c9ecf6', accent: '#0aa5c2' },
+  database: { bg: '#f8ddb8', accent: '#d97a1f' },
+  devops: { bg: '#e6d3f2', accent: '#8b3fc9' },
+  security: { bg: '#f7edad', accent: '#c9a400' },
+};
+const DEFAULT_NOTE_COLOR = { bg: '#eee9de', accent: '#8a7a5c' };
+
+function noteColor(category) {
+  const key = (category || '').trim().toLowerCase();
+  const match = Object.keys(CATEGORY_NOTE_COLORS).find((k) => key.includes(k));
+  return CATEGORY_NOTE_COLORS[match] || DEFAULT_NOTE_COLOR;
+}
 
 function SkillForm({ initial = {}, onSubmit, submitLabel, onCancel, isLoading }) {
   const [form, setForm] = useState({
@@ -87,14 +105,14 @@ function SkillForm({ initial = {}, onSubmit, submitLabel, onCancel, isLoading })
   }
 
   return (
-    <form className={styles.formCard} onSubmit={handleSubmit}>
+    <form className={`${styles.formCard} paperShadow`} onSubmit={handleSubmit}>
       <div className={styles.formGrid}>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Skill Name</label>
+          <label className={`${styles.label} ink`}>Skill Name</label>
           <input className={styles.input} name="name" value={form.name} onChange={handleChange} placeholder="e.g. React.js" required />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Category</label>
+          <label className={`${styles.label} ink`}>Category</label>
           <select
             className={styles.input}
             name="category"
@@ -109,7 +127,7 @@ function SkillForm({ initial = {}, onSubmit, submitLabel, onCancel, isLoading })
           </select>
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Proficiency Level</label>
+          <label className={`${styles.label} ink`}>Proficiency Level</label>
           <select
             className={styles.input}
             name="level"
@@ -124,45 +142,45 @@ function SkillForm({ initial = {}, onSubmit, submitLabel, onCancel, isLoading })
           </select>
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Years Exp.</label>
+          <label className={`${styles.label} ink`}>Years Exp.</label>
           <input className={styles.input} name="years" type="number" value={form.years} onChange={handleChange} placeholder="0" min="0" />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Sort Order</label>
+          <label className={`${styles.label} ink`}>Sort Order</label>
           <input className={styles.input} name="order" type="number" value={form.order} onChange={handleChange} placeholder="1" />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Persona IDs (CSV)</label>
+          <label className={`${styles.label} ink`}>Persona IDs (CSV)</label>
           <input className={styles.input} name="persona_ids" value={form.persona_ids.join(',')} onChange={handleChange} placeholder="e.g. 1,2,3" />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Projects (CSV Links)</label>
+          <label className={`${styles.label} ink`}>Projects (CSV Links)</label>
           <input className={styles.input} name="project_links" value={form.project_links.join(',')} onChange={handleChange} placeholder="comma-separated links" />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Icon URL</label>
+          <label className={`${styles.label} ink`}>Icon URL</label>
           <input className={styles.input} name="icon" value={form.icon || ''} onChange={handleChange} placeholder="Optional icon url" />
         </div>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Certificate Link</label>
+          <label className={`${styles.label} ink`}>Certificate Link</label>
           <input className={styles.input} name="cert_link" value={form.cert_link || ''} onChange={handleChange} placeholder="Optional cert link" />
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+      <div className={styles.formFooter}>
         <div className={styles.checkboxGroup}>
-          <label className={styles.checkboxLabel}>
+          <label className={`${styles.checkboxLabel} ink`}>
             <input name="active" type="checkbox" checked={form.active} onChange={handleChange} />
             <span>ACTIVE STATUS</span>
           </label>
-          <label className={styles.checkboxLabel}>
+          <label className={`${styles.checkboxLabel} ink`}>
             <input name="superpower" type="checkbox" checked={form.superpower} onChange={handleChange} />
-            <span style={{ color: form.superpower ? '#ffd700' : 'inherit' }}>IS SUPERPOWER?</span>
+            <span className={form.superpower ? styles.superpowerFlag : ''}>IS SUPERPOWER?</span>
           </label>
         </div>
-        <div style={{ display: 'flex', gap: '10px', width: 'auto' }}>
+        <div className={styles.formActions}>
           <button type="submit" className={styles.submitBtn} disabled={isLoading}>{submitLabel}</button>
           {onCancel && (
-            <button type="button" className={`${styles.actionBtn} ${styles.deleteBtn}`} onClick={onCancel} style={{ padding: '12px 24px' }}>
+            <button type="button" className={styles.cancelBtn} onClick={onCancel}>
               CANCEL
             </button>
           )}
@@ -193,20 +211,23 @@ export default function AdminSkillMatrix() {
     }
   }, [createSuccess, resetCreate]);
 
-  if (isLoading) return <div className={styles.container}><div style={{ padding: '2rem' }}>INITIALIZING MATRIX...</div></div>;
-  if (isError) return <div className={styles.container}><div style={{ color: 'red', padding: '2rem' }}>SYSTEM ERROR: Failed to load data.</div></div>;
+  if (isLoading) return <div className={styles.container}><div className={`${styles.stateMsg} ink`}>PULLING ARSENAL RECORDS&hellip;</div></div>;
+  if (isError) return <div className={styles.container}><div className={`${styles.stateMsg} ${styles.stateError} ink`}>SYSTEM ERROR: FAILED TO LOAD DATA.</div></div>;
 
   const sortedSkills = sortSkills(skills);
 
   return (
     <section className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.title}>SKILL_MATRIX_PROTOCOL</div>
-        <div style={{ fontSize: '0.8rem', color: '#666', fontFamily: 'Courier New' }}>
-          TOTAL_NODES: {skills.length}
+        <div>
+          <p className={`${styles.eyebrow} ink`}>{"// ARSENAL LEDGER"}</p>
+          <h1 className={`${styles.title} display`}>Skill Matrix</h1>
+        </div>
+        <div className={`${styles.nodeCount} ink`}>
+          ENTRIES ON FILE: {skills.length}
         </div>
       </div>
-      <div className={styles.tableContainer}>
+      <div className={`${styles.tableContainer} paperShadow`}>
         <table className={styles.dataTable}>
           <thead>
             <tr>
@@ -221,21 +242,30 @@ export default function AdminSkillMatrix() {
           </thead>
           <tbody>
             {sortedSkills.length === 0 && (
-              <tr><td colSpan={7} style={{ textAlign: "center", padding: "2rem" }}>REGISTRY EMPTY</td></tr>
+              <tr><td colSpan={7} className={styles.emptyRow}>REGISTRY EMPTY</td></tr>
             )}
-            {sortedSkills.map(skill => (
+            {sortedSkills.map(skill => {
+              const color = noteColor(skill.category);
+              return (
               <tr key={skill.id}>
-                <td style={{ fontWeight: 'bold', color: '#fff' }}>{skill.name}</td>
-                <td><span className={styles.categoryBadge}>{skill.category}</span></td>
+                <td className={styles.nameCell}>{skill.name}</td>
+                <td>
+                  <span
+                    className={`${styles.categoryBadge} ink`}
+                    style={{ '--note-bg': color.bg, '--note-accent': color.accent }}
+                  >
+                    {skill.category}
+                  </span>
+                </td>
                 <td>{skill.level}</td>
                 <td>{skill.years}y</td>
-                <td style={{ textAlign: 'center' }}>
+                <td className={styles.centerCell}>
                   {skill.superpower && <span className={styles.superpower}>★</span>}
                 </td>
-                <td style={{ textAlign: 'center' }}>
+                <td className={styles.centerCell}>
                   <span className={`${styles.activeDot} ${skill.active ? styles.on : ''}`}></span>
                 </td>
-                <td>
+                <td className={styles.actionsCell}>
                   <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={() => setEditingSkill(skill)}>
                     [ EDIT ]
                   </button>
@@ -246,13 +276,14 @@ export default function AdminSkillMatrix() {
                   </button>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
         {deleteError && <div className={styles.error}>Error deleting skill: {deleteError.message}</div>}
       </div>
-      <h3 className={styles.title} style={{ fontSize: '1rem', borderLeft: 'none', marginBottom: '1rem' }}>
-        {">>"} INITIALIZE_NEW_SKILL_NODE
+      <h3 className={`${styles.sectionTitle} ink`}>
+        {"// LOG A NEW SKILL"}
       </h3>
       <SkillForm
         submitLabel={creating ? "PROCESSING..." : createSuccess ? "DEPLOYED!" : "DEPLOY SKILL"}
@@ -264,7 +295,7 @@ export default function AdminSkillMatrix() {
       {editingSkill && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <h3 className={styles.title} style={{ marginBottom: '1rem' }}>MODIFY_SKILL_CONFIG</h3>
+            <h3 className={`${styles.sectionTitle} ink`}>EDIT SKILL RECORD</h3>
             <SkillForm
               initial={editingSkill}
               submitLabel={updating ? "UPDATING..." : "SAVE CONFIG"}

@@ -12,15 +12,13 @@ import TimelinePage from "../pages/public/Timeline/TimelinePage";
 import TimelineAdmin from "../pages/admin/TimelineAdmin";
 import RecoveryAdmin from "../pages/admin/Recovery/RecoveryAdmin";
 import Security from "../pages/admin/Security";
+import Dashboard from "../pages/admin/Dashboard/Dashboard";
+import SystemLogs from "../pages/admin/SystemLogs/SystemLogs";
 
 // NEW: Contact pages
 import Contact from "../pages/public/Contact/Contact";
 import ContactAdmin from "../pages/admin/ContactAdmin/ContactAdmin";
 import ChatbotAdmin from "../pages/admin/Chatbot/ChatbotAdmin";
-
-function AdminDashboardStub() {
-  return <div>Admin Dashboard Coming Soon!</div>;
-}
 
 function NotFound() {
   return (
@@ -47,7 +45,7 @@ export default function AppRoutes() {
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AdminDashboardStub />} />
+        <Route index element={<Dashboard />} />
         <Route path="personas" element={<PersonasAdminPage />} />
         <Route path="skills" element={<AdminSkillMatrix />} />
         <Route path="projects" element={<ProjectsAdminPage />} />
@@ -58,6 +56,8 @@ export default function AppRoutes() {
         <Route path="contact" element={<ContactAdmin />} />
         {/* Chatbot Admin Config */}
         <Route path="chatbot" element={<ChatbotAdmin />} />
+        {/* Activity / audit trail — placeholder until a backend log exists */}
+        <Route path="activity" element={<SystemLogs />} />
       </Route>
 
       {/* 404 fallback */}

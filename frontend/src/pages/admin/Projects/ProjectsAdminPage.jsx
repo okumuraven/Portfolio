@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { getProjects, deleteProject } from "../../../api/projects.api";
 import EditProjectModal from "./EditProjectModal";
+import "../../../styles/dossier.css";
 import styles from "./ProjectsAdminPage.module.css";
 
 // Set your backend API base here - update in production if needed!
@@ -71,7 +72,7 @@ export default function ProjectsAdminPage() {
 
   // --- RENDER HELPERS ---
   const renderList = (list) => {
-    if (!list || list.length === 0) return <span style={{color:'#666'}}>-</span>;
+    if (!list || list.length === 0) return <span style={{color:'rgba(36,28,22,0.35)'}}>&mdash;</span>;
     return list.map((item, i) => (
       <span key={i} className={styles.chip}>{item}</span>
     ));
@@ -83,21 +84,21 @@ export default function ProjectsAdminPage() {
     setImageErrorMap((prev) => ({ ...prev, [projectId]: true }));
   };
 
-  if (loading) return <div className={styles.loader}>INITIALIZING PROJECT REGISTRY...</div>;
-  if (error) return <div className={styles.error}>SYSTEM ERROR: {error}</div>;
+  if (loading) return <div className={`${styles.loader} ink`}>PULLING CASE FILES FROM STORAGE&hellip;</div>;
+  if (error) return <div className={`${styles.error} ink`}>[FILE ROOM ERROR]: {error}</div>;
 
   return (
     <div className={styles.container}>
       {/* HEADER */}
       <div className={styles.header}>
-        <div className={styles.title}>PROJECT_MANAGEMENT_PROTOCOL</div>
+        <div className={`${styles.title} display`}>Case File Index // Projects</div>
         <button className={styles.createBtn} onClick={handleAdd}>
-          + DEPLOY NEW PROJECT
+          + OPEN NEW CASE
         </button>
       </div>
       {/* DATA GRID */}
       {projects.length === 0 ? (
-        <div className={styles.loader}>NO PROJECT NODES DETECTED.</div>
+        <div className={`${styles.loader} ink`}>NO CASE FILES ON RECORD.</div>
       ) : (
         <div className={styles.tableContainer}>
           <table className={styles.dataTable}>
@@ -142,7 +143,7 @@ export default function ProjectsAdminPage() {
                     <span className={styles.projectTitle}>{project.title}</span>
                   </td>
                   {/* Category */}
-                  <td style={{color: '#aaa'}}>{project.category}</td>
+                  <td style={{color: 'var(--dossier-ink-soft, #4a3620)'}}>{project.category}</td>
                   {/* Skills (Chips) */}
                   <td>{renderList(project.skills)}</td>
                   {/* Personas (Chips) */}
@@ -151,13 +152,13 @@ export default function ProjectsAdminPage() {
                   <td>
                     <div style={{display:'flex', alignItems:'center'}}>
                       <span className={`${styles.statusDot} ${project.visible ? styles.visible : styles.hidden}`}></span>
-                      <span style={{fontSize:'0.8rem', color: project.visible ? '#fff' : '#666'}}>
+                      <span style={{fontSize:'0.8rem', color: project.visible ? 'var(--dossier-ink, #241c16)' : 'rgba(36,28,22,0.4)'}}>
                         {project.visible ? 'LIVE' : 'HIDDEN'}
                       </span>
                     </div>
                   </td>
                   {/* Order */}
-                  <td style={{fontFamily:'monospace'}}>#{project.order ?? "-"}</td>
+                  <td style={{fontFamily:'"Special Elite", monospace'}}>#{project.order ?? "-"}</td>
                   {/* Actions */}
                   <td>
                     <button className={`${styles.actionBtn} ${styles.editBtn}`} onClick={() => handleEdit(project)}>

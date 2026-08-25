@@ -1,4 +1,5 @@
 import React from "react";
+import "../../../styles/dossier.css";
 import styles from "./FieldsTable.module.css";
 
 export default function FieldsTable({
@@ -10,7 +11,7 @@ export default function FieldsTable({
   if (!fields || fields.length === 0) {
     return (
       <div className={styles.tableContainer}>
-        <div className={styles.emptyState}>[ NO_PROFILE_FIELDS_FOUND ]</div>
+        <div className={`${styles.emptyState} ink`}>{"// NO PROFILE FIELDS ON FILE"}</div>
       </div>
     );
   }
@@ -50,7 +51,7 @@ export default function FieldsTable({
               <td data-label="Data Type">
                 <span className={styles.cellType}>{row.type}</span>
               </td>
-              <td data-label="Sort Order" style={{ fontFamily: "monospace", color: "#888" }}>
+              <td data-label="Sort Order" className={styles.cellOrder}>
                 {row.sort_order ?? '—'}
               </td>
               <td data-label="Visibility">

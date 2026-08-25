@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRecovery } from '../../../features/recovery/useRecovery';
+import '../../../styles/dossier.css';
 import styles from './RecoveryAdmin.module.css';
 import TerminalLoader from '../../../components/feedback/TerminalLoader';
 import InlineTacticalLoader from '../../../components/feedback/InlineTacticalLoader';
@@ -104,11 +105,11 @@ const SobrietyClock = ({ lastReset }) => {
   }, [lastReset]);
 
   const getStatusColor = () => {
-    if (!lastReset) return '#555';
-    if (elapsed.days < 7) return '#ff3333'; // Critical
-    if (elapsed.days < 30) return '#ffcc00'; // Warning
-    if (elapsed.days < 90) return '#00ccff'; // Stable
-    return '#00ff00'; // Optimal
+    if (!lastReset) return 'rgba(36, 28, 22, 0.35)';
+    if (elapsed.days < 7) return '#c23b2c'; // Critical
+    if (elapsed.days < 30) return '#b8862e'; // Warning
+    if (elapsed.days < 90) return '#5b7386'; // Stable
+    return '#5c7a4f'; // Optimal
   };
 
   const color = getStatusColor();
@@ -396,7 +397,7 @@ const RecoveryAdmin = () => {
         <div className={`${styles.card} ${styles.briefingCard}`}>
           <div className={styles.cardHeader}>
             <div className={styles.cardHeaderLeft}>
-              <span className={styles.cardIndicator} style={{backgroundColor: '#00ff00'}}></span>
+              <span className={styles.cardIndicator} style={{backgroundColor: '#b39a68'}}></span>
               <h3>DAILY_TACTICAL_BRIEFING</h3>
             </div>
             <div className={styles.briefingActions}>
@@ -430,7 +431,7 @@ const RecoveryAdmin = () => {
         <div className={`${styles.card} ${styles.chatCard}`}>
           <div className={styles.cardHeader}>
             <div className={styles.cardHeaderLeft}>
-              <span className={styles.cardIndicator} style={{backgroundColor: '#00ff00'}}></span>
+              <span className={styles.cardIndicator} style={{backgroundColor: '#b39a68'}}></span>
               <h3>SENTINEL_AI (TACTICAL_ADVISOR)</h3>
             </div>
             <span className={styles.chatStatus}>ENCRYPTED_LINK_ACTIVE</span>
@@ -472,7 +473,7 @@ const RecoveryAdmin = () => {
         {/* TRIGGER TELEMETRY */}
         <div className={`${styles.card} ${styles.telemetryCard}`}>
           <div className={styles.cardHeader}>
-            <span className={styles.cardIndicator} style={{backgroundColor: '#ffaa00'}}></span>
+            <span className={styles.cardIndicator} style={{backgroundColor: '#8a5a2b'}}></span>
             <h3>TRIGGER_TELEMETRY_LOG</h3>
           </div>
           <form onSubmit={handleLogUrge} className={styles.telemetryForm}>
@@ -514,7 +515,7 @@ const RecoveryAdmin = () => {
         {/* CORE MOTIVATION (REASONS) */}
         <div className={`${styles.card} ${styles.objectivesCard}`}>
           <div className={styles.cardHeader}>
-            <span className={styles.cardIndicator} style={{backgroundColor: '#00aaff'}}></span>
+            <span className={styles.cardIndicator} style={{backgroundColor: '#5b7386'}}></span>
             <h3>STRATEGIC_OBJECTIVES</h3>
           </div>
           <div className={styles.reasonsContainer}>
@@ -566,7 +567,7 @@ const RecoveryAdmin = () => {
         {/* SYSTEM RESET */}
         <div className={`${styles.card} ${styles.resetCard}`}>
           <div className={styles.cardHeader}>
-            <span className={styles.cardIndicator} style={{backgroundColor: '#ff0000'}}></span>
+            <span className={styles.cardIndicator} style={{backgroundColor: '#c23b2c'}}></span>
             <h3>FAILURE_PROCEDURE</h3>
           </div>
           <p className={styles.resetWarning}>
